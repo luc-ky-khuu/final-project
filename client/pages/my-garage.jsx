@@ -5,10 +5,7 @@ class MyCars extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      year: '',
-      make: '',
-      model: '',
-      photoUrl: ''
+      cars: []
     };
   }
 
@@ -20,27 +17,31 @@ class MyCars extends React.Component {
     fetch('/api/garage')
       .then(cars => cars.json())
       .then(result => {
-        const { year, make, model, photoUrl } = result[0];
-        return this.setState({
-          year,
-          make,
-          model,
-          photoUrl
+        this.setState({
+          cars: result
         });
-
       });
   }
 
-  render() {
-    const { photoUrl } = this.state;
+  renderCar(car) {
+    const { year, make, model, photoUrl } = car;
     return (
-      <div className='container'>
+      <>
         <Card className='flex-md-row-reverse align-items-center'>
           <Card.Img className='border border-dark' style={{ height: '20rem' }} variant="top" src={`${photoUrl}`} />
           <Card.Body >
-            <Card.Title>Card Title</Card.Title>
+            <Card.Title className="text-reset h1">{year} {make} {model}</Card.Title>
           </Card.Body>
         </Card>
+      </>
+    );
+  }
+
+  render() {
+
+    return (
+      <div className='container'>
+        {this.state.cars.map(car => this.renderCar(car))}
       </div>
     );
   }
