@@ -42,13 +42,10 @@ class MyCars extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(carData)
-    });
-    this.setState({
-      year: '',
-      make: '',
-      model: '',
-      modal: !this.state.modal
-    });
+    })
+      .then(res => res.json())
+      .catch(err => console.error(err));
+
   }
 
   carForm() {
