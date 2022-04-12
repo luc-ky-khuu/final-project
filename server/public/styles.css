@@ -1,9 +1,17 @@
-.bg-component-blue {
-  background-color: rgba(48, 71, 94, 1);
-}
-
 a {
   text-decoration: none;
+}
+
+body {
+  background-color: rgba(221, 221, 221, 1);
+}
+
+.light-grey-bg {
+  background-color: rgba(221, 221, 221, 1);
+}
+
+.bg-component-blue {
+  background-color: rgba(48, 71, 94, 1);
 }
 
 .white-icon {

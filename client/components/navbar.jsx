@@ -13,9 +13,7 @@ class Navigation extends React.Component {
     return (
       <Navbar className="bg-component-blue navbar-dark" expand={'lg'}>
         <Container className="justify-content-start">
-          <Nav className="d-none d-lg-block flex-grow-1 pe-3">
-            <Nav.Link className='white-icon' href="#action1">Garage</Nav.Link>
-          </Nav>
+          <Navbar.Brand className='d-none d-lg-block ms-3 fs-1'>Vehicle Maintenance Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar" />
           <Navbar.Offcanvas
             id="offcanvasNavbar"
