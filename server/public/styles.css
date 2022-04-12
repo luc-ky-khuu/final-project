@@ -1,0 +1,24 @@
+.bg-component-blue {
+  background-color: rgba(48, 71, 94, 1);
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: rgba(221, 221, 221, 1);
+}
+
+.white-icon {
+  color: rgba(221, 221, 221, 1);
+}
+
+.navbar-toggler-icon {
+  color: rgba(221, 221, 221, 1);
+}
+
+.bg-navbar-menu {
+  background-color: rgba(196, 196, 196, 1);
+}
