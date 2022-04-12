@@ -25,4 +25,18 @@ insert into "public"."vehicles" (
   'Honda',
   'Civic',
   'https://proximaride.com/images/car_placeholder2.png'
+),
+(
+  1,
+  2015,
+  'Honda',
+  'Civic',
+  'https://proximaride.com/images/car_placeholder2.png'
+),
+(
+  1,
+  2000,
+  'Honda',
+  'Civic',
+  'https://proximaride.com/images/car_placeholder2.png'
 )

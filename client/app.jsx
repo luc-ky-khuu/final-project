@@ -10,7 +10,7 @@ export default class App extends React.Component {
         <Navbar />
         <div className="container">
           <div className='justify-content-center  row'>
-            <div className=" col-lg-3 light-grey-bg d-none d-lg-block p-3 sticky-top">
+            <div className=" col-lg-3 light-grey-bg d-none d-lg-block p-3">
               <Menu />
             </div>
             <div className="col-lg-9 light-grey-bg">
