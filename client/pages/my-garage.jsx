@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Card, Modal, Button, Form } from 'react-bootstrap';
 
-function CarForm(form) {
+function CarForm(props) {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = event => {
-    event.preventDefault();
-    setShow(true);
-  };
+  const handleClose = event => setShow(false);
+  const handleShow = event => setShow(true);
   const handleSubmit = event => {
     event.preventDefault();
+
+    handleClose();
   };
 
   return (
@@ -23,18 +22,10 @@ function CarForm(form) {
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
-            <Form.Group className='mb-3' controlId='year'>
-              <Form.Control type='text' placeholder='Year'></Form.Control>
-            </Form.Group>
-            <Form.Group className='mb-3' controlId='make'>
-              <Form.Control type='text' placeholder='Make'></Form.Control>
-            </Form.Group>
-            <Form.Group className='mb-3' controlId='model'>
-              <Form.Control type='text' placeholder='Model'></Form.Control>
-            </Form.Group>
+            {props.form}
           </Modal.Body>
           <Modal.Footer className="justify-content-between">
-            <Button className='border-0 blue-button'type='submit' onClick={handleClose}>
+            <Button className='border-0 blue-button' type='submit' onClick={handleClose}>
               Add Vehicle
             </Button>
             <Button className='border-0 red-button' onClick={handleClose}>
@@ -50,16 +41,38 @@ class MyCars extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cars: []
+      cars: [],
+      year: '',
+      make: '',
+      model: ''
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     this.getCars();
   }
 
-  toggleForm(show) {
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
 
+  formInput() {
+    return (
+      <>
+        <Form.Group className='mb-3' controlId='year'>
+          <Form.Control onChange={this.handleChange} name='year' type='text' placeholder='Year'></Form.Control>
+        </Form.Group>
+        <Form.Group className='mb-3' controlId='make'>
+          <Form.Control onChange={this.handleChange} name='make' type='text' placeholder='Make'></Form.Control>
+        </Form.Group>
+        <Form.Group className='mb-3' controlId='model'>
+          <Form.Control onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
+        </Form.Group>
+      </>
+    );
   }
 
   getCars() {
@@ -90,14 +103,15 @@ class MyCars extends React.Component {
   }
 
   render() {
-
+    const { year, make, model } = this.state;
+    const carValues = { year, make, model };
     return (<>
         <ul className="list-group list-group-flush list-unstyled">
           {this.state.cars.length > 0 ? this.state.cars.map(car => this.renderCar(car)) : <h3 className='text-center p-5'>No Cars To Display</h3>}
         </ul>
         <a href='#' className='text-reset'></a>
         <div>
-          <CarForm />
+          <CarForm form={this.formInput()} stateValues={carValues}/>
         </div>
       </>
     );
