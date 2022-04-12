@@ -17,7 +17,7 @@ function CarForm(form) {
       <a className='text-reset' href="#" onClick={handleShow}>
         <i className="bi fs-1  bi-plus-circle-fill"></i>
       </a>
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal size='sm' show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Add Vehicle</Modal.Title>
         </Modal.Header>
@@ -33,12 +33,12 @@ function CarForm(form) {
               <Form.Control type='text' placeholder='Model'></Form.Control>
             </Form.Group>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
+          <Modal.Footer className="justify-content-between">
+            <Button className='border-0 blue-button'type='submit' onClick={handleClose}>
+              Add Vehicle
             </Button>
-            <Button type='submit' variant="primary" onClick={handleClose}>
-              Save Changes
+            <Button className='border-0 red-button' onClick={handleClose}>
+              Close
             </Button>
           </Modal.Footer>
         </Form>

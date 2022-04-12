@@ -2,6 +2,10 @@ body {
   background-color: rgba(221, 221, 221, 1);
 }
 
+img {
+  object-fit: cover;
+}
+
 .work-sans {
   font-family: "Work Sans", "Noto Sans", sans-serif;
 }
@@ -10,14 +14,26 @@ body {
   font-family: "Open Sans", "Noto Sans", sans-serif;
 }
 
-img {
-  object-fit: cover;
-}
-
 .bg-component-blue {
   background-color: rgba(48, 71, 94, 1);
 }
 
 .bg-navbar-menu {
   background-color: rgba(196, 196, 196, 1);
+}
+
+.red-button {
+  background-color: rgba(240, 84, 84, 1);
+}
+
+.red-button:hover {
+  background-color: rgb(255, 143, 143);
+}
+
+.blue-button {
+  background-color: rgba(48, 71, 94, 1);
+}
+
+.blue-button:hover {
+  background-color: rgb(104, 127, 151);
 }
