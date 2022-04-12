@@ -1,42 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, Modal, Button, Form } from 'react-bootstrap';
-
-function CarForm(props) {
-  const [show, setShow] = useState(false);
-  const handleClose = event => setShow(false);
-  const handleShow = event => setShow(true);
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    handleClose();
-  };
-
-  return (
-    <>
-      <a className='text-reset' href="#" onClick={handleShow}>
-        <i className="bi fs-1  bi-plus-circle-fill"></i>
-      </a>
-      <Modal size='sm' show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Vehicle</Modal.Title>
-        </Modal.Header>
-        <Form onSubmit={handleSubmit}>
-          <Modal.Body>
-            {props.form}
-          </Modal.Body>
-          <Modal.Footer className="justify-content-between">
-            <Button className='border-0 blue-button' type='submit' onClick={handleClose}>
-              Add Vehicle
-            </Button>
-            <Button className='border-0 red-button' onClick={handleClose}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
-    </>
-  );
-}
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
@@ -44,9 +7,12 @@ class MyCars extends React.Component {
       cars: [],
       year: '',
       make: '',
-      model: ''
+      model: '',
+      modal: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -59,18 +25,64 @@ class MyCars extends React.Component {
     });
   }
 
-  formInput() {
+  toggleModal(event) {
+    event.preventDefault();
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const { year, make, model } = this.state;
+    const carData = { year, make, model };
+    fetch('/api/garage/add-car', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(carData)
+    });
+    this.setState({
+      year: '',
+      make: '',
+      model: '',
+      modal: !this.state.modal
+    });
+  }
+
+  carForm() {
     return (
       <>
-        <Form.Group className='mb-3' controlId='year'>
-          <Form.Control onChange={this.handleChange} name='year' type='text' placeholder='Year'></Form.Control>
-        </Form.Group>
-        <Form.Group className='mb-3' controlId='make'>
-          <Form.Control onChange={this.handleChange} name='make' type='text' placeholder='Make'></Form.Control>
-        </Form.Group>
-        <Form.Group className='mb-3' controlId='model'>
-          <Form.Control onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
-        </Form.Group>
+        <a className='text-reset' href="#" onClick={this.toggleModal}>
+          <i className="bi fs-1  bi-plus-circle-fill"></i>
+        </a>
+        <Modal size='sm' show={this.state.modal} onHide={this.toggleModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Vehicle</Modal.Title>
+          </Modal.Header>
+          <Form onSubmit={this.handleSubmit}>
+            <Modal.Body>
+              <Form.Group className='mb-3' controlId='year'>
+                <Form.Control value={this.state.year} onChange={this.handleChange} name='year' type='text' placeholder='Year'></Form.Control>
+              </Form.Group>
+              <Form.Group className='mb-3' controlId='make'>
+                <Form.Control value={this.state.make} onChange={this.handleChange} name='make' type='text' placeholder='Make'></Form.Control>
+              </Form.Group>
+              <Form.Group className='mb-3' controlId='model'>
+                <Form.Control value={this.state.model} onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer className="justify-content-between">
+              <Button className='border-0 blue-button' type='submit'>
+                Add Vehicle
+              </Button>
+              <Button className='border-0 red-button' onClick={this.toggleModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal>
       </>
     );
   }
@@ -103,15 +115,13 @@ class MyCars extends React.Component {
   }
 
   render() {
-    const { year, make, model } = this.state;
-    const carValues = { year, make, model };
     return (<>
         <ul className="list-group list-group-flush list-unstyled">
           {this.state.cars.length > 0 ? this.state.cars.map(car => this.renderCar(car)) : <h3 className='text-center p-5'>No Cars To Display</h3>}
         </ul>
         <a href='#' className='text-reset'></a>
         <div>
-          <CarForm form={this.formInput()} stateValues={carValues}/>
+          {this.carForm()}
         </div>
       </>
     );
