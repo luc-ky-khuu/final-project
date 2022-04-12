@@ -16,13 +16,22 @@ app.get('/api/garage', (req, res) => {
   const sql = `
     select *
       from "vehicles"
-
   `;
   db.query(sql)
     .then(result => {
       res.json(result.rows);
     })
     .catch(err => console.error(err));
+});
+
+app.post('/api/garage/add-car', (req, res) => {
+  // const { year, make, model } = req.body;
+  // const params = [year, make, model];
+  // const sql = `
+  //   insert into "vehicles" ("year", "make", "model")
+  //   values ($1, $2, $3)
+  // `;
+
 });
 
 app.use(errorMiddleware);
