@@ -17,5 +17,5 @@ insert into "public"."vehicles" (
   2011,
   'Toyota',
   'Prius',
-  'https://www.vhv.rs/dpng/d/549-5490971_car-placeholder-image-png-transparent-png.png'
+  'https://proximaride.com/images/car_placeholder2.png'
 )
