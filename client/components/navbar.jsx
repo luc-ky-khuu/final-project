@@ -2,6 +2,12 @@ import React from 'react';
 import { Container, Offcanvas, Navbar, Nav } from 'react-bootstrap';
 
 class Navigation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      route: 'My Garage'
+    };
+  }
 
   render() {
     return (
@@ -22,11 +28,11 @@ class Navigation extends React.Component {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="flex-grow-1 pe-3">
-                <Nav.Link className=' text-reset text-decoration-none' href="#action1">Garage</Nav.Link>
+                <Nav.Link className=' text-reset text-decoration-none' href="#garage">Garage</Nav.Link>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-          <Navbar.Brand className='d-lg-none ms-3 fs-1'>My Garage</Navbar.Brand>
+          <Navbar.Brand className='d-lg-none ms-3 fs-1'>{this.state.route}</Navbar.Brand>
         </Container>
       </Navbar>
     );

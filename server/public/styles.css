@@ -4,11 +4,6 @@
 
 a {
   text-decoration: none;
-  color: black;
-}
-
-a:hover {
-  color: rgba(221, 221, 221, 1);
 }
 
 .white-icon {
