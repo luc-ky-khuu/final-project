@@ -24,7 +24,10 @@ class MyCars extends React.Component {
   }
 
   renderCar(car) {
-    const { year, make, model, photoUrl, vehicleId } = car;
+    let { year, make, model, photoUrl, vehicleId } = car;
+    if (!photoUrl) {
+      photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
+    }
     return (
       <li key={vehicleId.toString()}>
           <Card className='shadow my-3 car-card flex-md-row-reverse align-items-center'>

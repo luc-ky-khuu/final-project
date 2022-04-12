@@ -24,19 +24,22 @@ app.get('/api/garage', (req, res) => {
     .catch(err => console.error(err));
 });
 
-app.post('/api/garage/add-car', (req, res) => {
+app.post('/api/garage/add-car', (req, res, next) => {
   const { year, make, model } = req.body;
   if (!year || !make || !model) {
     throw new ClientError(400, "Vehicle 'year', 'make', and 'model' are required");
   }
-  const params = [year, make, model];
+  const params = [1, parseInt(year), make, model];
   const sql = `
-    insert into "vehicles" ("year", "make", "model")
-    values ($1, $2, $3)
+    insert into "vehicles" ("userId", "year", "make", "model")
+    values ($1, $2, $3, $4)
+    returning *
   `;
   db.query(sql, params)
-    .then(result => result.json())
-    .then(result => result.rows());
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
