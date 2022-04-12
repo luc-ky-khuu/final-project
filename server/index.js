@@ -3,7 +3,7 @@ const express = require('express');
 const db = require('./db');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
-
+const ClientError = require('./client-error');
 const app = express();
 
 app.use(staticMiddleware);
@@ -25,13 +25,18 @@ app.get('/api/garage', (req, res) => {
 });
 
 app.post('/api/garage/add-car', (req, res) => {
-  // const { year, make, model } = req.body;
-  // const params = [year, make, model];
-  // const sql = `
-  //   insert into "vehicles" ("year", "make", "model")
-  //   values ($1, $2, $3)
-  // `;
-
+  const { year, make, model } = req.body;
+  if (!year || !make || !model) {
+    throw new ClientError(400, "Vehicle 'year', 'make', and 'model' are required");
+  }
+  const params = [year, make, model];
+  const sql = `
+    insert into "vehicles" ("year", "make", "model")
+    values ($1, $2, $3)
+  `;
+  db.query(sql, params)
+    .then(result => result.json())
+    .then(result => result.rows());
 });
 
 app.use(errorMiddleware);
