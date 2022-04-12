@@ -13,7 +13,7 @@ class Navigation extends React.Component {
     return (
       <Navbar className="bg-component-blue navbar-dark" expand={'lg'}>
         <Container className="justify-content-start">
-          <Navbar.Brand className='d-none d-lg-block ms-3 fs-1'>Vehicle Maintenance Tracker</Navbar.Brand>
+          <Navbar.Brand className='work-sans d-none d-lg-block fs-1'>Vehicle Expenses Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar" />
           <Navbar.Offcanvas
             id="offcanvasNavbar"
@@ -22,15 +22,15 @@ class Navigation extends React.Component {
             className='bg-navbar-menu'
           >
             <Offcanvas.Header closeButton>
-              <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
+              <Offcanvas.Title className='work-sans' id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="flex-grow-1 pe-3">
-                <Nav.Link className=' text-reset text-decoration-none' href="#garage">Garage</Nav.Link>
+                <Nav.Link className='open-sans text-reset text-decoration-none' href="#garage">Garage</Nav.Link>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-          <Navbar.Brand className='d-lg-none ms-3 fs-1'>{this.state.route}</Navbar.Brand>
+          <Navbar.Brand className='work-sans d-lg-none ms-3 fs-1'>{this.state.route}</Navbar.Brand>
         </Container>
       </Navbar>
     );

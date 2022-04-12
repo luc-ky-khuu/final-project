@@ -26,11 +26,11 @@ class MyCars extends React.Component {
   renderCar(car) {
     const { year, make, model, photoUrl, vehicleId } = car;
     return (
-        <li>
-          <Card key={vehicleId.toString()} className='shadow m-3 car-card flex-md-row-reverse align-items-center'>
+      <li key={vehicleId.toString()}>
+          <Card className='shadow my-3 car-card flex-md-row-reverse align-items-center'>
             <Card.Img className='' style={{ height: '20rem' }} variant="top" src={`${photoUrl}`} />
             <Card.Body className=''>
-              <h1 className="text-reset h1 text-center">{year} {make} {model}</h1>
+              <h1 className="work-sans text-reset h1 text-center">{year} {make} {model}</h1>
             </Card.Body>
           </Card>
         </li>

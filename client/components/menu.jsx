@@ -4,7 +4,7 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <div className='rounded-3 border border-secondary shadow d-none d-lg-block flex-grow-1 pe-3 sticky-top'>
+      <div className='rounded-3 bg-white border border-secondary shadow d-none d-lg-block flex-grow-1 sticky-top'>
         <h2>Menu</h2>
         <ul className="list-group list-group-flush">
           <a className='text-decoration-none' href='#garage'>
@@ -14,10 +14,6 @@ class Menu extends React.Component {
           </a>
       </ul>
       </div>
-
-    // <Nav className="d-none d-lg-block flex-grow-1 pe-3">
-    //   <Nav.Link className='white-icon' href="#garage">Garage</Nav.Link>
-    // </Nav>
     );
   }
 }

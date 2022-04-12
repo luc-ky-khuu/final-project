@@ -2,20 +2,20 @@ body {
   background-color: rgba(221, 221, 221, 1);
 }
 
-.light-grey-bg {
-  background-color: rgba(221, 221, 221, 1);
+.work-sans {
+  font-family: "Work Sans", "Noto Sans", sans-serif;
+}
+
+.open-sans {
+  font-family: "Open Sans", "Noto Sans", sans-serif;
+}
+
+img {
+  object-fit: cover;
 }
 
 .bg-component-blue {
   background-color: rgba(48, 71, 94, 1);
-}
-
-.white-icon {
-  color: rgba(221, 221, 221, 1);
-}
-
-.dark-grey {
-  color: rgba(176, 176, 176, 1);
 }
 
 .bg-navbar-menu {
