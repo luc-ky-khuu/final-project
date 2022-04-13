@@ -47,6 +47,15 @@ app.get('/api/garage/:vehicleId', (req, res, next) => {
   if (vehicleId < 1 || !Number(vehicleId)) {
     throw new ClientError(400, 'vehicleId msut be a positive integer');
   }
+  const sql = `
+    select   *
+      from   "vehicles"
+     where   "vehicleId" = $1
+  `;
+  const params = [vehicleId];
+  db.query(sql, params)
+    .then(result => res.json(result.rows))
+    .catch(err => next(err));
 });
 app.use(errorMiddleware);
 
