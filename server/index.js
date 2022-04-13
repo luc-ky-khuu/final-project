@@ -50,11 +50,17 @@ app.get('/api/garage/:vehicleId', (req, res, next) => {
   const sql = `
     select   *
       from   "vehicles"
+      join   "records" using ("vehicleId")
      where   "vehicleId" = $1
   `;
   const params = [vehicleId];
   db.query(sql, params)
-    .then(result => res.json(result.rows))
+    .then(result => {
+      if (!result) {
+        throw new ClientError(401, `No vehicle with vehicleId ${vehicleId} found`);
+      }
+      res.json(result.rows);
+    })
     .catch(err => next(err));
 });
 app.use(errorMiddleware);
