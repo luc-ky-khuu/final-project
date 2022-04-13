@@ -19,43 +19,14 @@ class MyCars extends React.Component {
     this.getCars();
   }
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
-
-  toggleModal(event) {
-    if (event) {
-      event.preventDefault();
-    }
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    const { year, make, model } = this.state;
-    const carData = { year, make, model };
-    fetch('/api/garage/add-car', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(carData)
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.getCars();
+  getCars() {
+    fetch('/api/garage')
+      .then(cars => cars.json())
+      .then(result => {
         this.setState({
-          year: '',
-          make: '',
-          model: '',
-          modal: !this.state.modal
+          cars: result
         });
-      })
-      .catch(err => console.error(err));
+      });
   }
 
   carForm() {
@@ -95,14 +66,43 @@ class MyCars extends React.Component {
     );
   }
 
-  getCars() {
-    fetch('/api/garage')
-      .then(cars => cars.json())
-      .then(result => {
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  toggleModal(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const { year, make, model } = this.state;
+    const carData = { year, make, model };
+    fetch('/api/garage/add-car', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(carData)
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.getCars();
         this.setState({
-          cars: result
+          year: '',
+          make: '',
+          model: '',
+          modal: !this.state.modal
         });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   renderCar(car) {
@@ -112,9 +112,11 @@ class MyCars extends React.Component {
     }
     return (
       <li key={vehicleId.toString()}>
-          <Card className='shadow my-3 car-card flex-md-row-reverse align-items-center'>
-            <Card.Img className='' style={{ height: '20rem' }} variant="top" src={`${photoUrl}`} />
-            <Card.Body className=''>
+          <Card className='row flex-nowrap shadow my-3 flex-md-row-reverse align-items-center'>
+            <div className="col-md-9 p-0">
+              <Card.Img className='' style={{ height: '20rem' }} variant="top" src={`${photoUrl}`} />
+            </div>
+            <Card.Body className='col-lg-2'>
               <h1 className="work-sans text-reset h1 text-center">{year} {make} {model}</h1>
             </Card.Body>
           </Card>
