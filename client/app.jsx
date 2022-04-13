@@ -14,7 +14,7 @@ export default class App extends React.Component {
             <div className=" col-lg-3 d-none d-lg-block p-3">
               <Menu />
             </div>
-            <div className="col-lg-9 ">
+            <div className="text-center col-lg-9 ">
               <MyCars />
             </div>
           </div>
