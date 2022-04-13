@@ -43,7 +43,10 @@ app.post('/api/garage/add-car', (req, res, next) => {
 });
 
 app.get('/api/garage/:vehicleId', (req, res, next) => {
-
+  const { vehicleId } = req.params;
+  if (vehicleId < 1 || !Number(vehicleId)) {
+    throw new ClientError(400, 'vehicleId msut be a positive integer');
+  }
 });
 app.use(errorMiddleware);
 
