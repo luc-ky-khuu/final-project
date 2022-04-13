@@ -112,14 +112,16 @@ class MyCars extends React.Component {
     }
     return (
       <li key={vehicleId.toString()}>
+          <a className='text-reset text-decoration-none'href={`#garage?vehicleId=${vehicleId}`}>
           <Card className='row flex-nowrap shadow my-3 flex-md-row-reverse align-items-center'>
             <div className="col-md-9 p-0">
               <Card.Img className='' style={{ height: '20rem' }} variant="top" src={`${photoUrl}`} />
             </div>
             <Card.Body className='col-lg-2'>
-              <h1 className="work-sans text-reset h1 text-center">{year} {make} {model}</h1>
+              <h1 className="work-sans h1 text-center text-capitalized">{year} {make} {model}</h1>
             </Card.Body>
           </Card>
+          </a>
         </li>
     );
   }
