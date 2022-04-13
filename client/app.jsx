@@ -3,7 +3,31 @@ import React from 'react';
 import Navbar from './components/navbar';
 import MyCars from './pages/my-garage';
 import Menu from './components/menu';
+
+function parseRoute(hashRoute) {
+  if (hashRoute.startsWith('#')) {
+    hashRoute = hashRoute.replace('#', '');
+  }
+  const [path, queryString] = hashRoute.split('?');
+  const params = new URLSearchParams(queryString);
+  return { path, params };
+}
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      route: parseRoute(window.location.hash)
+    };
+  }
+
+  componentDidMount() {
+    window.addEventListener('hashchange', () => {
+      // console.log(parseRoute(window.location.hash).params.get('vehicleId'));
+      this.setState({
+        route: parseRoute(window.location.hash)
+      });
+    });
+  }
 
   render() {
     return (
