@@ -62,15 +62,15 @@ class MyCars extends React.Component {
     return (
       <>
         <a className='text-reset' href="#" onClick={this.toggleModal}>
-          <i className="bi fs-1  bi-plus-circle-fill"></i>
+          <i className="bi fs-1 bi-plus-circle-fill"></i>
         </a>
         <Modal size='sm' show={this.state.modal} onHide={this.toggleModal} centered>
           <Modal.Header>
-            <Modal.Title>Add Vehicle</Modal.Title>
+            <Modal.Title className='work-sans'>Add Vehicle</Modal.Title>
             <CloseButton onClick={this.toggleModal}></CloseButton>
           </Modal.Header>
           <Form onSubmit={this.handleSubmit}>
-            <Modal.Body>
+            <Modal.Body className='open-sans'>
               <Form.Group className='mb-3' controlId='year'>
                 <Form.Control value={this.state.year} onChange={this.handleChange} name='year' type='text' placeholder='Year'></Form.Control>
               </Form.Group>
@@ -81,7 +81,7 @@ class MyCars extends React.Component {
                 <Form.Control value={this.state.model} onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
               </Form.Group>
             </Modal.Body>
-            <Modal.Footer className="justify-content-between">
+            <Modal.Footer className="justify-content-between work-sans">
               <Button className='border-0 blue-button' type='submit'>
                 Add Vehicle
               </Button>
