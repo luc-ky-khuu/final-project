@@ -52,9 +52,13 @@ app.get('/api/garage/:vehicleId', (req, res, next) => {
     select  "datePerformed",
             "mileage",
             string_agg("maintenanceName", ', '),
+            concat("year", ' ',  "make", ' ', "model")
       from  "records"
+      join  "vehicles" using ("vehicleId")
      where  "vehicleId" = $1
-     group  by "datePerformed", "mileage"
+     group  by "datePerformed", "mileage", "year", "make", "model"
+     order  by "datePerformed" desc
+     limit  4
   `;
   const params = [vehicleId];
   db.query(sql, params)

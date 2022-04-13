@@ -3,6 +3,7 @@ import React from 'react';
 import Navbar from './components/navbar';
 import MyCars from './pages/my-garage';
 import Menu from './components/menu';
+import CarDetails from './pages/car-details';
 
 function parseRoute(hashRoute) {
   if (hashRoute.startsWith('#')) {
@@ -40,6 +41,7 @@ export default class App extends React.Component {
             </div>
             <div className="text-center col-lg-9 ">
               <MyCars />
+              <CarDetails vehicleId='1'/>
             </div>
           </div>
         </div>
