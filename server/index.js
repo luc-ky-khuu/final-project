@@ -47,12 +47,14 @@ app.get('/api/garage/:vehicleId', (req, res, next) => {
   if (vehicleId < 1 || !Number(vehicleId)) {
     throw new ClientError(400, 'vehicleId msut be a positive integer');
   }
+
   const sql = `
-    select   *
-      from   "vehicles"
-      join   "records" using ("vehicleId")
-     where   "vehicleId" = $1
-     order   by "datePerformed" desc
+    select  "datePerformed",
+            "mileage",
+            string_agg("maintenanceName", ', '),
+      from  "records"
+     where  "vehicleId" = $1
+     group  by "datePerformed", "mileage"
   `;
   const params = [vehicleId];
   db.query(sql, params)
