@@ -49,7 +49,7 @@ app.get('/api/garage/:vehicleId', (req, res, next) => {
   }
 
   const sql = `
-    select  "datePerformed",
+    select  to_char("datePerformed", 'YYYY-MM-DD') as "datePerformed",
             "mileage",
             string_agg("maintenanceName", ', '),
             concat("year", ' ',  "make", ' ', "model")
