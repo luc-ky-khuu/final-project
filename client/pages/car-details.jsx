@@ -7,11 +7,9 @@ class CarDetails extends React.Component {
       carTitle: '',
       carRecords: []
     };
-
-    this.getDetails = this.getDetails.bind(this);
   }
 
-  getDetails() {
+  componentDidMount() {
     fetch(`/api/garage/${this.props.vehicleId}`)
       .then(result => result.json())
       .then(result => {
@@ -24,8 +22,11 @@ class CarDetails extends React.Component {
   }
 
   render() {
+    const { carTitle } = this.state;
     return (
-      <div onClick={this.getDetails}> Test Page </div>
+      <div className='container'>
+        <h1 className='work-sans'>{carTitle}</h1>
+      </div>
     );
   }
 }
