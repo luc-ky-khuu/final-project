@@ -37,3 +37,7 @@ img {
 .blue-button:hover {
   background-color: rgb(104, 127, 151);
 }
+
+.bi:hover {
+  color: rgb(84, 94, 104);
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Modal, Button, Form } from 'react-bootstrap';
+import { Card, Modal, Button, Form, CloseButton } from 'react-bootstrap';
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,9 @@ class MyCars extends React.Component {
   }
 
   toggleModal(event) {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     this.setState({
       modal: !this.state.modal
     });
@@ -54,7 +56,6 @@ class MyCars extends React.Component {
         });
       })
       .catch(err => console.error(err));
-
   }
 
   carForm() {
@@ -64,8 +65,9 @@ class MyCars extends React.Component {
           <i className="bi fs-1  bi-plus-circle-fill"></i>
         </a>
         <Modal size='sm' show={this.state.modal} onHide={this.toggleModal} centered>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>Add Vehicle</Modal.Title>
+            <CloseButton onClick={this.toggleModal}></CloseButton>
           </Modal.Header>
           <Form onSubmit={this.handleSubmit}>
             <Modal.Body>
