@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from 'react-bootstrap/Card';
 
 class CarDetails extends React.Component {
   constructor(props) {
@@ -22,11 +23,19 @@ class CarDetails extends React.Component {
   }
 
   render() {
-    const { carTitle } = this.state;
+    const { carTitle, carRecords } = this.state;
+    if (!carRecords.photoUrl) {
+      carRecords.photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
+    }
     return (
-      <div className='container'>
-        <h1 className='work-sans'>{carTitle}</h1>
-      </div>
+      <>
+        <div className="row">
+          <h1 className='work-sans text-capitalized'>{carTitle}</h1>
+        </div>
+        <div className="row ">
+          <Card.Img className='shadow p-0' src={carRecords.photoUrl} alt="" />
+        </div>
+      </>
     );
   }
 }
