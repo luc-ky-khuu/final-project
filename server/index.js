@@ -42,6 +42,9 @@ app.post('/api/garage/add-car', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/garage/:vehicleId', (req, res, next) => {
+
+});
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
