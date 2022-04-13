@@ -52,6 +52,7 @@ app.get('/api/garage/:vehicleId', (req, res, next) => {
       from   "vehicles"
       join   "records" using ("vehicleId")
      where   "vehicleId" = $1
+     order   by "datePerformed" desc
   `;
   const params = [vehicleId];
   db.query(sql, params)
