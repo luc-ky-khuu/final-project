@@ -18,4 +18,60 @@ insert into "public"."vehicles" (
   'Toyota',
   'Prius',
   'https://proximaride.com/images/car_placeholder2.png'
-)
+),
+(
+  1,
+  2010,
+  'Honda',
+  'Civic',
+  'https://proximaride.com/images/car_placeholder2.png'
+);
+
+insert into "public"."records" (
+  "vehicleId",
+  "maintenanceName",
+  "datePerformed",
+  "mileage",
+  "cost"
+) values (
+  1,
+  'Oil change',
+  '2022-02-26',
+  199821,
+  60
+),
+(
+  1,
+  'Tire rotation',
+  '2022-02-26',
+  199821,
+  10
+),
+(
+  1,
+  'Car freshener',
+  '2022-03-15',
+  201922,
+  5
+),
+(
+  2,
+  'Oil',
+  '2021-12-30',
+  126882,
+  60
+),
+(
+  2,
+  'Tires',
+  '2022-01-26',
+  131922,
+  400
+),
+(
+  2,
+  'Car freshener',
+  '2022-03-01',
+  140122,
+  5
+);
