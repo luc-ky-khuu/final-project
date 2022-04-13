@@ -56,7 +56,7 @@ app.get('/api/garage/:vehicleId', (req, res, next) => {
   const params = [vehicleId];
   db.query(sql, params)
     .then(result => {
-      if (!result) {
+      if (!result.rows[0]) {
         throw new ClientError(401, `No vehicle with vehicleId ${vehicleId} found`);
       }
       res.json(result.rows);
