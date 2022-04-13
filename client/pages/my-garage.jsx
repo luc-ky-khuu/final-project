@@ -44,6 +44,15 @@ class MyCars extends React.Component {
       body: JSON.stringify(carData)
     })
       .then(res => res.json())
+      .then(data => {
+        this.getCars();
+        this.setState({
+          year: '',
+          make: '',
+          model: '',
+          modal: !this.state.modal
+        });
+      })
       .catch(err => console.error(err));
 
   }
