@@ -118,7 +118,7 @@ class MyCars extends React.Component {
               <Card.Img style={{ height: '20rem' }} variant="top" src={photoUrl} />
             </div>
             <Card.Body className='col-lg p-0'>
-              <h1 className="work-sans h1 text-center text-capitalized">{year} {make} {model}</h1>
+              <h1 className="work-sans h1 text-center text-capitalize">{year} {make} {model}</h1>
             </Card.Body>
           </Card>
           </a>

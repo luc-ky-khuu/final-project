@@ -6,17 +6,26 @@ class CarDetails extends React.Component {
     super(props);
     this.state = {
       carTitle: '',
+      carPhoto: '',
       carRecords: []
     };
     this.makeTable = this.makeTable.bind(this);
   }
 
   componentDidMount() {
-    fetch(`/api/garage/${this.props.vehicleId}`)
+    fetch(`/api/garage/details/${this.props.vehicleId}`)
+      .then(result => result.json())
+      .then(result => {
+        const { year, make, model, photoUrl } = result[0];
+        this.setState({
+          carTitle: `${year} ${make} ${model}`,
+          carPhoto: photoUrl
+        });
+      });
+    fetch(`/api/garage/recent-history/${this.props.vehicleId}`)
       .then(result => result.json())
       .then(result => {
         this.setState({
-          carTitle: result[0].concat,
           carRecords: result
         });
       })
@@ -38,17 +47,17 @@ class CarDetails extends React.Component {
   }
 
   render() {
-    const { carTitle, carRecords } = this.state;
-    if (!carRecords.photoUrl) {
-      carRecords.photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
+    let { carTitle, carPhoto } = this.state;
+    if (!carPhoto) {
+      carPhoto = 'https://proximaride.com/images/car_placeholder2.png';
     }
     return (
       <>
         <div className="row">
-          <h1 className='py-3 work-sans fw-bold text-capitalized'>{carTitle}</h1>
+          <h1 className='py-3 work-sans fw-bold text-capitalize'>{carTitle}</h1>
         </div>
         <div className="row ">
-          <Card.Img className='shadow p-0' src={carRecords.photoUrl} alt="" />
+          <Card.Img className='shadow p-0' src={carPhoto} alt="" />
         </div>
         <div className="row">
           <Table className='my-3 border rounded overflow-hidden' striped>

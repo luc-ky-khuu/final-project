@@ -17,7 +17,7 @@ insert into "public"."vehicles" (
   2011,
   'Toyota',
   'Prius',
-  'https://proximaride.com/images/car_placeholder2.png'
+  'https://cdn.britannica.com/93/97093-050-23ACD82B/Prius-Toyota-1997.jpg'
 ),
 (
   1,

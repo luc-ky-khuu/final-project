@@ -42,29 +42,48 @@ app.post('/api/garage/add-car', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/garage/:vehicleId', (req, res, next) => {
+app.get('/api/garage/details/:vehicleId', (req, res, next) => {
   const { vehicleId } = req.params;
   if (vehicleId < 1 || !Number(vehicleId)) {
-    throw new ClientError(400, 'vehicleId msut be a positive integer');
+    throw new ClientError(400, 'vehicleId must be a positive integer');
   }
-
   const sql = `
-    select  to_char("datePerformed", 'YYYY-MM-DD') as "datePerformed",
-            "mileage",
-            string_agg("maintenanceName", ', '),
-            concat("year", ' ',  "make", ' ', "model")
-      from  "records"
-      join  "vehicles" using ("vehicleId")
-     where  "vehicleId" = $1
-     group  by "datePerformed", "mileage", "year", "make", "model"
-     order  by "datePerformed" desc
-     limit  4
+    select *
+      from "vehicles"
+     where "vehicleId" = $1
   `;
   const params = [vehicleId];
   db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {
         throw new ClientError(401, `No vehicle with vehicleId ${vehicleId} found`);
+      }
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
+  const { vehicleId } = req.params;
+  if (vehicleId < 1 || !Number(vehicleId)) {
+    throw new ClientError(400, 'vehicleId must be a positive integer');
+  }
+  const sql = `
+    select  to_char("datePerformed", 'YYYY-MM-DD') as "datePerformed",
+            "mileage",
+            string_agg("maintenanceName", ', ')
+      from  "records"
+      join  "vehicles" using ("vehicleId")
+     where  "vehicleId" = $1
+     group  by "datePerformed", "mileage"
+     order  by "datePerformed" desc
+     limit  4;
+  `;
+  const params = [vehicleId];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(401, `No vehicle history with vehicleId ${vehicleId} found`);
       }
       res.json(result.rows);
     })
