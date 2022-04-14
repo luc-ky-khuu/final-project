@@ -54,7 +54,7 @@ export default class App extends React.Component {
               {this.renderPage()}
             </div>
 
-              <AddForm />
+              <AddForm vehicleId={this.state.route.params.get('vehicleId')}/>
 
           </div>
         </div>
