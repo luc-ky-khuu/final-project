@@ -50,20 +50,20 @@ class AddForm extends React.Component {
         <Form className='col-4' onSubmit={this.handleSubmit} >
           <Row className="">
             <Form.Group as={Col} controlId="date">
-              <Form.Control type="date" name='date' onChange={this.handleChange} placeholder="Date" />
+              <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} placeholder="Date" />
             </Form.Group>
             <Form.Group as={Col} controlId="price">
               <InputGroup className="mb-3">
                 <InputGroup.Text>$</InputGroup.Text>
-                <FormControl placeholder='Price' name='cost' onChange={this.handleChange} aria-label="Amount (to the nearest dollar)" />
+                <FormControl placeholder='Price' name='cost' value={this.state.cost} onChange={this.handleChange} aria-label="Amount (to the nearest dollar)" />
               </InputGroup>
             </Form.Group>
           </Row>
           <Form.Group className="mb-3" controlId="maintenance">
-            <Form.Control name='record' placeholder="Record" onChange={this.handleChange}/>
+            <Form.Control name='record' placeholder="Record" value={this.state.record} onChange={this.handleChange}/>
           </Form.Group>
           <Form.Group className="mb-3" controlId="mileage">
-            <Form.Control name='mileage' placeholder="Mileage" onChange={this.handleChange}/>
+            <Form.Control name='mileage' placeholder="Mileage" value={this.state.mileage} onChange={this.handleChange}/>
           </Form.Group>
 
             <div className="modal-footer p-0 justify-content-between">
