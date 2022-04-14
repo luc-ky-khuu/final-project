@@ -72,7 +72,7 @@ app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
       if (!result.rows[0]) {
         throw new ClientError(401, `No vehicle history with vehicleId ${vehicleId} found`);
       }
-      res.json(result.rows);
+      res.json(result.rows[0]);
     })
     .catch(err => next(err));
 });
