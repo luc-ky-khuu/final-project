@@ -5,34 +5,23 @@ class CarDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      carTitle: '',
-      carPhoto: '',
-      carRecords: []
+      car: []
     };
     this.makeTable = this.makeTable.bind(this);
   }
 
   componentDidMount() {
-    fetch(`/api/garage/details/${this.props.vehicleId}`)
-      .then(result => result.json())
-      .then(result => {
-        const { year, make, model, photoUrl } = result[0];
-        this.setState({
-          carTitle: `${year} ${make} ${model}`,
-          carPhoto: photoUrl
-        });
-      });
     fetch(`/api/garage/recent-history/${this.props.vehicleId}`)
       .then(result => result.json())
       .then(result => {
         this.setState({
-          carRecords: result[0].records
+          car: result
         });
       })
       .catch(err => console.error(err));
   }
 
-  makeDescription(records) {
+  combineNamesByDate(records) {
     const newArr = [];
     let newObj = {
       datePerformed: records[0].datePerformed,
@@ -59,7 +48,7 @@ class CarDetails extends React.Component {
   }
 
   makeTable() {
-    const newDesc = (this.makeDescription(this.state.carRecords));
+    const newDesc = (this.combineNamesByDate(this.state.car.records));
     return newDesc.map((car, index) => {
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
@@ -74,17 +63,17 @@ class CarDetails extends React.Component {
   }
 
   render() {
-    let { carTitle, carPhoto } = this.state;
-    if (!carPhoto) {
-      carPhoto = 'https://proximaride.com/images/car_placeholder2.png';
+    let { year, make, model, photoUrl } = this.state.car;
+    if (!photoUrl) {
+      photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
     }
     return (
       <>
         <div className="row">
-          <h1 className='py-3 work-sans fw-bold text-capitalize'>{carTitle}</h1>
+          <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
         </div>
         <div className="row ">
-          <Card.Img className='shadow p-0' src={carPhoto} alt="" />
+          <Card.Img className='shadow p-0' src={photoUrl} alt="" />
         </div>
         <div className="row my-3 rounded overflow-hidden">
           <Table className='m-0' hover striped>
@@ -96,7 +85,7 @@ class CarDetails extends React.Component {
               </tr>
             </thead>
             <tbody className='fs-4'>
-              {this.state.carRecords.length > 0 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
+              {this.state.car.records && this.state.car.records.length > 1 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
             </tbody>
           </Table>
         </div>
