@@ -4,6 +4,7 @@ import Navbar from './components/navbar';
 import MyCars from './pages/my-garage';
 import Menu from './components/menu';
 import CarDetails from './pages/car-details';
+import AddForm from './components/add-record';
 
 function parseRoute(hashRoute) {
   if (hashRoute.startsWith('#')) {
@@ -52,6 +53,9 @@ export default class App extends React.Component {
             <div className="text-center col-lg-9 ">
               {this.renderPage()}
             </div>
+
+              <AddForm />
+
           </div>
         </div>
       </>
