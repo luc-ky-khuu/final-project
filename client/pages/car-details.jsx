@@ -51,7 +51,7 @@ class CarDetails extends React.Component {
           <Card.Img className='shadow p-0' src={carRecords.photoUrl} alt="" />
         </div>
         <div className="row">
-          <Table className='my-3 border rounded overflow-hidden' striped hover>
+          <Table className='my-3 border rounded overflow-hidden' striped>
             <thead className=''>
               <tr className=''>
                 <th colSpan={4} className='bg-secondary'>
@@ -60,7 +60,7 @@ class CarDetails extends React.Component {
               </tr>
             </thead>
             <tbody className='fs-4'>
-              {this.state.carRecords.length > 0 ? this.makeTable() : <tr>No Records To Display</tr>}
+              {this.state.carRecords.length > 0 ? this.makeTable() : <tr><td>No Records To Display</td></tr>}
             </tbody>
           </Table>
         </div>

@@ -23,14 +23,22 @@ export default class App extends React.Component {
 
   componentDidMount() {
     window.addEventListener('hashchange', () => {
-      // console.log(parseRoute(window.location.hash).params.get('vehicleId'));
       this.setState({
         route: parseRoute(window.location.hash)
       });
     });
   }
 
+  renderPage() {
+    const { route } = this.state;
+    if (route.path === 'garage/myCar') {
+      return <CarDetails vehicleId={route.params.get('vehicleId')} />;
+    }
+    return <MyCars />;
+  }
+
   render() {
+
     return (
       <>
         <Navbar />
@@ -40,8 +48,7 @@ export default class App extends React.Component {
               <Menu />
             </div>
             <div className="text-center col-lg-9 ">
-              <MyCars />
-              <CarDetails vehicleId='1'/>
+              {this.renderPage()}
             </div>
           </div>
         </div>
