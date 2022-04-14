@@ -27,15 +27,43 @@ class CarDetails extends React.Component {
       .then(result => result.json())
       .then(result => {
         this.setState({
-          carRecords: result
+          carRecords: result[0].records
         });
       })
       .catch(err => console.error(err));
   }
 
+  makeDescription(records) {
+    const newArr = [];
+    let newObj = {
+      datePerformed: records[0].datePerformed,
+      maintenanceName: records[0].maintenanceName,
+      mileage: records[0].mileage
+    };
+    for (let i = 1; i < records.length; i++) {
+      if (newObj.datePerformed === records[i].datePerformed) {
+        newObj.datePerformed = records[i].datePerformed;
+        newObj.maintenanceName += `, ${records[i].maintenanceName}`;
+        newObj.mileage = records[i].mileage;
+      } else {
+        newArr.push(newObj);
+        newObj = {
+          datePerformed: records[i].datePerformed,
+          maintenanceName: records[i].maintenanceName,
+          mileage: records[i].mileage
+        };
+      }
+
+    }
+    newArr.push(newObj);
+    return newArr;
+  }
+
   makeTable() {
-    return this.state.carRecords.map((car, index) => {
-      const { datePerformed, string_agg: name, mileage } = car;
+    const newDesc = (this.makeDescription(this.state.carRecords));
+    return newDesc.map((car, index) => {
+
+      const { datePerformed, maintenanceName: name, mileage } = car;
       return (
         <tr key={index}>
           <td colSpan={1} className='text-start'>{datePerformed}</td>

@@ -69,21 +69,23 @@ app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
     throw new ClientError(400, 'vehicleId must be a positive integer');
   }
 
-  // this query currently doesn't work when a new car with no history is clicked
   const sql = `
-    select  to_char("datePerformed", 'YYYY-MM-DD') as "datePerformed",
-            "mileage",
-            string_agg("maintenanceName", ', '),
-            "year",
-            "make",
-            "model",
-            "photoUrl"
-      from  "records"
-      join  "vehicles" using ("vehicleId")
-     where  "vehicleId" = $1
-     group  by "datePerformed", "mileage", "year", "make", "model", "photoUrl"
-     order  by "datePerformed" desc
-     limit  4;
+  select "v"."vehicleId",
+       "v"."year",
+       "v"."make",
+       "v"."model",
+       "v"."photoUrl",
+       coalesce(
+         (
+           select json_agg("r" order by "r"."datePerformed" desc)
+             from "records" as "r"
+            where "r"."vehicleId" = $1
+            limit 4
+         ),
+         '[]'::json
+       ) as "records"
+  from "vehicles" as "v"
+ where "v"."vehicleId" = $1
   `;
   const params = [vehicleId];
   db.query(sql, params)
