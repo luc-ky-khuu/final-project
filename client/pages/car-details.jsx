@@ -13,6 +13,7 @@ class CarDetails extends React.Component {
   }
 
   componentDidMount() {
+    // this first fetch request is only to make sure that a title is received
     fetch(`/api/garage/details/${this.props.vehicleId}`)
       .then(result => result.json())
       .then(result => {
