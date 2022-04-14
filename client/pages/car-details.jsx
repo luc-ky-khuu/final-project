@@ -5,7 +5,7 @@ class CarDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      car: []
+      car: {}
     };
     this.makeTable = this.makeTable.bind(this);
   }
@@ -21,7 +21,7 @@ class CarDetails extends React.Component {
       .catch(err => console.error(err));
   }
 
-  combineNamesByDate(records) {
+  combineSameDayRecords(records) {
     const newArr = [];
     let newObj = {
       datePerformed: records[0].datePerformed,
@@ -48,7 +48,7 @@ class CarDetails extends React.Component {
   }
 
   makeTable() {
-    const newDesc = (this.combineNamesByDate(this.state.car.records));
+    const newDesc = (this.combineSameDayRecords(this.state.car.records));
     return newDesc.map((car, index) => {
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
