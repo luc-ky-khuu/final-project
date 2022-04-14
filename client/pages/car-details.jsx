@@ -13,7 +13,6 @@ class CarDetails extends React.Component {
   }
 
   componentDidMount() {
-    // this first fetch request is only to make sure that a title is received
     fetch(`/api/garage/details/${this.props.vehicleId}`)
       .then(result => result.json())
       .then(result => {
@@ -62,10 +61,9 @@ class CarDetails extends React.Component {
   makeTable() {
     const newDesc = (this.makeDescription(this.state.carRecords));
     return newDesc.map((car, index) => {
-
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
-        <tr key={index}>
+        <tr key={index} className='open-sans'>
           <td colSpan={1} className='text-start'>{datePerformed}</td>
           <td colSpan={2} className='text-start'>{name}</td>
           <td colSpan={1} className='text-end'>{mileage.toLocaleString()}</td>
@@ -86,13 +84,13 @@ class CarDetails extends React.Component {
           <h1 className='py-3 work-sans fw-bold text-capitalize'>{carTitle}</h1>
         </div>
         <div className="row ">
-          <Card.Img className='border-dark border shadow p-0' src={carPhoto} alt="" />
+          <Card.Img className='shadow p-0' src={carPhoto} alt="" />
         </div>
-        <div className="row my-3 border border-dark rounded overflow-hidden">
+        <div className="row my-3 rounded overflow-hidden">
           <Table className='m-0' hover striped>
             <thead className=''>
-              <tr className=''>
-                <th colSpan={4} className='bg-secondary'>
+              <tr className='bg-navbar-menu'>
+                <th colSpan={4}>
                   <h2 className=' text-start m-0 work-sans'>Recent Records</h2>
                 </th>
               </tr>

@@ -11,7 +11,7 @@ class Navigation extends React.Component {
 
   render() {
     return (
-      <Navbar className="bg-component-blue navbar-dark" expand={'lg'}>
+      <Navbar className="bg-component-blue navbar-dark" expand={'lg'} collapseOnSelect='true'>
         <Container className="justify-content-start">
           <Navbar.Brand className='work-sans d-none d-lg-block fs-1'>Vehicle Expenses Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar" />
