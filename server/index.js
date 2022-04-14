@@ -59,7 +59,6 @@ app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
            select json_agg("r" order by "r"."datePerformed" desc)
              from "records" as "r"
             where "r"."vehicleId" = $1
-            limit 4
          ),
          '[]'::json
        ) as "records"

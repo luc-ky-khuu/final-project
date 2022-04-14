@@ -48,8 +48,9 @@ class CarDetails extends React.Component {
   }
 
   makeTable() {
-    const newDesc = (this.combineSameDayRecords(this.state.car.records));
-    return newDesc.map((car, index) => {
+    const combinedRecords = (this.combineSameDayRecords(this.state.car.records));
+    const firstFourRecords = combinedRecords.slice(0, 4);
+    return firstFourRecords.map((car, index) => {
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
         <tr key={index} className='open-sans'>

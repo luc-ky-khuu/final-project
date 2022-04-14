@@ -5,6 +5,7 @@ class AddForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      missingInput: false,
       date: '',
       cost: '',
       record: '',
@@ -16,8 +17,18 @@ class AddForm extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     const { date, cost, record, mileage } = this.state;
+
+    if (!date || !cost || !record || !mileage) {
+      this.setState({
+        missingInput: true
+      });
+      return;
+    }
+
     const newRecord = { date, cost, record, mileage };
     fetch(`/api/garage/add-record/${this.props.vehicleId}`, {
       method: 'POST',
@@ -31,7 +42,6 @@ class AddForm extends React.Component {
         this.reset();
       })
       .catch(err => console.error(err));
-
   }
 
   handleChange(event) {
@@ -42,6 +52,7 @@ class AddForm extends React.Component {
 
   reset() {
     this.setState({
+      missingInput: false,
       date: '',
       cost: '',
       record: '',
@@ -52,7 +63,7 @@ class AddForm extends React.Component {
   render() {
     return (
       <>
-        <Form className='col-4' onSubmit={this.handleSubmit} >
+        <Form className='col-lg-5' onSubmit={this.handleSubmit} >
           <Row className="">
             <Form.Group as={Col} controlId="date">
               <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} placeholder="Date" />
@@ -70,7 +81,7 @@ class AddForm extends React.Component {
           <Form.Group className="mb-3" controlId="mileage">
             <Form.Control name='mileage' placeholder="Mileage" value={this.state.mileage} onChange={this.handleChange}/>
           </Form.Group>
-
+            {this.state.missingInput && <p className='text-danger'>* Input Missing</p>}
             <div className="modal-footer p-0 justify-content-between">
             <Button variant="primary" className='col-4 blue-button border-0 m-0' type="submit">
               Add
