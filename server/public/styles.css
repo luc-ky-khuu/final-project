@@ -14,7 +14,8 @@ img {
   font-family: "Open Sans", "Noto Sans", sans-serif;
 }
 
-.bg-component-blue {
+.bg-component-blue,
+.blue-button {
   background-color: rgba(48, 71, 94, 1);
 }
 
@@ -30,14 +31,24 @@ img {
   background-color: rgb(255, 143, 143);
 }
 
-.blue-button {
-  background-color: rgba(48, 71, 94, 1);
-}
-
 .blue-button:hover {
   background-color: rgb(104, 127, 151);
 }
 
 .bi:hover {
   color: rgb(84, 94, 104);
+}
+
+.table-striped > tbody > tr:nth-child(even) > td,
+.table-striped > tbody > tr:nth-child(even) > th {
+  background-color: white;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+  background-color: rgb(253, 253, 253);
+}
+
+.disabled {
+  pointer-events: none;
 }

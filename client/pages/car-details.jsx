@@ -58,19 +58,19 @@ class CarDetails extends React.Component {
           <h1 className='py-3 work-sans fw-bold text-capitalize'>{carTitle}</h1>
         </div>
         <div className="row ">
-          <Card.Img className='shadow p-0' src={carPhoto} alt="" />
+          <Card.Img className='border-dark border shadow p-0' src={carPhoto} alt="" />
         </div>
-        <div className="row">
-          <Table className='my-3 border rounded overflow-hidden' striped>
+        <div className="row my-3 border border-dark rounded overflow-hidden">
+          <Table className='m-0' hover striped>
             <thead className=''>
               <tr className=''>
                 <th colSpan={4} className='bg-secondary'>
-                  <h2 className='text-start work-sans'>Recent Records</h2>
+                  <h2 className=' text-start m-0 work-sans'>Recent Records</h2>
                 </th>
               </tr>
             </thead>
             <tbody className='fs-4'>
-              {this.state.carRecords.length > 0 ? this.makeTable() : <tr><td>No Records To Display</td></tr>}
+              {this.state.carRecords.length > 0 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
             </tbody>
           </Table>
         </div>
