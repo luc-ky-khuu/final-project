@@ -12,6 +12,7 @@ class AddForm extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   handleSubmit(event) {
@@ -27,12 +28,7 @@ class AddForm extends React.Component {
     })
       .then(result => result.json())
       .then(data => {
-        this.setState({
-          date: '',
-          cost: '',
-          record: '',
-          mileage: ''
-        });
+        this.reset();
       })
       .catch(err => console.error(err));
 
@@ -41,6 +37,15 @@ class AddForm extends React.Component {
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
+    });
+  }
+
+  reset() {
+    this.setState({
+      date: '',
+      cost: '',
+      record: '',
+      mileage: ''
     });
   }
 
@@ -70,8 +75,8 @@ class AddForm extends React.Component {
             <Button variant="primary" className='col-4 blue-button border-0 m-0' type="submit">
               Add
             </Button>
-            <Button variant="primary" className='col-5 border-0 red-button m-0'>
-              Clear Form
+            <Button variant="primary" className='col-5 border-0 red-button m-0' onClick={this.reset}>
+              Clear
             </Button>
             </div>
         </Form>
