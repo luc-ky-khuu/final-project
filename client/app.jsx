@@ -31,7 +31,9 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
-    if (route.path === 'garage/myCar') {
+    if (route.path === 'garage') {
+      return <MyCars />;
+    } else if (route.path === 'garage/myCar') {
       return <CarDetails vehicleId={route.params.get('vehicleId')} />;
     }
     return <MyCars />;
