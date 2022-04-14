@@ -3,9 +3,44 @@ import React from 'react';
 import Navbar from './components/navbar';
 import MyCars from './pages/my-garage';
 import Menu from './components/menu';
+import CarDetails from './pages/car-details';
+
+function parseRoute(hashRoute) {
+  if (hashRoute.startsWith('#')) {
+    hashRoute = hashRoute.replace('#', '');
+  }
+  const [path, queryString] = hashRoute.split('?');
+  const params = new URLSearchParams(queryString);
+  return { path, params };
+}
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      route: parseRoute(window.location.hash)
+    };
+  }
+
+  componentDidMount() {
+    window.addEventListener('hashchange', () => {
+      this.setState({
+        route: parseRoute(window.location.hash)
+      });
+    });
+  }
+
+  renderPage() {
+    const { route } = this.state;
+    if (route.path === 'garage') {
+      return <MyCars />;
+    } else if (route.path === 'garage/myCar') {
+      return <CarDetails vehicleId={route.params.get('vehicleId')} />;
+    }
+    return <MyCars />;
+  }
 
   render() {
+
     return (
       <>
         <Navbar />
@@ -15,7 +50,7 @@ export default class App extends React.Component {
               <Menu />
             </div>
             <div className="text-center col-lg-9 ">
-              <MyCars />
+              {this.renderPage()}
             </div>
           </div>
         </div>

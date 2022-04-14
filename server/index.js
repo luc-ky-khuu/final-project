@@ -42,6 +42,40 @@ app.post('/api/garage/add-car', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
+  const { vehicleId } = req.params;
+  if (vehicleId < 1 || !Number(vehicleId)) {
+    throw new ClientError(400, 'vehicleId must be a positive integer');
+  }
+
+  const sql = `
+  select "v"."vehicleId",
+       "v"."year",
+       "v"."make",
+       "v"."model",
+       "v"."photoUrl",
+       coalesce(
+         (
+           select json_agg("r" order by "r"."datePerformed" desc)
+             from "records" as "r"
+            where "r"."vehicleId" = $1
+            limit 4
+         ),
+         '[]'::json
+       ) as "records"
+  from "vehicles" as "v"
+ where "v"."vehicleId" = $1
+  `;
+  const params = [vehicleId];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(401, `No vehicle history with vehicleId ${vehicleId} found`);
+      }
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
