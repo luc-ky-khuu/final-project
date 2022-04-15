@@ -56,3 +56,8 @@ img {
 .off-white-text {
   color: rgba(221, 221, 221, 1);
 }
+
+.btn:focus {
+  outline: white;
+  box-shadow: white;
+}

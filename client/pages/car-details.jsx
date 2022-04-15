@@ -97,7 +97,6 @@ class CarDetails extends React.Component {
             <div className="col-lg-11">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
-
             <div className='m-0 overflow-hidden rounded'>
               <div className="row py-2 mx-0 bg-navbar-menu">
                 <h2 className='col text-start'>Recent Records</h2>
