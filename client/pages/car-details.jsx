@@ -61,9 +61,9 @@ class CarDetails extends React.Component {
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
         <tr key={index} className='open-sans'>
-          <td colSpan={1} className='text-start'>{datePerformed}</td>
+          <td className='w-25 text-start'>{datePerformed}</td>
           <td colSpan={2} className='text-start'>{name}</td>
-          <td colSpan={1} className='text-end'>{mileage.toLocaleString()}</td>
+          <td className='text-end'>{mileage.toLocaleString()}</td>
         </tr>
       );
     });
@@ -97,21 +97,20 @@ class CarDetails extends React.Component {
             <div className="col-lg-11">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
-            <Table className='m-0 overflow-hidden rounded' hover striped>
-              <thead className=''>
-                <tr className='bg-navbar-menu'>
-                  <th colSpan={3}>
-                    <h2 className=' text-start m-0 work-sans'>Recent Records</h2>
-                  </th>
-                  <th colSpan={1} className='text-end'>
-                    <a href="" onClick={this.toggleModal}className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className='fs-4'>
-                {this.state.car.records && this.state.car.records.length > 0 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
-              </tbody>
-            </Table>
+
+            <div className='m-0 overflow-hidden rounded'>
+              <div className="row py-2 mx-0 bg-navbar-menu">
+                <h2 className='col text-start'>Recent Records</h2>
+                <div className="col text-end">
+                  <a href="" onClick={this.toggleModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+                </div>
+              </div>
+              <Table hover striped>
+                <tbody className='fs-4'>
+                  {this.state.car.records && this.state.car.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
+                </tbody>
+              </Table>
+           </div>
             </div>
           <div>
             {this.showAddForm()}

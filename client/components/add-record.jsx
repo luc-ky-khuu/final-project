@@ -64,7 +64,7 @@ class AddForm extends React.Component {
   render() {
     return (
       <>
-        <Form className='bg-white p-1 border rounded shadow' onSubmit={this.handleSubmit} >
+        <Form className='bg-white p-3 border rounded shadow' onSubmit={this.handleSubmit} >
           <h3>Add Record</h3>
           <Form.Group className="mb-3" controlId="date">
             <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} placeholder="Date" />

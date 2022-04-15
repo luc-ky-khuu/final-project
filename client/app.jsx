@@ -1,5 +1,4 @@
 import React from 'react';
-// import Home from './pages/home';
 import Navbar from './components/navbar';
 import MyCars from './pages/my-garage';
 import Menu from './components/menu';
@@ -39,23 +38,10 @@ export default class App extends React.Component {
     return <MyCars />;
   }
 
-  renderNav() {
-    if (this.state.route.params.get('vehicleId')) {
-      return (
-        <Navbar vehicleId={this.state.route.params.get('vehicleId')}/>
-      );
-    } else {
-      return (
-        <Navbar />
-      );
-    }
-  }
-
   render() {
-    // console.log(<CarDetails/>);
     return (
       <>
-        {this.renderNav()}
+        <Navbar />
         <div className="container">
           <div className='justify-content-center row'>
             <div className=" col-lg-2 d-none d-lg-block px-0 py-3">
