@@ -8,7 +8,8 @@ class MyCars extends React.Component {
       year: '',
       make: '',
       model: '',
-      modal: false
+      modal: false,
+      missingInput: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
@@ -51,14 +52,19 @@ class MyCars extends React.Component {
               <Form.Group className='mb-3' controlId='model'>
                 <Form.Control value={this.state.model} onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
               </Form.Group>
+              {this.state.missingInput && <p className='text-danger m-0'>* Input Missing</p>}
             </Modal.Body>
-            <Modal.Footer className="justify-content-between work-sans">
-              <Button className='border-0 blue-button' type='submit'>
-                Add Vehicle
-              </Button>
-              <Button className='border-0 red-button' onClick={this.toggleModal}>
-                Close
-              </Button>
+            <Modal.Footer className="work-sans">
+                <div className="col">
+                  <Button variant="outline-light" className='w-100 blue-button border-0 work-sans' type="submit">
+                    Add Vehicle
+                  </Button>
+                </div>
+                <div className="col">
+                  <Button variant="outline-light" className='w-100 border-0 red-button work-sans' onClick={this.toggleModal}>
+                    Close
+                  </Button>
+                </div>
             </Modal.Footer>
           </Form>
         </Modal>
@@ -84,6 +90,12 @@ class MyCars extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const { year, make, model } = this.state;
+    if (!year || !make || !model) {
+      this.setState({
+        missingInput: true
+      });
+      return;
+    }
     const carData = { year, make, model };
     fetch('/api/garage/add-car', {
       method: 'POST',
