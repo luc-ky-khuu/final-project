@@ -12,21 +12,9 @@ class CarDetails extends React.Component {
     this.makeTable = this.makeTable.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.getHistory = this.getHistory.bind(this);
   }
 
   componentDidMount() {
-    this.getHistory();
-  }
-
-  addRecord(data) {
-    const newRecord = data.concat(this.state.records);
-    this.setState({
-      records: newRecord
-    });
-  }
-
-  getHistory() {
     fetch(`/api/garage/recent-history/${this.props.vehicleId}`)
       .then(result => result.json())
       .then(result => {
@@ -36,6 +24,13 @@ class CarDetails extends React.Component {
         });
       })
       .catch(err => console.error(err));
+  }
+
+  addRecord(data) {
+    const newRecord = data.concat(this.state.records);
+    this.setState({
+      records: newRecord
+    });
   }
 
   combineSameDayRecords(records) {
