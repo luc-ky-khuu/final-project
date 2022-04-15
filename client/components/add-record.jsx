@@ -5,10 +5,10 @@ class AddForm extends React.Component {
     super(props);
     this.state = {
       missingInput: false,
-      date: null,
-      cost: null,
-      record: null,
-      mileage: null
+      date: '',
+      cost: '',
+      record: '',
+      mileage: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -28,7 +28,7 @@ class AddForm extends React.Component {
       return;
     }
 
-    const newRecord = { date, cost, record, mileage };
+    const newRecord = { date, cost, record, mileage, vehicleId: this.props.vehicleId };
     fetch(`/api/garage/add-record/${this.props.vehicleId}`, {
       method: 'POST',
       headers: {
@@ -40,14 +40,15 @@ class AddForm extends React.Component {
       .then(data => {
         this.reset();
         this.props.toggleModal();
-        this.props.getHistory();
+        this.props.addRecord(data);
       })
       .catch(err => console.error(err));
   }
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      missingInput: false
     });
   }
 

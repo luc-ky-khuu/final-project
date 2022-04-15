@@ -6,15 +6,24 @@ class CarDetails extends React.Component {
     super(props);
     this.state = {
       car: {},
-      modal: false
+      modal: false,
+      records: null
     };
     this.makeTable = this.makeTable.bind(this);
-    this.getHistory = this.getHistory.bind(this);
+    this.addRecord = this.addRecord.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.getHistory = this.getHistory.bind(this);
   }
 
   componentDidMount() {
     this.getHistory();
+  }
+
+  addRecord(data) {
+    const newRecord = data.concat(this.state.records);
+    this.setState({
+      records: newRecord
+    });
   }
 
   getHistory() {
@@ -22,7 +31,8 @@ class CarDetails extends React.Component {
       .then(result => result.json())
       .then(result => {
         this.setState({
-          car: result
+          car: result,
+          records: result.records
         });
       })
       .catch(err => console.error(err));
@@ -30,8 +40,9 @@ class CarDetails extends React.Component {
 
   combineSameDayRecords(records) {
     const newArr = [];
+    const splitDate = records[0].datePerformed.split('T');
     let newObj = {
-      datePerformed: records[0].datePerformed,
+      datePerformed: splitDate[0],
       maintenanceName: records[0].maintenanceName,
       mileage: records[0].mileage
     };
@@ -48,14 +59,14 @@ class CarDetails extends React.Component {
           mileage: records[i].mileage
         };
       }
-
     }
     newArr.push(newObj);
     return newArr;
   }
 
   makeTable() {
-    const combinedRecords = (this.combineSameDayRecords(this.state.car.records));
+    const { records } = this.state;
+    const combinedRecords = (this.combineSameDayRecords(records));
     const firstFourRecords = combinedRecords.slice(0, 4);
     return firstFourRecords.map((car, index) => {
       const { datePerformed, maintenanceName: name, mileage } = car;
@@ -72,7 +83,7 @@ class CarDetails extends React.Component {
   showAddForm() {
     return (
       <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
-        <AddForm vehicleId={this.props.vehicleId} toggleModal={this.toggleModal} getHistory={this.getHistory}/>
+        <AddForm vehicleId={this.props.vehicleId} toggleModal={this.toggleModal} addRecord={this.addRecord}/>
       </Modal>
     );
   }
@@ -106,7 +117,7 @@ class CarDetails extends React.Component {
               </div>
               <Table hover striped>
                 <tbody className='fs-4'>
-                  {this.state.car.records && this.state.car.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
+                  {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
                 </tbody>
               </Table>
            </div>

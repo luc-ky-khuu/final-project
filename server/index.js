@@ -88,6 +88,7 @@ app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
   const sql = `
     insert  into "records" ("vehicleId", "maintenanceName", "datePerformed", "mileage", "cost")
     values  ($1, $2, $3, $4, $5)
+    returning *
   `;
   const params = [vehicleId, record, date, mileage, cost];
   db.query(sql, params)
