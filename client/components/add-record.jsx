@@ -62,10 +62,17 @@ class AddForm extends React.Component {
   render() {
     return (
       <>
-        <Form className='col-lg-5' onSubmit={this.handleSubmit} >
-          <Row className="">
-            <Form.Group as={Col} controlId="date">
-              <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} placeholder="Date" />
+        <Form className='bg-white p-1 border rounded shadow' onSubmit={this.handleSubmit} >
+          <h3>Add Record</h3>
+          <Form.Group className="mb-3" controlId="date">
+            <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} placeholder="Date" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="maintenance">
+            <Form.Control name='record' placeholder="Record" value={this.state.record} onChange={this.handleChange}/>
+          </Form.Group>
+          <Row>
+            <Form.Group className="mb-3" as={Col} controlId="mileage">
+              <Form.Control name='mileage' placeholder="Mileage" value={this.state.mileage} onChange={this.handleChange} />
             </Form.Group>
             <Form.Group as={Col} controlId="price">
               <InputGroup className="mb-3">
@@ -74,15 +81,9 @@ class AddForm extends React.Component {
               </InputGroup>
             </Form.Group>
           </Row>
-          <Form.Group className="mb-3" controlId="maintenance">
-            <Form.Control name='record' placeholder="Record" value={this.state.record} onChange={this.handleChange}/>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="mileage">
-            <Form.Control name='mileage' placeholder="Mileage" value={this.state.mileage} onChange={this.handleChange}/>
-          </Form.Group>
             {this.state.missingInput && <p className='text-danger'>* Input Missing</p>}
-            <div className="modal-footer p-0 justify-content-between">
-            <Button variant="primary" className='col-4 blue-button border-0 m-0' type="submit">
+            <div className="modal-footer border-0 p-0 justify-content-between">
+            <Button variant="primary" className='col-5 blue-button border-0 m-0' type="submit">
               Add
             </Button>
             <Button variant="primary" className='col-5 border-0 red-button m-0' onClick={this.reset}>

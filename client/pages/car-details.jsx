@@ -76,27 +76,28 @@ class CarDetails extends React.Component {
     }
     return (
       <>
-        <div className="row">
-          <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
-        </div>
-        <div className="row ">
-          <Card.Img className='shadow p-0' src={photoUrl} alt="" />
-        </div>
         <div className="row my-3 rounded overflow-hidden">
-          <Table className='m-0' hover striped>
-            <thead className=''>
-              <tr className='bg-navbar-menu'>
-                <th colSpan={4}>
-                  <h2 className=' text-start m-0 work-sans'>Recent Records</h2>
-                </th>
-              </tr>
-            </thead>
-            <tbody className='fs-4'>
-              {this.state.car.records && this.state.car.records.length > 0 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
-            </tbody>
-          </Table>
+            <div className="col-lg-9">
+            <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
+            <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
+            <Table className='m-0 overflow-hidden rounded' hover striped>
+              <thead className=''>
+                <tr className='bg-navbar-menu'>
+                  <th colSpan={4}>
+                    <h2 className=' text-start m-0 work-sans'>Recent Records</h2>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className='fs-4'>
+                {this.state.car.records && this.state.car.records.length > 0 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
+              </tbody>
+            </Table>
+            </div>
+          <div className=" col-lg-3 d-md-none d-lg-block p-0">
+            <AddForm table={this.getHistory} vehicleId={this.props.vehicleId} />
+          </div>
         </div>
-        <AddForm table={this.getHistory} vehicleId={this.props.vehicleId} />
+
       </>
     );
   }

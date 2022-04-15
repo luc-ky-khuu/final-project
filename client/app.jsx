@@ -46,10 +46,10 @@ export default class App extends React.Component {
         <Navbar />
         <div className="container">
           <div className='justify-content-center row'>
-            <div className=" col-lg-3 d-none d-lg-block p-3">
+            <div className=" col-lg-2 d-none d-lg-block p-3">
               <Menu />
             </div>
-            <div className="text-center col-lg-9 ">
+            <div className="text-center col-lg-10 ">
               {this.renderPage()}
             </div>
           </div>
