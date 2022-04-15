@@ -1,16 +1,22 @@
 import React from 'react';
 import { Card, Table } from 'react-bootstrap';
-
+import AddForm from '../components/add-record';
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      car: {}
+      car: {},
+      render: false
     };
     this.makeTable = this.makeTable.bind(this);
+    this.getHistory = this.getHistory.bind(this);
   }
 
   componentDidMount() {
+    this.getHistory();
+  }
+
+  getHistory() {
     fetch(`/api/garage/recent-history/${this.props.vehicleId}`)
       .then(result => result.json())
       .then(result => {
@@ -86,10 +92,11 @@ class CarDetails extends React.Component {
               </tr>
             </thead>
             <tbody className='fs-4'>
-              {this.state.car.records && this.state.car.records.length > 1 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
+              {this.state.car.records && this.state.car.records.length > 0 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
             </tbody>
           </Table>
         </div>
+        <AddForm table={this.getHistory} vehicleId={this.props.vehicleId} />
       </>
     );
   }

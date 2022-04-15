@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Button, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
-
 class AddForm extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +20,6 @@ class AddForm extends React.Component {
       event.preventDefault();
     }
     const { date, cost, record, mileage } = this.state;
-
     if (!date || !cost || !record || !mileage) {
       this.setState({
         missingInput: true
@@ -39,6 +37,7 @@ class AddForm extends React.Component {
     })
       .then(result => result.json())
       .then(data => {
+        this.props.table();
         this.reset();
       })
       .catch(err => console.error(err));
