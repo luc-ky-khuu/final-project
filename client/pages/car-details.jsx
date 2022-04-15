@@ -61,7 +61,7 @@ class CarDetails extends React.Component {
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
         <tr key={index} className='open-sans'>
-          <td className='w-25 text-start'>{datePerformed}</td>
+          <td className='col-4 text-start'>{datePerformed}</td>
           <td colSpan={2} className='text-start'>{name}</td>
           <td className='text-end'>{mileage.toLocaleString()}</td>
         </tr>
