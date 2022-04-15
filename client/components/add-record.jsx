@@ -19,6 +19,7 @@ class AddForm extends React.Component {
     if (event) {
       event.preventDefault();
     }
+
     const { date, cost, record, mileage } = this.state;
     if (!date || !cost || !record || !mileage) {
       this.setState({
@@ -37,8 +38,9 @@ class AddForm extends React.Component {
     })
       .then(result => result.json())
       .then(data => {
-        this.props.table();
         this.reset();
+        this.props.toggleModal();
+        this.props.getHistory();
       })
       .catch(err => console.error(err));
   }
@@ -95,5 +97,4 @@ class AddForm extends React.Component {
     );
   }
 }
-
 export default AddForm;

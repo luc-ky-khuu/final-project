@@ -1,15 +1,16 @@
 import React from 'react';
-import { Card, Table } from 'react-bootstrap';
+import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       car: {},
-      render: false
+      modal: false
     };
     this.makeTable = this.makeTable.bind(this);
     this.getHistory = this.getHistory.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   componentDidMount() {
@@ -66,7 +67,23 @@ class CarDetails extends React.Component {
         </tr>
       );
     });
+  }
 
+  showAddForm() {
+    return (
+      <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
+        <AddForm vehicleId={this.props.vehicleId} toggleModal={this.toggleModal} getHistory={this.getHistory}/>
+      </Modal>
+    );
+  }
+
+  toggleModal(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   render() {
@@ -77,14 +94,17 @@ class CarDetails extends React.Component {
     return (
       <>
         <div className="row my-3 rounded overflow-hidden">
-            <div className="col-lg-9">
+            <div className="col-lg-11">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
             <Table className='m-0 overflow-hidden rounded' hover striped>
               <thead className=''>
                 <tr className='bg-navbar-menu'>
-                  <th colSpan={4}>
+                  <th colSpan={3}>
                     <h2 className=' text-start m-0 work-sans'>Recent Records</h2>
+                  </th>
+                  <th colSpan={1} className='text-end'>
+                    <a href="" onClick={this.toggleModal}className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
                   </th>
                 </tr>
               </thead>
@@ -93,11 +113,10 @@ class CarDetails extends React.Component {
               </tbody>
             </Table>
             </div>
-          <div className=" col-lg-3 d-md-none d-lg-block p-0">
-            <AddForm table={this.getHistory} vehicleId={this.props.vehicleId} />
+          <div>
+            {this.showAddForm()}
           </div>
         </div>
-
       </>
     );
   }

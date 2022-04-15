@@ -39,14 +39,26 @@ export default class App extends React.Component {
     return <MyCars />;
   }
 
-  render() {
+  renderNav() {
+    if (this.state.route.params.get('vehicleId')) {
+      return (
+        <Navbar vehicleId={this.state.route.params.get('vehicleId')}/>
+      );
+    } else {
+      return (
+        <Navbar />
+      );
+    }
+  }
 
+  render() {
+    // console.log(<CarDetails/>);
     return (
       <>
-        <Navbar />
+        {this.renderNav()}
         <div className="container">
           <div className='justify-content-center row'>
-            <div className=" col-lg-2 d-none d-lg-block p-3">
+            <div className=" col-lg-2 d-none d-lg-block px-0 py-3">
               <Menu />
             </div>
             <div className="text-center col-lg-10 ">
