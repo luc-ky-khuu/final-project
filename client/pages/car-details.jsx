@@ -1,13 +1,17 @@
 import React from 'react';
-import { Card, Table } from 'react-bootstrap';
-
+import { Card, Modal, Table } from 'react-bootstrap';
+import AddForm from '../components/add-record';
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      car: {}
+      car: {},
+      modal: false,
+      records: null
     };
     this.makeTable = this.makeTable.bind(this);
+    this.addRecord = this.addRecord.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   componentDidMount() {
@@ -15,10 +19,20 @@ class CarDetails extends React.Component {
       .then(result => result.json())
       .then(result => {
         this.setState({
-          car: result
+          car: result,
+          records: result.records
         });
       })
       .catch(err => console.error(err));
+  }
+
+  addRecord(data) {
+    const splitDate = data[0].datePerformed.split('T');
+    data[0].datePerformed = splitDate[0];
+    const newRecord = data.concat(this.state.records);
+    this.setState({
+      records: newRecord
+    });
   }
 
   combineSameDayRecords(records) {
@@ -41,25 +55,42 @@ class CarDetails extends React.Component {
           mileage: records[i].mileage
         };
       }
-
     }
     newArr.push(newObj);
     return newArr;
   }
 
   makeTable() {
-    const newDesc = (this.combineSameDayRecords(this.state.car.records));
-    return newDesc.map((car, index) => {
+    const { records } = this.state;
+    const combinedRecords = (this.combineSameDayRecords(records));
+    const firstFourRecords = combinedRecords.slice(0, 4);
+    return firstFourRecords.map((car, index) => {
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
         <tr key={index} className='open-sans'>
-          <td colSpan={1} className='text-start'>{datePerformed}</td>
+          <td className='col-4 text-start'>{datePerformed}</td>
           <td colSpan={2} className='text-start'>{name}</td>
-          <td colSpan={1} className='text-end'>{mileage.toLocaleString()}</td>
+          <td className='text-end'>{mileage.toLocaleString()}</td>
         </tr>
       );
     });
+  }
 
+  showAddForm() {
+    return (
+      <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
+        <AddForm vehicleId={this.props.vehicleId} toggleModal={this.toggleModal} addRecord={this.addRecord}/>
+      </Modal>
+    );
+  }
+
+  toggleModal(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   render() {
@@ -69,25 +100,27 @@ class CarDetails extends React.Component {
     }
     return (
       <>
-        <div className="row">
-          <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
-        </div>
-        <div className="row ">
-          <Card.Img className='shadow p-0' src={photoUrl} alt="" />
-        </div>
         <div className="row my-3 rounded overflow-hidden">
-          <Table className='m-0' hover striped>
-            <thead className=''>
-              <tr className='bg-navbar-menu'>
-                <th colSpan={4}>
-                  <h2 className=' text-start m-0 work-sans'>Recent Records</h2>
-                </th>
-              </tr>
-            </thead>
-            <tbody className='fs-4'>
-              {this.state.car.records && this.state.car.records.length > 1 ? this.makeTable() : <tr className='disabled'><td>No Records To Display</td></tr>}
-            </tbody>
-          </Table>
+            <div className="col-lg-11">
+            <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
+            <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
+            <div className='m-0 overflow-hidden rounded'>
+              <div className="row py-2 mx-0 bg-navbar-menu">
+                <h2 className='col text-start'>Recent Records</h2>
+                <div className="col text-end">
+                  <a href="" onClick={this.toggleModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+                </div>
+              </div>
+              <Table hover striped>
+                <tbody className='fs-4'>
+                  {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
+                </tbody>
+              </Table>
+           </div>
+            </div>
+          <div>
+            {this.showAddForm()}
+          </div>
         </div>
       </>
     );

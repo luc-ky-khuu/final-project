@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Offcanvas, Navbar, Nav } from 'react-bootstrap';
-
 class Navigation extends React.Component {
   constructor(props) {
     super(props);
@@ -14,15 +13,15 @@ class Navigation extends React.Component {
       <Navbar className="bg-component-blue navbar-dark" expand={'lg'} collapseOnSelect='true'>
         <Container className="justify-content-start">
           <Navbar.Brand className='work-sans d-none d-lg-block fs-1'>Vehicle Expenses Tracker</Navbar.Brand>
-          <Navbar.Toggle aria-controls="offcanvasNavbar" />
+          <Navbar.Toggle aria-controls="menu" />
           <Navbar.Offcanvas
-            id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
+            id="menu"
+            aria-labelledby="menuList"
             placement="start"
             className='bg-navbar-menu'
           >
             <Offcanvas.Header closeButton>
-              <Offcanvas.Title className='work-sans' id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
+              <Offcanvas.Title className='work-sans' id="menuList">Menu</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="flex-grow-1 pe-3">
@@ -36,5 +35,4 @@ class Navigation extends React.Component {
     );
   }
 }
-
 export default Navigation;
