@@ -40,7 +40,7 @@ class CarDetails extends React.Component {
     const { records } = this.state;
     for (let i = 0; i < records.length; i++) {
       if (records[i].maintenanceName.toLowerCase().includes('oil change')) {
-        return records[i].mileage;
+        return records[i].mileage + 3000;
       }
     }
   }
