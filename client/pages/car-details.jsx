@@ -27,6 +27,8 @@ class CarDetails extends React.Component {
   }
 
   addRecord(data) {
+    const splitDate = data[0].datePerformed.split('T');
+    data[0].datePerformed = splitDate[0];
     const newRecord = data.concat(this.state.records);
     this.setState({
       records: newRecord
@@ -35,9 +37,8 @@ class CarDetails extends React.Component {
 
   combineSameDayRecords(records) {
     const newArr = [];
-    const splitDate = records[0].datePerformed.split('T');
     let newObj = {
-      datePerformed: splitDate[0],
+      datePerformed: records[0].datePerformed,
       maintenanceName: records[0].maintenanceName,
       mileage: records[0].mileage
     };
