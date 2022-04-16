@@ -113,7 +113,15 @@ class CarDetails extends React.Component {
         <div className="row my-3 rounded overflow-hidden">
             <div className="col-lg-11">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
-            <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
+            <div className="row">
+              <div className="col-lg-9">
+                <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
+              </div>
+              <div className='col-lg-3'>
+                <h4 className='bg-navbar-menu'>Next Oil Change</h4>
+
+              </div>
+            </div>
             <div className='m-0 overflow-hidden rounded'>
               <div className="row py-2 mx-0 bg-navbar-menu">
                 <h2 className='col text-start'>Recent Records</h2>
