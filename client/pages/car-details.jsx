@@ -12,6 +12,7 @@ class CarDetails extends React.Component {
     this.makeTable = this.makeTable.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.getLastOilChange = this.getLastOilChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +34,15 @@ class CarDetails extends React.Component {
     this.setState({
       records: newRecord
     });
+  }
+
+  getLastOilChange() {
+    const { records } = this.state;
+    for (let i = 0; i < records.length; i++) {
+      if (records[i].maintenanceName.toLowerCase().includes('oil change')) {
+        return records[i].mileage;
+      }
+    }
   }
 
   combineSameDayRecords(records) {
