@@ -136,29 +136,29 @@ class CarDetails extends React.Component {
               </div>
               <div className='col-lg-3 d-flex ps-lg-0'>
                 <div className="d-flex flex-lg-wrap w-100 gap-3">
-                  <div className='col-lg-12 w-100'>
-                    <Card className='h-100'>
-                      <Card.Header className='m-0 row bg-navbar-menu work-sans widget-title h-40'>
-                        <h4 className='m-auto'>
+                  <div className='col-lg-12 w-100 shadow'>
+                    <Card className='fill border-0'>
+                      <Card.Header className='m-0 row bg-navbar-menu work-sans  px-1 h-40'>
+                        <h4 className='m-auto widget-title'>
                           Next Oil Change
                         </h4>
                       </Card.Header>
                       <Card.Body className='row body-sans widget-body-text '>
-                        <p className='m-auto'>
+                        <p className='m-auto py-0'>
                           {nextOilChange ? nextOilChange.toLocaleString() + ' Miles' : 'No Past Oil Changes'}
                         </p>
                       </Card.Body>
                     </Card>
                   </div>
-                  <div className='col-lg-12 w-100'>
-                    <Card className='h-100'>
+                  <div className='col-lg-12 w-100 shadow'>
+                    <Card className='fill border-0'>
                       <Card.Header className='m-0 row bg-navbar-menu work-sans widget-title h-40'>
-                        <h4 className='m-auto'>
+                        <h4 className='m-auto widget-title'>
                           Total Cost
                         </h4>
                       </Card.Header>
                       <Card.Body className='row body-sans widget-body-text'>
-                        <p className='m-auto'>
+                        <p className='m-auto py-lg-0 py-4'>
                           {totalCost ? `$${totalCost.toLocaleString()}` : 'No Records to Calculate'}
                         </p>
                       </Card.Body>
