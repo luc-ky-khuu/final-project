@@ -38,6 +38,9 @@ class CarDetails extends React.Component {
 
   getNextOilChange() {
     const { records } = this.state;
+    if (!this.state.records) {
+      return;
+    }
     for (let i = 0; i < records.length; i++) {
       if (records[i].maintenanceName.toLowerCase().includes('oil change')) {
         return records[i].mileage + 3000;
@@ -122,7 +125,7 @@ class CarDetails extends React.Component {
                   <Card.Header className='bg-navbar-menu work-sans fs-3 py-md-3'>Next Oil Change</Card.Header>
                   <Card.Body className='row body-sans fs-1 py-sm-5 py-md-5 py-5'>
                     <p className='m-auto'>
-                      {this.state.records ? this.getNextOilChange().toLocaleString() + ' Miles' : 'No Past Oil Changes'}
+                      {this.getNextOilChange() ? this.getNextOilChange().toLocaleString() + ' Miles' : 'No Past Oil Changes'}
                     </p>
                   </Card.Body>
                 </Card>
