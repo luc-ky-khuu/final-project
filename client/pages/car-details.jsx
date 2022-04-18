@@ -119,8 +119,8 @@ class CarDetails extends React.Component {
               </div>
               <div className='col-lg-3 mb-3 ps-lg-0'>
                 <Card className='h-100'>
-                  <Card.Header className='bg-navbar-menu work-sans fs-3'>Next Oil Change</Card.Header>
-                  <Card.Body className='row body-sans fs-1 '>
+                  <Card.Header className='bg-navbar-menu work-sans fs-3 py-md-3'>Next Oil Change</Card.Header>
+                  <Card.Body className='row body-sans fs-1 py-sm-5 py-md-5 py-5'>
                     <p className='m-auto'>
                       {this.state.records ? this.getNextOilChange().toLocaleString() + ' Miles' : 'No Past Oil Changes'}
                     </p>
