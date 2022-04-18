@@ -48,6 +48,18 @@ class CarDetails extends React.Component {
     }
   }
 
+  calculateTotalCost() {
+    const { records } = this.state;
+    let total = 0;
+    if (!this.state.records) {
+      return;
+    }
+    for (let i = 0; i < records.length; i++) {
+      total += records[i].cost;
+    }
+    return total;
+  }
+
   combineSameDayRecords(records) {
     const newArr = [];
     let newObj = {
