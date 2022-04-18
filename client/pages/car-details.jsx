@@ -107,6 +107,7 @@ class CarDetails extends React.Component {
   }
 
   render() {
+    const nextOilChange = this.getNextOilChange();
     let { year, make, model, photoUrl } = this.state.car;
     if (!photoUrl) {
       photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
@@ -125,7 +126,7 @@ class CarDetails extends React.Component {
                   <Card.Header className='bg-navbar-menu work-sans fs-3 py-md-3'>Next Oil Change</Card.Header>
                   <Card.Body className='row body-sans fs-1 py-sm-5 py-md-5 py-5'>
                     <p className='m-auto'>
-                      {this.getNextOilChange() ? this.getNextOilChange().toLocaleString() + ' Miles' : 'No Past Oil Changes'}
+                      {nextOilChange ? nextOilChange.toLocaleString() + ' Miles' : 'No Past Oil Changes'}
                     </p>
                   </Card.Body>
                 </Card>
