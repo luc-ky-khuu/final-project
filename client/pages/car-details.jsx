@@ -120,6 +120,7 @@ class CarDetails extends React.Component {
 
   render() {
     const nextOilChange = this.getNextOilChange();
+    const totalCost = this.calculateTotalCost();
     let { year, make, model, photoUrl } = this.state.car;
     if (!photoUrl) {
       photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
@@ -129,19 +130,41 @@ class CarDetails extends React.Component {
         <div className="row mt-3 rounded overflow-hidden">
           <div className="col-lg-12">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
-            <div className="row">
-              <div className="col-lg-9">
-                <Card.Img className='shadow p-0 mb-3 rounded' src={photoUrl} alt="" />
+            <div className="row mb-3">
+              <div className="col-lg-9 mb-lg-0 mb-3">
+                <Card.Img className='h-100 shadow p-0 rounded' src={photoUrl} alt="" />
               </div>
-              <div className='col-lg-3 mb-3 ps-lg-0'>
-                <Card className='h-100'>
-                  <Card.Header className='bg-navbar-menu work-sans fs-3 py-md-3'>Next Oil Change</Card.Header>
-                  <Card.Body className='row body-sans fs-1 py-sm-5 py-md-5 py-5'>
-                    <p className='m-auto'>
-                      {nextOilChange ? nextOilChange.toLocaleString() + ' Miles' : 'No Past Oil Changes'}
-                    </p>
-                  </Card.Body>
-                </Card>
+              <div className='col-lg-3 d-flex ps-lg-0'>
+                <div className="d-flex flex-lg-wrap w-100 gap-3">
+                  <div className='col-lg-12 w-100'>
+                    <Card className='h-100'>
+                      <Card.Header className='m-0 row bg-navbar-menu work-sans widget-title h-40'>
+                        <h4 className='m-auto'>
+                          Next Oil Change
+                        </h4>
+                      </Card.Header>
+                      <Card.Body className='row body-sans widget-body-text '>
+                        <p className='m-auto'>
+                          {nextOilChange ? nextOilChange.toLocaleString() + ' Miles' : 'No Past Oil Changes'}
+                        </p>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                  <div className='col-lg-12 w-100'>
+                    <Card className='h-100'>
+                      <Card.Header className='m-0 row bg-navbar-menu work-sans widget-title h-40'>
+                        <h4 className='m-auto'>
+                          Total Cost
+                        </h4>
+                      </Card.Header>
+                      <Card.Body className='row body-sans widget-body-text'>
+                        <p className='m-auto'>
+                          {totalCost ? `$${totalCost.toLocaleString()}` : 'No Records to Calculate'}
+                        </p>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
