@@ -62,10 +62,6 @@ img {
   box-shadow: white;
 }
 
-.widget-height {
-  min-height: 10rem;
-}
-
 .fill {
   min-height: 100%;
 }
@@ -76,8 +72,4 @@ img {
 
 .widget-body-text {
   font-size: 2rem;
-}
-
-.h-40 {
-  min-height: 40% !important;
 }
