@@ -12,6 +12,7 @@ class CarDetails extends React.Component {
     this.makeTable = this.makeTable.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.getNextOilChange = this.getNextOilChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +34,18 @@ class CarDetails extends React.Component {
     this.setState({
       records: newRecord
     });
+  }
+
+  getNextOilChange() {
+    const { records } = this.state;
+    if (!this.state.records) {
+      return;
+    }
+    for (let i = 0; i < records.length; i++) {
+      if (records[i].maintenanceName.toLowerCase().includes('oil')) {
+        return records[i].mileage + 3000;
+      }
+    }
   }
 
   combineSameDayRecords(records) {
@@ -94,33 +107,48 @@ class CarDetails extends React.Component {
   }
 
   render() {
+    const nextOilChange = this.getNextOilChange();
     let { year, make, model, photoUrl } = this.state.car;
     if (!photoUrl) {
       photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
     }
     return (
       <>
-        <div className="row my-3 rounded overflow-hidden">
-            <div className="col-lg-11">
+        <div className="row mt-3 rounded overflow-hidden">
+          <div className="col-lg-12">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
-            <Card.Img className='shadow p-0 mb-3' src={photoUrl} alt="" />
-            <div className='m-0 overflow-hidden rounded'>
-              <div className="row py-2 mx-0 bg-navbar-menu">
-                <h2 className='col text-start'>Recent Records</h2>
-                <div className="col text-end">
-                  <a href="" onClick={this.toggleModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
-                </div>
+            <div className="row">
+              <div className="col-lg-9">
+                <Card.Img className='shadow p-0 mb-3 rounded' src={photoUrl} alt="" />
               </div>
-              <Table hover striped>
-                <tbody className='fs-4'>
-                  {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
-                </tbody>
-              </Table>
-           </div>
+              <div className='col-lg-3 mb-3 ps-lg-0'>
+                <Card className='h-100'>
+                  <Card.Header className='bg-navbar-menu work-sans fs-3 py-md-3'>Next Oil Change</Card.Header>
+                  <Card.Body className='row body-sans fs-1 py-sm-5 py-md-5 py-5'>
+                    <p className='m-auto'>
+                      {nextOilChange ? nextOilChange.toLocaleString() + ' Miles' : 'No Past Oil Changes'}
+                    </p>
+                  </Card.Body>
+                </Card>
+              </div>
             </div>
-          <div>
-            {this.showAddForm()}
           </div>
+        </div>
+        <div className='row m-0 overflow-hidden rounded'>
+          <div className="row py-2 mx-0 bg-navbar-menu">
+            <h2 className='col text-start'>Recent Records</h2>
+            <div className="col text-end">
+              <a href="" onClick={this.toggleModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+            </div>
+          </div>
+          <Table hover striped>
+            <tbody className='fs-4'>
+              {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
+            </tbody>
+          </Table>
+        </div>
+        <div>
+          {this.showAddForm()}
         </div>
       </>
     );
