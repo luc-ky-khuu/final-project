@@ -7,6 +7,17 @@ class AllRecords extends React.Component {
       records: null
     };
   }
+
+  componentDidMount() {
+    fetch(`/api/vehicles/${this.props.vehicleId}/records`)
+      .then(result => result.json())
+      .then(result => {
+        this.setState({
+          records: result
+        });
+      })
+      .catch(err => console.error(err));
+  }
 }
 
 export default AllRecords;

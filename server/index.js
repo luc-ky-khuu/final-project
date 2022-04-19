@@ -105,7 +105,7 @@ app.get('/api/vehicles/:vehicleId/records', (req, res, next) => {
             json_agg("cost") as "cost",
             sum("cost") as "total",
             "mileage",
-            "datePerformed"::date
+            to_char("datePerformed"::date, 'yyyy/mm/dd') as "datePerformed"
       from  "records"
      where  "vehicleId" = $1
      group  by "datePerformed", mileage
