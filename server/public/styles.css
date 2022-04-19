@@ -79,7 +79,7 @@ ul {
 }
 
 .accordion-item:nth-child(odd) button {
-  background-color: rgba(196, 196, 196, 1);
+  background-color: rgb(214, 214, 214);
 }
 
 .accordion-item:nth-child(even) button {
