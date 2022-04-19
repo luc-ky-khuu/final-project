@@ -177,7 +177,7 @@ class CarDetails extends React.Component {
             </div>
           </div>
           <Table striped>
-            <tbody className='fs-4'>
+            <tbody className='fs-4 text-capitalize'>
               {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
               <tr>
                 <td colSpan={5}>
