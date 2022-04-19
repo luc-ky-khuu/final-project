@@ -176,9 +176,14 @@ class CarDetails extends React.Component {
               <a href="" onClick={this.toggleModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
             </div>
           </div>
-          <Table hover striped>
-            <tbody className='fs-4'>
+          <Table striped>
+            <tbody className='fs-4 text-capitalize'>
               {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
+              {this.state.records && this.state.records.length > 0 && <tr>
+                <td colSpan={5}>
+                  <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.props.vehicleId}`}>View All Records</a>
+                </td>
+              </tr>}
             </tbody>
           </Table>
         </div>

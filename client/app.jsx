@@ -3,6 +3,7 @@ import Navbar from './components/navbar';
 import MyCars from './pages/my-garage';
 import Menu from './components/menu';
 import CarDetails from './pages/car-details';
+import AllRecords from './pages/all-records';
 
 function parseRoute(hashRoute) {
   if (hashRoute.startsWith('#')) {
@@ -30,10 +31,13 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
+    const vehicleId = route.params.get('vehicleId');
     if (route.path === 'garage') {
       return <MyCars />;
     } else if (route.path === 'garage/myCar') {
-      return <CarDetails vehicleId={route.params.get('vehicleId')} />;
+      return <CarDetails vehicleId={vehicleId} />;
+    } else if (route.path === 'vehicle-records') {
+      return <AllRecords vehicleId={vehicleId}/>;
     }
     return <MyCars />;
   }
@@ -41,7 +45,7 @@ export default class App extends React.Component {
   render() {
     return (
       <>
-        <Navbar />
+        <Navbar route={this.state.route.path}/>
         <div className="container">
           <div className='justify-content-center row'>
             <div className=" col-lg-2 d-none d-lg-block px-0 py-3">
