@@ -66,7 +66,7 @@ class AllRecords extends React.Component {
               })}
                 <li className='text-capitalize row fs-3 ms-5'>
                   <p className='col-11 m-0 p-3 text-end'>
-                    {<span className='fw-bolder'>Total Cost: </span>} {`$${item.total}`}
+                    {<span className='fw-bolder'>Total: </span>} {`$${item.total}`}
                   </p>
                 </li>
             </ul>
