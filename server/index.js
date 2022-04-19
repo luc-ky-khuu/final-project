@@ -97,6 +97,27 @@ app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+app.get('/api/vehicles/:vehicleId/records', (req, res, next) => {
+  const { vehicleId } = req.params;
+  const sql = `
+    select  json_agg("maintenanceName") as "names",
+            json_agg("cost") as "cost",
+            sum("cost") as "total",
+            "mileage",
+            "datePerformed"::date
+      from  "records"
+     where  "vehicleId" = $1
+     group  by "datePerformed", mileage
+     order  by "datePerformed" desc
+  `;
+  const params = [vehicleId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
