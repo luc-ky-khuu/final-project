@@ -23,7 +23,7 @@ class AllRecords extends React.Component {
   displayRecordsList() {
     const { records } = this.state;
     return (
-      <Accordion defaultActiveKey={0}>
+      <Accordion className='mt-3 mt-lg-0' defaultActiveKey={0}>
         {
       records.map((item, index) => {
         return (
@@ -82,7 +82,7 @@ class AllRecords extends React.Component {
   render() {
     return (
       <>
-      <h1 className='m-3'>All Records</h1>
+      <h1 className='m-3 d-lg-block d-none'>Vehicle Records</h1>
         {this.state.records ? this.displayRecordsList() : <p>no records</p>}
       </>
     );

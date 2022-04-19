@@ -130,7 +130,7 @@ class MyCars extends React.Component {
               <Card.Img style={{ height: '20rem' }} variant="top" src={photoUrl} />
             </div>
             <Card.Body className='col-lg p-0'>
-              <h1 className="work-sans h1 text-center text-capitalize">
+              <h1 className="work-sans h1 text-center text-capitalize m-3">
                 <span className="d-md-block">{year} </span>
                 <span className="d-md-block text-break">{make} </span>
                 <span className="d-md-block text-break">{model}</span>

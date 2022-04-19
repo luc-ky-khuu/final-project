@@ -179,11 +179,11 @@ class CarDetails extends React.Component {
           <Table striped>
             <tbody className='fs-4 text-capitalize'>
               {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
-              <tr>
+              {this.state.records && this.state.records.length > 0 && <tr>
                 <td colSpan={5}>
-                  <a className='text-reset text-decoration-none' href={`#vehicle-records?vehicleId=${this.props.vehicleId}`}>View All Records</a>
+                  <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.props.vehicleId}`}>View All Records</a>
                 </td>
-              </tr>
+              </tr>}
             </tbody>
           </Table>
         </div>

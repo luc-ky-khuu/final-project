@@ -1,14 +1,12 @@
 import React from 'react';
 import { Container, Offcanvas, Navbar, Nav } from 'react-bootstrap';
 class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      route: 'My Garage'
-    };
-  }
 
   render() {
+    let title = 'My Garage';
+    if (this.props.route === 'vehicle-records') {
+      title = 'Vehicle Records';
+    }
     return (
       <Navbar className="bg-component-blue navbar-dark" expand={'lg'} collapseOnSelect='true'>
         <Container className="justify-content-start">
@@ -29,7 +27,7 @@ class Navigation extends React.Component {
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-          <Navbar.Brand className='work-sans d-lg-none ms-3 fs-1'>{this.state.route}</Navbar.Brand>
+          <Navbar.Brand className='work-sans d-lg-none ms-3 fs-1'>{title}</Navbar.Brand>
         </Container>
       </Navbar>
     );

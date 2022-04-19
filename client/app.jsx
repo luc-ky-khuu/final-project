@@ -45,7 +45,7 @@ export default class App extends React.Component {
   render() {
     return (
       <>
-        <Navbar />
+        <Navbar route={this.state.route.path}/>
         <div className="container">
           <div className='justify-content-center row'>
             <div className=" col-lg-2 d-none d-lg-block px-0 py-3">
