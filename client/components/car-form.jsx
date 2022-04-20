@@ -22,9 +22,9 @@ class CarForm extends React.Component {
   addCarModal() {
     return (
       <>
-        <Modal size='sm' show={this.state.modal} onHide={this.toggleModal} centered>
+        <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
           <Modal.Header>
-            <Modal.Title className='work-sans'>Add Vehicle</Modal.Title>
+            <Modal.Title className='work-sans'>{this.state.newCar ? 'Add Vehicle' : 'Edit Vehicle Info'}</Modal.Title>
             <CloseButton onClick={this.toggleModal}></CloseButton>
           </Modal.Header>
           <Form onSubmit={this.handleSubmit}>
@@ -46,7 +46,7 @@ class CarForm extends React.Component {
             <Modal.Footer className="work-sans">
               <div className="col">
                 <Button variant="outline-light" className='w-100 blue-button border-0 work-sans' type="submit">
-                  Add Vehicle
+                  {this.state.newCar ? 'Add Vehicle' : 'Save Changes'}
                 </Button>
               </div>
               <div className="col">
@@ -111,9 +111,13 @@ class CarForm extends React.Component {
   render() {
     return (
      <>
-       <a className='text-reset' href="#" onClick={this.toggleModal}>
-         <i className="bi fs-1 bi-plus-circle-fill"></i>
-       </a>
+        {this.state.newCar
+          ? <a className='text-reset' href="#" onClick={this.toggleModal}>
+          <i className="bi fs-1 bi-plus-circle-fill"></i>
+        </a>
+          : <a href='#' onClick={this.toggleModal} className='fs-3 edit-icon position-absolute text-reset'>
+          <i className="bi bi-pencil-square icon-color"></i>
+        </a>}
        {this.addCarModal()}
      </>
     );

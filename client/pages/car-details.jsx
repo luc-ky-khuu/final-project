@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
+import CarForm from '../components/car-form';
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -132,9 +133,7 @@ class CarDetails extends React.Component {
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <div className="row mb-3">
               <div className="col-lg-9 mb-lg-0 mb-3 position-relative">
-                <a href='' className='fs-3 edit-icon position-absolute text-reset'>
-                  <i className="bi bi-pencil-square icon-color"></i>
-                </a>
+                <CarForm newCar={false} />
                 <Card.Img className='h-100 shadow p-0 rounded' src={photoUrl} alt="" />
               </div>
               <div className='col-lg-3 d-flex ps-lg-0'>
