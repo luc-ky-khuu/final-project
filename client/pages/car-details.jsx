@@ -131,7 +131,10 @@ class CarDetails extends React.Component {
           <div className="col-lg-12">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <div className="row mb-3">
-              <div className="col-lg-9 mb-lg-0 mb-3">
+              <div className="col-lg-9 mb-lg-0 mb-3 position-relative">
+                <a href='' className='fs-3 edit-icon position-absolute text-reset'>
+                  <i className="bi bi-pencil-square icon-color"></i>
+                </a>
                 <Card.Img className='h-100 shadow p-0 rounded' src={photoUrl} alt="" />
               </div>
               <div className='col-lg-3 d-flex ps-lg-0'>
