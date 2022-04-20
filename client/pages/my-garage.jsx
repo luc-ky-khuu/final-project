@@ -130,7 +130,7 @@ class MyCars extends React.Component {
     }
     return (
       <li key={vehicleId.toString()}>
-          <a className='text-reset text-decoration-none' href={`#garage/myCar?vehicleId=${vehicleId}`}>
+        <a className='text-reset text-decoration-none' href={`#garage/myCar?vehicleId=${vehicleId}`}>
           <Card className='row flex-nowrap shadow my-3 mx-0 flex-md-row-reverse align-items-center'>
             <div className="col-md-9 p-0">
               <Card.Img style={{ height: '20rem' }} variant="top" src={photoUrl} />
@@ -140,11 +140,11 @@ class MyCars extends React.Component {
                 <span className="d-md-block">{year} </span>
                 <span className="d-md-block text-break">{make} </span>
                 <span className="d-md-block text-break">{model}</span>
-                </h1>
+              </h1>
             </Card.Body>
           </Card>
-          </a>
-        </li>
+        </a>
+      </li>
     );
   }
 
