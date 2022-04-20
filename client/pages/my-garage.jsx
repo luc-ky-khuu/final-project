@@ -5,16 +5,8 @@ class MyCars extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cars: [],
-      year: '',
-      make: '',
-      model: '',
-      modal: false,
-      missingInput: false
+      cars: []
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.fileInputRef = React.createRef();
   }
 
@@ -64,7 +56,7 @@ class MyCars extends React.Component {
         </ul>
         <a href='#' className='text-reset'></a>
         <div>
-          <CarForm />
+          <CarForm newCar={true}/>
         </div>
       </>
     );

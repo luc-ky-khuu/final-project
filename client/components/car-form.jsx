@@ -10,7 +10,8 @@ class CarForm extends React.Component {
       make: '',
       model: '',
       modal: false,
-      missingInput: false
+      missingInput: false,
+      newCar: this.props.newCar
     };
     this.handleChange = this.handleChange.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
