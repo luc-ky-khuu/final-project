@@ -52,6 +52,9 @@ class MyCars extends React.Component {
               <Form.Group className='mb-3' controlId='model'>
                 <Form.Control value={this.state.model} onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
               </Form.Group>
+              <Form.Group controlId="formFile" className="mb-3">
+                <Form.Control type="file" />
+              </Form.Group>
               {this.state.missingInput && <p className='text-danger m-0'>* Input Missing</p>}
             </Modal.Body>
             <Modal.Footer className="work-sans">
