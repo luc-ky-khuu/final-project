@@ -100,13 +100,17 @@ class MyCars extends React.Component {
       });
       return;
     }
-    const carData = { year, make, model };
+    const formData = new FormData();
+    formData.append('year', year);
+    formData.append('make', make);
+    formData.append('model', model);
+    formData.append('photoUrl', this.fileInputRef.current.files[0]);
     fetch('/api/garage/add-car', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(carData)
+      body: formData
     })
       .then(res => res.json())
       .then(data => {
@@ -117,6 +121,7 @@ class MyCars extends React.Component {
           model: '',
           modal: !this.state.modal
         });
+        this.fileInputRef.current.value = null;
       })
       .catch(err => console.error(err));
   }
