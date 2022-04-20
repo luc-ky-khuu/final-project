@@ -30,10 +30,11 @@ app.post('/api/garage/add-car', fileUpload, (req, res, next) => {
   if (!year || !make || !model) {
     throw new ClientError(400, "Vehicle 'year', 'make', and 'model' are required");
   }
-  const params = [1, parseInt(year), make, model];
+  const photoUrl = `/images/${req.file.filename}`;
+  const params = [1, parseInt(year), make, model, photoUrl];
   const sql = `
-    insert into "vehicles" ("userId", "year", "make", "model")
-    values ($1, $2, $3, $4)
+    insert into "vehicles" ("userId", "year", "make", "model", "photoUrl")
+    values ($1, $2, $3, $4, $5)
     returning *
   `;
   db.query(sql, params)
