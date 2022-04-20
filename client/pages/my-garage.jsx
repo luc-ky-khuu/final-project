@@ -14,6 +14,7 @@ class MyCars extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
