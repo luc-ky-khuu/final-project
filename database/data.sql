@@ -24,7 +24,7 @@ insert into "public"."vehicles" (
   2010,
   'Honda',
   'Civic',
-  'https://proximaride.com/images/car_placeholder2.png'
+  null
 );
 
 insert into "public"."records" (

@@ -14,6 +14,7 @@ class MyCars extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
@@ -51,6 +52,9 @@ class MyCars extends React.Component {
               </Form.Group>
               <Form.Group className='mb-3' controlId='model'>
                 <Form.Control value={this.state.model} onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="photoUrl" className="mb-3">
+                <Form.Control accept=".png, .jpg, .jpeg" ref={this.fileInputRef} name='photoUrl' type="file" />
               </Form.Group>
               {this.state.missingInput && <p className='text-danger m-0'>* Input Missing</p>}
             </Modal.Body>
@@ -96,23 +100,25 @@ class MyCars extends React.Component {
       });
       return;
     }
-    const carData = { year, make, model };
+    const formData = new FormData();
+    formData.append('year', year);
+    formData.append('make', make);
+    formData.append('model', model);
+    formData.append('photoUrl', this.fileInputRef.current.files[0]);
     fetch('/api/garage/add-car', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(carData)
+      body: formData
     })
       .then(res => res.json())
       .then(data => {
-        this.getCars();
         this.setState({
+          cars: this.state.cars.concat([data]),
           year: '',
           make: '',
           model: '',
-          modal: !this.state.modal
+          modal: false
         });
+        this.fileInputRef.current.value = null;
       })
       .catch(err => console.error(err));
   }
