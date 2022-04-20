@@ -116,7 +116,7 @@ class MyCars extends React.Component {
           year: '',
           make: '',
           model: '',
-          modal: !this.state.modal
+          modal: false
         });
         this.fileInputRef.current.value = null;
       })
