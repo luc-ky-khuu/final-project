@@ -5,6 +5,7 @@ const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
 const app = express();
+const fileUpload = require('./file-upload');
 
 app.use(staticMiddleware);
 
@@ -24,7 +25,7 @@ app.get('/api/garage', (req, res) => {
     .catch(err => console.error(err));
 });
 
-app.post('/api/garage/add-car', (req, res, next) => {
+app.post('/api/garage/add-car', fileUpload, (req, res, next) => {
   const { year, make, model } = req.body;
   if (!year || !make || !model) {
     throw new ClientError(400, "Vehicle 'year', 'make', and 'model' are required");
