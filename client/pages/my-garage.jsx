@@ -111,7 +111,6 @@ class MyCars extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-
         this.setState({
           cars: this.state.cars.concat([data]),
           year: '',
