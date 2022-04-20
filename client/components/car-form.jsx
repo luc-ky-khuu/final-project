@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
-
+import VehicleId from '../lib/vehicleId-context';
 class CarForm extends React.Component {
 
   constructor(props) {
@@ -79,33 +79,51 @@ class CarForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const { year, make, model } = this.state;
-    if (!year || !make || !model) {
-      this.setState({
-        missingInput: true
-      });
-      return;
-    }
     const formData = new FormData();
     formData.append('year', year);
     formData.append('make', make);
     formData.append('model', model);
     formData.append('photoUrl', this.fileInputRef.current.files[0]);
-    fetch('/api/garage/add-car', {
-      method: 'POST',
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.props.updateCars(data);
+    if (this.state.newCar) {
+      if (!year || !make || !model) {
         this.setState({
-          year: '',
-          make: '',
-          model: '',
-          modal: false
+          missingInput: true
         });
-        this.fileInputRef.current.value = null;
+        return;
+      }
+      fetch('/api/garage/add-car/', {
+        method: 'POST',
+        body: formData
       })
-      .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(data => {
+          this.props.updateCars(data);
+          this.setState({
+            year: '',
+            make: '',
+            model: '',
+            modal: false
+          });
+          this.fileInputRef.current.value = null;
+        })
+        .catch(err => console.error(err));
+    } else {
+      fetch(`/api/garage/edit-car/${this.context.vehicleId}`, {
+        method: 'PUT',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.setState({
+            year: '',
+            make: '',
+            model: '',
+            modal: false
+          });
+          this.fileInputRef.current.value = null;
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   render() {
@@ -123,5 +141,5 @@ class CarForm extends React.Component {
     );
   }
 }
-
+CarForm.contextType = VehicleId;
 export default CarForm;

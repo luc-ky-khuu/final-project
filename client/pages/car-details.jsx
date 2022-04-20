@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
 import CarForm from '../components/car-form';
+import VehicleId from '../lib/vehicleId-context';
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +18,7 @@ class CarDetails extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/garage/recent-history/${this.props.vehicleId}`)
+    fetch(`/api/garage/recent-history/${this.context.vehicleId}`)
       .then(result => result.json())
       .then(result => {
         this.setState({
@@ -105,7 +106,7 @@ class CarDetails extends React.Component {
   showAddForm() {
     return (
       <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
-        <AddForm vehicleId={this.props.vehicleId} toggleModal={this.toggleModal} addRecord={this.addRecord}/>
+        <AddForm vehicleId={this.context.vehicleId} toggleModal={this.toggleModal} addRecord={this.addRecord}/>
       </Modal>
     );
   }
@@ -183,7 +184,7 @@ class CarDetails extends React.Component {
               {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
               {this.state.records && this.state.records.length > 0 && <tr>
                 <td colSpan={5}>
-                  <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.props.vehicleId}`}>View All Records</a>
+                  <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.context.vehicleId}`}>View All Records</a>
                 </td>
               </tr>}
             </tbody>
@@ -196,5 +197,5 @@ class CarDetails extends React.Component {
     );
   }
 }
-
+CarDetails.contextType = VehicleId;
 export default CarDetails;
