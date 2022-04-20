@@ -16,14 +16,12 @@ class CarForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fileInputRef = React.createRef();
   }
 
-  carForm() {
+  addCarModal() {
     return (
       <>
-        <a className='text-reset' href="#" onClick={this.toggleModal}>
-          <i className="bi fs-1 bi-plus-circle-fill"></i>
-        </a>
         <Modal size='sm' show={this.state.modal} onHide={this.toggleModal} centered>
           <Modal.Header>
             <Modal.Title className='work-sans'>Add Vehicle</Modal.Title>
@@ -98,8 +96,8 @@ class CarForm extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
+        this.props.updateCars(data);
         this.setState({
-          cars: this.state.cars.concat([data]),
           year: '',
           make: '',
           model: '',
@@ -108,6 +106,17 @@ class CarForm extends React.Component {
         this.fileInputRef.current.value = null;
       })
       .catch(err => console.error(err));
+  }
+
+  render() {
+    return (
+     <>
+       <a className='text-reset' href="#" onClick={this.toggleModal}>
+         <i className="bi fs-1 bi-plus-circle-fill"></i>
+       </a>
+       {this.addCarModal()}
+     </>
+    );
   }
 }
 

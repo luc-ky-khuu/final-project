@@ -7,11 +7,17 @@ class MyCars extends React.Component {
     this.state = {
       cars: []
     };
-    this.fileInputRef = React.createRef();
+    this.updateCars = this.updateCars.bind(this);
   }
 
   componentDidMount() {
     this.getCars();
+  }
+
+  updateCars(newCars) {
+    this.setState({
+      cars: this.state.cars.concat([newCars])
+    });
   }
 
   getCars() {
@@ -56,7 +62,7 @@ class MyCars extends React.Component {
         </ul>
         <a href='#' className='text-reset'></a>
         <div>
-          <CarForm newCar={true}/>
+          <CarForm updateCars={this.updateCars} newCar={true}/>
         </div>
       </>
     );
