@@ -84,6 +84,16 @@ class CarForm extends React.Component {
     formData.append('make', make);
     formData.append('model', model);
     formData.append('photoUrl', this.fileInputRef.current.files[0]);
+    const resetState = data => {
+      this.props.updateCar(data);
+      this.setState({
+        year: '',
+        make: '',
+        model: '',
+        modal: false
+      });
+      this.fileInputRef.current.value = null;
+    };
     if (this.state.newCar) {
       if (!year || !make || !model) {
         this.setState({
@@ -96,16 +106,7 @@ class CarForm extends React.Component {
         body: formData
       })
         .then(res => res.json())
-        .then(data => {
-          this.props.updateCars(data);
-          this.setState({
-            year: '',
-            make: '',
-            model: '',
-            modal: false
-          });
-          this.fileInputRef.current.value = null;
-        })
+        .then(resetState)
         .catch(err => console.error(err));
     } else {
       fetch(`/api/garage/edit-car/${this.context.vehicleId}`, {
@@ -113,16 +114,7 @@ class CarForm extends React.Component {
         body: formData
       })
         .then(res => res.json())
-        .then(data => {
-          this.props.updateCar(data);
-          this.setState({
-            year: '',
-            make: '',
-            model: '',
-            modal: false
-          });
-          this.fileInputRef.current.value = null;
-        })
+        .then(resetState)
         .catch(err => console.error(err));
     }
   }

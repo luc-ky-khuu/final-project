@@ -17,6 +17,7 @@ app.get('/api/garage', (req, res) => {
   const sql = `
     select *
       from "vehicles"
+     order by "vehicleId"
   `;
   db.query(sql)
     .then(result => {
