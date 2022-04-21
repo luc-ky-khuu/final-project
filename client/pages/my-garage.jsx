@@ -23,10 +23,7 @@ class MyCars extends React.Component {
     });
   }
 
-  deleteCar(event) {
-    if (event) {
-      event.preventDefault();
-    }
+  deleteCar() {
     const { cars, vehicleIndex } = this.state;
     fetch(`/api/garage/delete-car/${cars[vehicleIndex].vehicleId}`, {
       method: 'DELETE'
@@ -43,10 +40,7 @@ class MyCars extends React.Component {
       .catch(err => console.error(err));
   }
 
-  toggleDeleteModal(event, index) {
-    if (event) {
-      event.preventDefault();
-    }
+  toggleDeleteModal(index) {
     this.setState({
       deleteModal: !this.state.deleteModal,
       vehicleIndex: index
@@ -110,9 +104,9 @@ class MyCars extends React.Component {
             </Card.Body>
           </Card>
         </a>
-        <a href='#' onClick={event => this.toggleDeleteModal(event, index)} className='text-reset position-absolute trash-icon fs-3'>
+        <button onClick={() => this.toggleDeleteModal(index)} className='btn text-reset position-absolute trash-icon fs-3'>
           <i className="bi bi-trash-fill trash-icon"></i>
-        </a>
+        </button>
       </li>
     );
   }
