@@ -30,16 +30,42 @@ class CarForm extends React.Component {
           <Form onSubmit={this.handleSubmit}>
             <Modal.Body className='open-sans'>
               <Form.Group className='mb-3' controlId='year'>
-                <Form.Control value={this.state.year} onChange={this.handleChange} name='year' type='text' placeholder='Year'></Form.Control>
+                <Form.Control
+                  value={this.state.year}
+                  onChange={this.handleChange}
+                  name='year'
+                  type='text'
+                  {...(this.state.newCar && { placeholder: 'Year' })}>
+                </Form.Control>
               </Form.Group>
-              <Form.Group className='mb-3' controlId='make'>
-                <Form.Control value={this.state.make} onChange={this.handleChange} name='make' type='text' placeholder='Make'></Form.Control>
+              <Form.Group className='mb-3 text-capitalize' controlId='make'>
+                <Form.Control
+                  className='text-capitalize'
+                  value={this.state.make}
+                  onChange={this.handleChange}
+                  name='make'
+                  type='text'
+                  {...(this.state.newCar && { placeholder: 'Make' })}>
+                </Form.Control>
               </Form.Group>
               <Form.Group className='mb-3' controlId='model'>
-                <Form.Control value={this.state.model} onChange={this.handleChange} name='model' type='text' placeholder='Model'></Form.Control>
+                <Form.Control
+                  className='text-capitalize'
+                  value={this.state.model}
+                  onChange={this.handleChange}
+                  name='model'
+                  type='text'
+                  {...(!this.state.newCar && { placeholder: 'Model' })}>
+                </Form.Control>
               </Form.Group>
               <Form.Group controlId="photoUrl" className="mb-3">
-                <Form.Control accept=".png, .jpg, .jpeg" ref={this.fileInputRef} name='photoUrl' type="file" />
+                <Form.Control
+                  accept=".png, .jpg, .jpeg"
+                  onChange={this.handleChange}
+                  ref={this.fileInputRef}
+                  name='photoUrl'
+                  type="file"
+                  />
               </Form.Group>
               {this.state.missingInput && <p className='text-danger m-0'>* Input Missing</p>}
             </Modal.Body>
@@ -71,9 +97,19 @@ class CarForm extends React.Component {
     if (event) {
       event.preventDefault();
     }
-    this.setState({
-      modal: !this.state.modal
-    });
+    if (this.props.car) {
+      const { year, make, model } = this.props.car;
+      this.setState({
+        year: year,
+        make: make,
+        model: model,
+        modal: !this.state.modal
+      });
+    } else {
+      this.setState({
+        modal: !this.state.modal
+      });
+    }
   }
 
   handleSubmit(event) {
@@ -85,7 +121,7 @@ class CarForm extends React.Component {
     formData.append('model', model);
     formData.append('photoUrl', this.fileInputRef.current.files[0]);
     const resetState = data => {
-      this.props.updateCar(data);
+      this.props.updateCars(data);
       this.setState({
         year: '',
         make: '',

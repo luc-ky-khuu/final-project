@@ -141,7 +141,7 @@ class CarDetails extends React.Component {
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <div className="row mb-3">
               <div className="col-lg-9 mb-lg-0 mb-3 position-relative">
-                <CarForm updateCar={this.updateCar} newCar={false} />
+                <CarForm car={this.state.car} updateCars={this.updateCar} newCar={false} />
                 <Card.Img className='h-100 shadow p-0 rounded' src={photoUrl} alt="" />
               </div>
               <div className='col-lg-3 d-flex ps-lg-0'>
@@ -169,7 +169,7 @@ class CarDetails extends React.Component {
                       </Card.Header>
                       <Card.Body className='row body-sans widget-body-text py-lg-0 py-4'>
                         <p className='m-auto py-lg-0 py-4'>
-                          {totalCost ? `$${totalCost.toLocaleString()}` : 'No Records to Calculate'}
+                          {totalCost ? `$${totalCost.toLocaleString()}` : 'No Records'}
                         </p>
                       </Card.Body>
                     </Card>

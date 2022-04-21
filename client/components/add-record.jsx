@@ -68,7 +68,7 @@ class AddForm extends React.Component {
         <Form className='bg-white p-3 border rounded shadow open-sans' onSubmit={this.handleSubmit} >
           <h3 className='work-sans'>Add Record</h3>
           <Form.Group className="mb-3" controlId="date">
-            <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} placeholder="Date" />
+            <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} />
           </Form.Group>
           <Form.Group className="mb-3" controlId="maintenance">
             <Form.Control name='record' placeholder="Record" value={this.state.record} onChange={this.handleChange}/>
