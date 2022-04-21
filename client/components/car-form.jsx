@@ -55,7 +55,7 @@ class CarForm extends React.Component {
                   onChange={this.handleChange}
                   name='model'
                   type='text'
-                  {...(!this.state.newCar && { placeholder: 'Model' })}>
+                  {...(this.state.newCar && { placeholder: 'Model' })}>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId="photoUrl" className="mb-3">
