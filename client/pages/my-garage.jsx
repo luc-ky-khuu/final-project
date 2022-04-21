@@ -1,13 +1,15 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
+import { Card, Button, Modal } from 'react-bootstrap';
 import CarForm from '../components/car-form';
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cars: []
+      cars: [],
+      deleteModal: false
     };
     this.updateCars = this.updateCars.bind(this);
+    this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
   }
 
   componentDidMount() {
@@ -18,6 +20,36 @@ class MyCars extends React.Component {
     this.setState({
       cars: this.state.cars.concat([newCars])
     });
+  }
+
+  toggleDeleteModal(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.setState({
+      deleteModal: !this.state.deleteModal
+    });
+  }
+
+  deleteModal() {
+    return (
+      <>
+         <Modal show={this.state.deleteModal} onHide={this.toggleDeleteModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body></Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.toggleDeleteModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.toggleDeleteModal}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
   }
 
   getCars() {
@@ -51,7 +83,7 @@ class MyCars extends React.Component {
             </Card.Body>
           </Card>
         </a>
-        <a href='#' className='text-reset position-absolute trash-icon fs-3'>
+        <a href='#' onClick={this.toggleDeleteModal} className='text-reset position-absolute trash-icon fs-3'>
           <i className="bi bi-trash-fill trash-icon"></i>
         </a>
       </li>
@@ -66,6 +98,9 @@ class MyCars extends React.Component {
         <a href='#' className='text-reset'></a>
         <div>
           <CarForm updateCars={this.updateCars} newCar={true}/>
+        </div>
+        <div>
+          {this.deleteModal()}
         </div>
       </>
     );
