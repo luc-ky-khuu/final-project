@@ -138,26 +138,10 @@ app.put('/api/garage/edit-car/:vehicleId', uploadsMiddleware, (req, res, next) =
   const params = [year, make, model, photoUrl, vehicleId];
   const sql = `
     update  "vehicles"
-       set  "year" = coalesce(nullif($1,'')::integer, (
-         select "year"
-           from "vehicles"
-          where "vehicleId" = $5
-       )),
-            "make" = coalesce(nullif($2, ''), (
-         select "make"
-           from "vehicles"
-          where "vehicleId" = $5
-       )),
-            "model" = coalesce(nullif($3, ''), (
-         select "model"
-           from "vehicles"
-          where "vehicleId" = $5
-       )),
-            "photoUrl" = coalesce(nullif($4, ''), (
-         select "photoUrl"
-           from "vehicles"
-          where "vehicleId" = $5
-       ))
+       set  "year" = $1,
+            "make" = $2,
+            "model" = $3,
+            "photoUrl" = coalesce($4, "photoUrl")
      where  "vehicleId" = $5
      returning *
   `;
