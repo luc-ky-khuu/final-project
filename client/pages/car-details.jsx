@@ -8,13 +8,14 @@ class CarDetails extends React.Component {
     super(props);
     this.state = {
       car: {},
-      modal: false,
+      recordModal: false,
       records: null
     };
     this.makeTable = this.makeTable.bind(this);
     this.addRecord = this.addRecord.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
+    this.toggleAddRecordModal = this.toggleAddRecordModal.bind(this);
     this.getNextOilChange = this.getNextOilChange.bind(this);
+    this.updateCar = this.updateCar.bind(this);
   }
 
   componentDidMount() {
@@ -87,6 +88,12 @@ class CarDetails extends React.Component {
     return newArr;
   }
 
+  updateCar(data) {
+    this.setState({
+      car: data
+    });
+  }
+
   makeTable() {
     const { records } = this.state;
     const combinedRecords = (this.combineSameDayRecords(records));
@@ -105,18 +112,18 @@ class CarDetails extends React.Component {
 
   showAddForm() {
     return (
-      <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
-        <AddForm vehicleId={this.context.vehicleId} toggleModal={this.toggleModal} addRecord={this.addRecord}/>
+      <Modal size='md' show={this.state.recordModal} onHide={this.toggleAddRecordModal} centered>
+        <AddForm vehicleId={this.context.vehicleId} toggleModal={this.toggleAddRecordModal} addRecord={this.addRecord}/>
       </Modal>
     );
   }
 
-  toggleModal(event) {
+  toggleAddRecordModal(event) {
     if (event) {
       event.preventDefault();
     }
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.recordModal
     });
   }
 
@@ -134,7 +141,7 @@ class CarDetails extends React.Component {
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <div className="row mb-3">
               <div className="col-lg-9 mb-lg-0 mb-3 position-relative">
-                <CarForm newCar={false} />
+                <CarForm updateCar={this.updateCar} newCar={false} />
                 <Card.Img className='h-100 shadow p-0 rounded' src={photoUrl} alt="" />
               </div>
               <div className='col-lg-3 d-flex ps-lg-0'>
@@ -176,7 +183,7 @@ class CarDetails extends React.Component {
           <div className="row py-2 mx-0 bg-navbar-menu">
             <h2 className='col text-start'>Recent Records</h2>
             <div className="col text-end">
-              <a href="" onClick={this.toggleModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+              <a href="" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
             </div>
           </div>
           <Table striped>

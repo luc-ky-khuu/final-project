@@ -91,7 +91,7 @@ class CarForm extends React.Component {
         });
         return;
       }
-      fetch('/api/garage/add-car/', {
+      fetch('/api/garage/add-car', {
         method: 'POST',
         body: formData
       })
@@ -114,6 +114,7 @@ class CarForm extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
+          this.props.updateCar(data);
           this.setState({
             year: '',
             make: '',

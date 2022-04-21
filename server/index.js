@@ -124,7 +124,7 @@ app.get('/api/vehicles/:vehicleId/records', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/garage/edit-car/:vehicleId', (req, res, next) => {
+app.put('/api/garage/edit-car/:vehicleId', uploadsMiddleware, (req, res, next) => {
   const { vehicleId } = req.params;
   if (vehicleId < 1 || !Number(vehicleId)) {
     throw new ClientError(400, 'vehicleId must be a positive integer');
@@ -134,16 +134,32 @@ app.put('/api/garage/edit-car/:vehicleId', (req, res, next) => {
   if (req.file) {
     photoUrl = `/images/${req.file.filename}`;
   }
-  const params = [parseInt(year), make, model, photoUrl, vehicleId];
+  const params = [year, make, model, photoUrl, vehicleId];
   const sql = `
     update  "vehicles"
-       set  "year" = coalesce($1, "year"),
-            "make" = coalesce($2, "make"),
-            "model" = coalesce($3, "model"),
-            "photoUrl" = coalesece($4, "photoUrl")
+       set  "year" = coalesce(nullif($1,'')::integer, (
+         select "year"
+           from "vehicles"
+          where "vehicleId" = $5
+       )),
+            "make" = coalesce(nullif($2, ''), (
+         select "make"
+           from "vehicles"
+          where "vehicleId" = $5
+       )),
+            "model" = coalesce(nullif($3, ''), (
+         select "model"
+           from "vehicles"
+          where "vehicleId" = $5
+       )),
+            "photoUrl" = coalesce(nullif($4, ''), (
+         select "photoUrl"
+           from "vehicles"
+          where "vehicleId" = $5
+       ))
      where  "vehicleId" = $5
+     returning *
   `;
-
   db.query(sql, params)
     .then(result => {
       res.json(result.rows[0]);
