@@ -10,6 +10,7 @@ class MyCars extends React.Component {
     };
     this.updateCars = this.updateCars.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+    this.deleteCar = this.deleteCar.bind(this);
   }
 
   componentDidMount() {
@@ -22,29 +23,50 @@ class MyCars extends React.Component {
     });
   }
 
-  toggleDeleteModal(event) {
+  deleteCar(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    const { cars, vehicleIndex } = this.state;
+    fetch(`/api/garage/delete-car/${cars[vehicleIndex].vehicleId}`, {
+      method: 'DELETE'
+    })
+      .then(result => result.json())
+      .then(result => {
+        const carsCopy = [...this.state.cars];
+        this.setState({
+          cars: carsCopy.splice(vehicleIndex, 1),
+          deleteModal: false
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  toggleDeleteModal(event, index) {
     if (event) {
       event.preventDefault();
     }
     this.setState({
-      deleteModal: !this.state.deleteModal
+      deleteModal: !this.state.deleteModal,
+      vehicleIndex: index
     });
   }
 
   deleteModal() {
     return (
       <>
-         <Modal show={this.state.deleteModal} onHide={this.toggleDeleteModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body></Modal.Body>
+         <Modal size='sm' centered show={this.state.deleteModal} onHide={this.toggleDeleteModal}>
+          <Modal.Body>
+            <p className='fs-4 m-0'>
+              Are you sure you want to remove this car?  This will delete all of your data.
+            </p>
+          </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.toggleDeleteModal}>
-              Close
+            <Button variant="outline-secondary" onClick={this.toggleDeleteModal}>
+              Cancel
             </Button>
-            <Button variant="primary" onClick={this.toggleDeleteModal}>
-              Save Changes
+            <Button variant="danger" onClick={this.deleteCar}>
+              Delete
             </Button>
           </Modal.Footer>
         </Modal>
@@ -62,7 +84,7 @@ class MyCars extends React.Component {
       });
   }
 
-  renderCar(car) {
+  renderCar(car, index) {
     let { year, make, model, photoUrl, vehicleId } = car;
     if (!photoUrl) {
       photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
@@ -83,7 +105,7 @@ class MyCars extends React.Component {
             </Card.Body>
           </Card>
         </a>
-        <a href='#' onClick={this.toggleDeleteModal} className='text-reset position-absolute trash-icon fs-3'>
+        <a href='#' onClick={event => this.toggleDeleteModal(event, index)} className='text-reset position-absolute trash-icon fs-3'>
           <i className="bi bi-trash-fill trash-icon"></i>
         </a>
       </li>
@@ -93,7 +115,7 @@ class MyCars extends React.Component {
   render() {
     return (<>
         <ul className="list-group list-group-flush list-unstyled">
-          {this.state.cars.length > 0 ? this.state.cars.map(car => this.renderCar(car)) : <h3 className='text-center p-5'>No Cars To Display</h3>}
+          {this.state.cars.length > 0 ? this.state.cars.map((car, index) => this.renderCar(car, index)) : <h3 className='text-center p-5'>No Cars To Display</h3>}
         </ul>
         <a href='#' className='text-reset'></a>
         <div>
