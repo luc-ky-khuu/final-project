@@ -36,13 +36,10 @@ class MyCars extends React.Component {
       photoUrl = 'https://proximaride.com/images/car_placeholder2.png';
     }
     return (
-      <li key={vehicleId.toString()}>
+      <li className='position-relative' key={vehicleId.toString()}>
         <a className='text-reset text-decoration-none' href={`#garage/myCar?vehicleId=${vehicleId}`}>
           <Card className='row flex-nowrap shadow my-3 mx-0 flex-md-row-reverse align-items-center'>
-            <div className="col-md-9 p-0 position-relative">
-              <a href='#' className='text-reset position-absolute trash-icon fs-3'>
-                <i className="bi bi-trash-fill trash-icon"></i>
-              </a>
+            <div className="col-md-9 p-0">
               <Card.Img style={{ height: '20rem' }} variant="top" src={photoUrl} />
             </div>
             <Card.Body className='col-lg p-0'>
@@ -53,6 +50,9 @@ class MyCars extends React.Component {
               </h1>
             </Card.Body>
           </Card>
+        </a>
+        <a href='#' className='text-reset position-absolute trash-icon fs-3'>
+          <i className="bi bi-trash-fill trash-icon"></i>
         </a>
       </li>
     );
