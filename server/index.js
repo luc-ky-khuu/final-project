@@ -165,7 +165,6 @@ app.delete('/api/garage/delete-car/:vehicleId', (req, res, next) => {
            returning  "vehicleId"
           )
   delete  from "vehicles" where "vehicleId" = $1
-  returning "vehicles"
   `;
   db.query(sql, params)
     .then(result => {
