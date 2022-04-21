@@ -1,22 +1,25 @@
 import React from 'react';
 import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
+import CarForm from '../components/car-form';
+import VehicleId from '../lib/vehicleId-context';
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       car: {},
-      modal: false,
+      recordModal: false,
       records: null
     };
     this.makeTable = this.makeTable.bind(this);
     this.addRecord = this.addRecord.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
+    this.toggleAddRecordModal = this.toggleAddRecordModal.bind(this);
     this.getNextOilChange = this.getNextOilChange.bind(this);
+    this.updateCar = this.updateCar.bind(this);
   }
 
   componentDidMount() {
-    fetch(`/api/garage/recent-history/${this.props.vehicleId}`)
+    fetch(`/api/garage/recent-history/${this.context.vehicleId}`)
       .then(result => result.json())
       .then(result => {
         this.setState({
@@ -85,6 +88,12 @@ class CarDetails extends React.Component {
     return newArr;
   }
 
+  updateCar(data) {
+    this.setState({
+      car: data
+    });
+  }
+
   makeTable() {
     const { records } = this.state;
     const combinedRecords = (this.combineSameDayRecords(records));
@@ -103,18 +112,18 @@ class CarDetails extends React.Component {
 
   showAddForm() {
     return (
-      <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
-        <AddForm vehicleId={this.props.vehicleId} toggleModal={this.toggleModal} addRecord={this.addRecord}/>
+      <Modal size='md' show={this.state.recordModal} onHide={this.toggleAddRecordModal} centered>
+        <AddForm vehicleId={this.context.vehicleId} toggleModal={this.toggleAddRecordModal} addRecord={this.addRecord}/>
       </Modal>
     );
   }
 
-  toggleModal(event) {
+  toggleAddRecordModal(event) {
     if (event) {
       event.preventDefault();
     }
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.recordModal
     });
   }
 
@@ -131,7 +140,8 @@ class CarDetails extends React.Component {
           <div className="col-lg-12">
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
             <div className="row mb-3">
-              <div className="col-lg-9 mb-lg-0 mb-3">
+              <div className="col-lg-9 mb-lg-0 mb-3 position-relative">
+                <CarForm car={this.state.car} updateCars={this.updateCar} newCar={false} />
                 <Card.Img className='h-100 shadow p-0 rounded' src={photoUrl} alt="" />
               </div>
               <div className='col-lg-3 d-flex ps-lg-0'>
@@ -159,7 +169,7 @@ class CarDetails extends React.Component {
                       </Card.Header>
                       <Card.Body className='row body-sans widget-body-text py-lg-0 py-4'>
                         <p className='m-auto py-lg-0 py-4'>
-                          {totalCost ? `$${totalCost.toLocaleString()}` : 'No Records to Calculate'}
+                          {totalCost ? `$${totalCost.toLocaleString()}` : 'No Records'}
                         </p>
                       </Card.Body>
                     </Card>
@@ -173,7 +183,7 @@ class CarDetails extends React.Component {
           <div className="row py-2 mx-0 bg-navbar-menu">
             <h2 className='col text-start'>Recent Records</h2>
             <div className="col text-end">
-              <a href="" onClick={this.toggleModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+              <a href="" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
             </div>
           </div>
           <Table striped>
@@ -181,7 +191,7 @@ class CarDetails extends React.Component {
               {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
               {this.state.records && this.state.records.length > 0 && <tr>
                 <td colSpan={5}>
-                  <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.props.vehicleId}`}>View All Records</a>
+                  <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.context.vehicleId}`}>View All Records</a>
                 </td>
               </tr>}
             </tbody>
@@ -194,5 +204,5 @@ class CarDetails extends React.Component {
     );
   }
 }
-
+CarDetails.contextType = VehicleId;
 export default CarDetails;

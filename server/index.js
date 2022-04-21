@@ -17,6 +17,7 @@ app.get('/api/garage', (req, res) => {
   const sql = `
     select *
       from "vehicles"
+     order by "vehicleId"
   `;
   db.query(sql)
     .then(result => {
@@ -123,6 +124,34 @@ app.get('/api/vehicles/:vehicleId/records', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+app.put('/api/garage/edit-car/:vehicleId', uploadsMiddleware, (req, res, next) => {
+  const { vehicleId } = req.params;
+  if (vehicleId < 1 || !Number(vehicleId)) {
+    throw new ClientError(400, 'vehicleId must be a positive integer');
+  }
+  const { year, make, model } = req.body;
+  let photoUrl = null;
+  if (req.file) {
+    photoUrl = `/images/${req.file.filename}`;
+  }
+  const params = [year, make, model, photoUrl, vehicleId];
+  const sql = `
+    update  "vehicles"
+       set  "year" = $1,
+            "make" = $2,
+            "model" = $3,
+            "photoUrl" = coalesce($4, "photoUrl")
+     where  "vehicleId" = $5
+     returning *
+  `;
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {

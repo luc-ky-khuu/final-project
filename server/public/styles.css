@@ -57,7 +57,8 @@ ul {
   pointer-events: none;
 }
 
-.off-white-text {
+.off-white-text,
+.icon-color {
   color: rgba(221, 221, 221, 1);
 }
 
@@ -97,4 +98,12 @@ ul {
 
 .accordion-button:focus {
   box-shadow: none;
+}
+
+.edit-icon {
+  right: 1.2rem;
+}
+
+.icon-color:hover {
+  color: none;
 }
