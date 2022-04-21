@@ -33,9 +33,10 @@ class MyCars extends React.Component {
     })
       .then(result => result.json())
       .then(result => {
-        const carsCopy = [...this.state.cars];
+        const carsCopy = [...cars];
+        carsCopy.splice(vehicleIndex, 1);
         this.setState({
-          cars: carsCopy.splice(vehicleIndex, 1),
+          cars: carsCopy,
           deleteModal: false
         });
       })
@@ -61,13 +62,17 @@ class MyCars extends React.Component {
               Are you sure you want to remove this car?  This will delete all of your data.
             </p>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="outline-secondary" onClick={this.toggleDeleteModal}>
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={this.deleteCar}>
-              Delete
-            </Button>
+          <Modal.Footer className="work-sans">
+            <div className="col">
+              <Button variant="outline-dark" className='w-100 work-sans' onClick={this.toggleDeleteModal}>
+                Cancel
+              </Button>
+            </div>
+            <div className="col">
+              <Button variant="danger" className='w-100 border-0 red-button work-sans' onClick={this.deleteCar}>
+                Delete
+              </Button>
+            </div>
           </Modal.Footer>
         </Modal>
       </>
