@@ -63,8 +63,8 @@ ul {
 }
 
 .btn:focus {
-  outline: white;
-  box-shadow: white;
+  outline: none;
+  box-shadow: none;
 }
 
 .fill {
@@ -104,6 +104,12 @@ ul {
   right: 1.2rem;
 }
 
-.icon-color:hover {
-  color: none;
+.trash-icon {
+  right: 0;
+  top: 1.3rem;
+  color: red;
+}
+
+.trash-icon:hover {
+  color: rgb(241, 79, 79);
 }

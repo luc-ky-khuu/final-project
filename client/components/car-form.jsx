@@ -107,6 +107,9 @@ class CarForm extends React.Component {
       });
     } else {
       this.setState({
+        year: '',
+        make: '',
+        model: '',
         modal: !this.state.modal
       });
     }

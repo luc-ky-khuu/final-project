@@ -123,7 +123,7 @@ class CarDetails extends React.Component {
       event.preventDefault();
     }
     this.setState({
-      modal: !this.state.recordModal
+      recordModal: !this.state.recordModal
     });
   }
 
@@ -183,7 +183,7 @@ class CarDetails extends React.Component {
           <div className="row py-2 mx-0 bg-navbar-menu">
             <h2 className='col text-start'>Recent Records</h2>
             <div className="col text-end">
-              <a href="" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+              <a href="#" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
             </div>
           </div>
           <Table striped>
