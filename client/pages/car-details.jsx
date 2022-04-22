@@ -3,6 +3,8 @@ import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
 import CarForm from '../components/car-form';
 import VehicleId from '../lib/vehicleId-context';
+import Map from '../components/map';
+
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -179,23 +181,30 @@ class CarDetails extends React.Component {
             </div>
           </div>
         </div>
-        <div className='row m-0 overflow-hidden rounded'>
-          <div className="row py-2 mx-0 bg-navbar-menu">
-            <h2 className='col text-start'>Recent Records</h2>
-            <div className="col text-end">
-              <a href="#" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+        <div className='fill row flex-row-reverse m-0 overflow-hidden rounded'>
+          <div className="col-lg-7">
+            <div className="row py-2 mx-0 bg-navbar-menu">
+              <h2 className='col text-start'>Recent Records</h2>
+              <div className="col text-end">
+                <a href="#" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+              </div>
+            </div>
+            <Table striped>
+              <tbody className='fs-4 text-capitalize'>
+                {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
+                {this.state.records && this.state.records.length > 0 && <tr>
+                  <td colSpan={5}>
+                    <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.context.vehicleId}`}>View All Records</a>
+                  </td>
+                </tr>}
+              </tbody>
+            </Table>
+          </div>
+          <div className=" p-0 col-lg-5">
+            <div className='map-size m-0'>
+              <Map />
             </div>
           </div>
-          <Table striped>
-            <tbody className='fs-4 text-capitalize'>
-              {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
-              {this.state.records && this.state.records.length > 0 && <tr>
-                <td colSpan={5}>
-                  <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.context.vehicleId}`}>View All Records</a>
-                </td>
-              </tr>}
-            </tbody>
-          </Table>
         </div>
         <div>
           {this.showAddForm()}
