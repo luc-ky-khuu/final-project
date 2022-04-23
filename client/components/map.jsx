@@ -109,20 +109,25 @@ class MyComponents extends React.Component {
   }
 
   render() {
+    const defaultMapOptions = {
+      disableDefaultUI: true
+    };
     return (
       <>
-          <div className='position-relative h-100'>
+          <div className=' h-100 position-relative'>
+          <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
+          <div id="map"></div>
             <GoogleMap
               mapContainerStyle={containerStyle}
-              mapContainerClassName='position-absolute'
+              mapContainerClassName=''
               center={this.state.currentLocation ? this.state.currentLocation : center}
               zoom={14}
+              options={defaultMapOptions}
             >
               {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
               {this.state.places && this.myLocationMarker(this.state.currentLocation)}
             </GoogleMap>
-            <button className='mt-2 position-absolute btn btn-light' onClick={this.getLocation}>Search Near Me</button>
-            <div id="map"></div>
+
           </div>
       </>
 
