@@ -101,7 +101,10 @@ class CarDetails extends React.Component {
     const combinedRecords = (this.combineSameDayRecords(records));
     const firstFourRecords = combinedRecords.slice(0, 4);
     return firstFourRecords.map((car, index) => {
-      const { datePerformed, maintenanceName: name, mileage } = car;
+      let { datePerformed, maintenanceName: name, mileage } = car;
+      if (name.length > 20) {
+        name = name.slice(0, 20) + '...';
+      }
       return (
         <tr key={index} className='open-sans lh-4'>
           <td className='py-3 col-4 text-start'>{datePerformed}</td>
@@ -190,7 +193,7 @@ class CarDetails extends React.Component {
               </div>
             </div>
             <Table striped className='m-0'>
-              <tbody className='fs-4 text-capitalize'>
+              <tbody className='fs-5 text-capitalize'>
                 {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
                 {this.state.records && this.state.records.length > 0 && <tr>
                   <td colSpan={5}>
