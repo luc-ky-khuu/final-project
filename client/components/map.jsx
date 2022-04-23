@@ -71,7 +71,6 @@ class MyComponents extends React.Component {
     this.setState({
       infoWindow: null
     });
-
   }
 
   myLocationMarker(location) {
@@ -86,25 +85,24 @@ class MyComponents extends React.Component {
         </Marker>
       </>
     );
-
   }
 
   createMarker(place, index) {
     const { formatted_address: address, geometry, name } = place;
     const splitAddress = address.split(',');
     return (
-        <>
+      <>
         <Marker key={index} position={geometry.location} onClick={() => this.openInfoWindow(index)}>
-        {this.state.infoWindow === index && <InfoWindow position={geometry.location} key={`A${index}`} onCloseClick={() => this.closeInfoWindow()}>
-          <div key={`B${index}`}>
-            <p className='fw-bolder m-0'>{name}</p>
-            <p className='m-0'>{splitAddress[0]}</p>
-            <p className='m-0'>{splitAddress[1]}</p>
-            <p className='m-0'>{splitAddress[2]}</p>
-          </div>
-        </InfoWindow>}
+          {this.state.infoWindow === index && <InfoWindow position={geometry.location} key={`A${index}`} onCloseClick={() => this.closeInfoWindow()}>
+            <div key={`B${index}`}>
+              <p className='fw-bolder m-0'>{name}</p>
+              <p className='m-0'>{splitAddress[0]}</p>
+              <p className='m-0'>{splitAddress[1]}</p>
+              <p className='m-0'>{splitAddress[2]}</p>
+            </div>
+          </InfoWindow>}
         </Marker>
-        </>
+      </>
     );
   }
 
@@ -114,23 +112,21 @@ class MyComponents extends React.Component {
     };
     return (
       <>
-          <div className=' h-100 position-relative'>
+        <div className=' h-100 position-relative'>
           <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
           <div id="map"></div>
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              mapContainerClassName=''
-              center={this.state.currentLocation ? this.state.currentLocation : center}
-              zoom={14}
-              options={defaultMapOptions}
-            >
-              {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
-              {this.state.places && this.myLocationMarker(this.state.currentLocation)}
-            </GoogleMap>
-
-          </div>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            mapContainerClassName=''
+            center={this.state.currentLocation ? this.state.currentLocation : center}
+            zoom={14}
+            options={defaultMapOptions}
+          >
+            {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
+            {this.state.places && this.myLocationMarker(this.state.currentLocation)}
+          </GoogleMap>
+        </div>
       </>
-
     );
   }
 }
