@@ -103,10 +103,10 @@ class CarDetails extends React.Component {
     return firstFourRecords.map((car, index) => {
       const { datePerformed, maintenanceName: name, mileage } = car;
       return (
-        <tr key={index} className='open-sans'>
-          <td className='col-4 text-start'>{datePerformed}</td>
-          <td colSpan={2} className='text-start'>{name}</td>
-          <td className='text-end'>{mileage.toLocaleString()}</td>
+        <tr key={index} className='open-sans lh-4'>
+          <td className='py-3 col-4 text-start'>{datePerformed}</td>
+          <td colSpan={2} className='py-3 text-start'>{name}</td>
+          <td className='py-3 text-end'>{mileage.toLocaleString()}</td>
         </tr>
       );
     });
@@ -181,15 +181,15 @@ class CarDetails extends React.Component {
             </div>
           </div>
         </div>
-        <div className='fill row flex-row-reverse m-0 overflow-hidden rounded'>
-          <div className="col-lg-7">
+        <div className='row flex-row-reverse m-0 mb-3 overflow-hidden rounded'>
+          <div className="col-xl-7 ps-xl-3 p-0 mb-3 mb-xl-0 shadow">
             <div className="row py-2 mx-0 bg-navbar-menu">
               <h2 className='col text-start'>Recent Records</h2>
               <div className="col text-end">
                 <a href="#" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
               </div>
             </div>
-            <Table striped>
+            <Table striped className='m-0'>
               <tbody className='fs-4 text-capitalize'>
                 {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
                 {this.state.records && this.state.records.length > 0 && <tr>
@@ -200,7 +200,7 @@ class CarDetails extends React.Component {
               </tbody>
             </Table>
           </div>
-          <div className=" p-0 col-lg-5">
+          <div className="p-0 pe-xl-1 col-xl-5">
             <div className='map-size m-0'>
               <Map />
             </div>
