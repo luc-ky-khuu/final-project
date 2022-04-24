@@ -10,8 +10,8 @@ const containerStyle = {
 };
 
 let center = {
-  lat: 33.680,
-  lng: -117.828
+  lat: 36.5843,
+  lng: -121.7535
 };
 class MyComponents extends React.Component {
 
@@ -26,11 +26,12 @@ class MyComponents extends React.Component {
     this.closeInfoWindow = this.closeInfoWindow.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.createMarker = this.createMarker.bind(this);
+    this.mapDivRef = React.createRef();
   }
 
   getLocation() {
     const map = new google.maps.Map(
-      document.getElementById('map'),
+      this.mapDivRef.current,
       {
         center: center,
         zoom: 13,
@@ -76,7 +77,7 @@ class MyComponents extends React.Component {
   myLocationMarker(location) {
     return (
       <>
-        <Marker icon={'http://maps.google.com/mapfiles/kml/paddle/blu-blank.png'} position={location} onClick={() => this.openInfoWindow('myLocation')}>
+        <Marker icon={'http://maps.google.com/mapfiles/kml/paddle/blu-blank.png'} onLoad={() => this.openInfoWindow('myLocation')} position={location} onClick={() => this.openInfoWindow('myLocation')}>
           {this.state.infoWindow === 'myLocation' && <InfoWindow position={location} onCloseClick={() => this.closeInfoWindow()}>
             <div>
               <p className='fw-bolder m-0'>Your Location</p>
@@ -88,21 +89,23 @@ class MyComponents extends React.Component {
   }
 
   createMarker(place, index) {
-    const { formatted_address: address, geometry, name } = place;
+    const { formatted_address: address, geometry, name, place_id: placeId } = place;
     const splitAddress = address.split(',');
+    const query = `https://www.google.com/maps/search/?api=1&query=${name}&${geometry.location.lat}%2C${geometry.location.lng}&query_place_id=${placeId}`;
     return (
-      <>
-        <Marker key={index} position={geometry.location} onClick={() => this.openInfoWindow(index)}>
+        <Marker key={index.toString()} position={geometry.location} onClick={() => this.openInfoWindow(index)}>
           {this.state.infoWindow === index && <InfoWindow position={geometry.location} key={`A${index}`} onCloseClick={() => this.closeInfoWindow()}>
             <div key={`B${index}`}>
-              <p className='fw-bolder m-0'>{name}</p>
-              <p className='m-0'>{splitAddress[0]}</p>
-              <p className='m-0'>{splitAddress[1]}</p>
-              <p className='m-0'>{splitAddress[2]}</p>
+              <p className='m-0 fw-bold'>View in Maps</p>
+              <a target="_blank" rel="noopener noreferrer" href={query}>
+                <p key={`C${index}`} className='fw-bolder m-0'>{name}</p>
+                <p key={`D${index}`} className='m-0'>{splitAddress[0]}</p>
+                <p key={`E${index}`} className='m-0'>{splitAddress[1]}</p>
+                <p key={`F${index}`} className='m-0'>{splitAddress[2]}</p>
+              </a>
             </div>
           </InfoWindow>}
         </Marker>
-      </>
     );
   }
 
@@ -111,22 +114,20 @@ class MyComponents extends React.Component {
       disableDefaultUI: true
     };
     return (
-      <>
-        <div className=' h-100 position-relative'>
-          <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
-          <div id="map"></div>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            mapContainerClassName=''
-            center={this.state.currentLocation ? this.state.currentLocation : center}
-            zoom={14}
-            options={defaultMapOptions}
-          >
-            {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
-            {this.state.places && this.myLocationMarker(this.state.currentLocation)}
-          </GoogleMap>
-        </div>
-      </>
+      <div className=' h-100 position-relative'>
+        <div ref={this.mapDivRef}></div>
+        <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          mapContainerClassName=''
+          center={this.state.currentLocation ? this.state.currentLocation : center}
+          zoom={13}
+          options={defaultMapOptions}
+        >
+          {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
+          {this.state.places && this.myLocationMarker(this.state.currentLocation)}
+        </GoogleMap>
+      </div>
     );
   }
 }

@@ -91,7 +91,7 @@ class MyCars extends React.Component {
     return (
       <li className='position-relative' key={vehicleId.toString()}>
         <a className='text-reset text-decoration-none' href={`#garage/myCar?vehicleId=${vehicleId}`}>
-          <Card className='row flex-nowrap shadow my-3 mx-0 flex-md-row-reverse align-items-center'>
+          <Card className='row flex-nowrap shadow-sm rounded my-3 mx-0 flex-md-row-reverse align-items-center'>
             <div className="col-md-9 p-0">
               <Card.Img style={{ height: '20rem' }} variant="top" src={photoUrl} />
             </div>
