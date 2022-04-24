@@ -45,6 +45,12 @@
       "rules": {
         "character-reference": false
       }
+    },
+    {
+      "selector": "script",
+      "rules": {
+        "character-reference": false
+      }
     }
   ],
   "childNodeRules": [
