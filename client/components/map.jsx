@@ -13,6 +13,7 @@ let center = {
   lat: 36.5843,
   lng: -121.7535
 };
+const library = [process.env.GOOGLE_LIBRARIES];
 class MyComponents extends React.Component {
 
   constructor(props) {
@@ -26,12 +27,10 @@ class MyComponents extends React.Component {
     this.closeInfoWindow = this.closeInfoWindow.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.createMarker = this.createMarker.bind(this);
-    this.mapDivRef = React.createRef();
   }
 
   getLocation() {
     const map = new google.maps.Map(
-      this.mapDivRef.current,
       {
         center: center,
         zoom: 13,
@@ -96,13 +95,12 @@ class MyComponents extends React.Component {
         <Marker key={index.toString()} position={geometry.location} onClick={() => this.openInfoWindow(index)}>
           {this.state.infoWindow === index && <InfoWindow position={geometry.location} key={`A${index}`} onCloseClick={() => this.closeInfoWindow()}>
             <div key={`B${index}`}>
-              <p className='m-0 fw-bold'>View in Maps</p>
-              <a target="_blank" rel="noopener noreferrer" href={query}>
-                <p key={`C${index}`} className='fw-bolder m-0'>{name}</p>
+                <p key={`C${index}`} className='fw-bolder m-1'>{name}</p>
                 <p key={`D${index}`} className='m-0'>{splitAddress[0]}</p>
-                <p key={`E${index}`} className='m-0'>{splitAddress[1]}</p>
-                <p key={`F${index}`} className='m-0'>{splitAddress[2]}</p>
-              </a>
+                <p key={`E${index}`} className='m-0'>{`${splitAddress[1]}, ${splitAddress[2]}`}</p>
+                <a target="_blank" rel="noopener noreferrer" href={query} className='text-decoration-none'>
+                  <p className='m-0'>View on Google Maps</p>
+                </a>
             </div>
           </InfoWindow>}
         </Marker>
@@ -116,14 +114,13 @@ class MyComponents extends React.Component {
     return (
       <div className=' h-100 position-relative'>
         <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
-        <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_TOKEN} libraries={['places']}>
+        <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_TOKEN} libraries={library}>
           <GoogleMap
             mapContainerStyle={containerStyle}
             mapContainerClassName=''
-            center={this.state.currentLocation ? this.state.currentLocation : center}
+            center={center}
             zoom={13}
             options={defaultMapOptions}
-            ref={this.mapDivRef}
           >
             {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
             {this.state.places && this.myLocationMarker(this.state.currentLocation)}
