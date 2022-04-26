@@ -33,7 +33,7 @@ app.post('/api/garage/add-car', uploadsMiddleware, (req, res, next) => {
   }
   let photoUrl = null;
   if (req.file) {
-    photoUrl = `/images/${req.file.filename}`;
+    photoUrl = req.file.location;
   }
   const params = [1, parseInt(year), make, model, photoUrl];
   const sql = `
@@ -133,7 +133,7 @@ app.put('/api/garage/edit-car/:vehicleId', uploadsMiddleware, (req, res, next) =
   const { year, make, model } = req.body;
   let photoUrl = null;
   if (req.file) {
-    photoUrl = `/images/${req.file.filename}`;
+    photoUrl = req.file.location;
   }
   const params = [year, make, model, photoUrl, vehicleId];
   const sql = `
