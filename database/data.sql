@@ -17,7 +17,7 @@ insert into "public"."vehicles" (
   2011,
   'Toyota',
   'Prius',
-  'https://cdn.britannica.com/93/97093-050-23ACD82B/Prius-Toyota-1997.jpg'
+  null
 ),
 (
   1,
@@ -49,31 +49,45 @@ insert into "public"."records" (
 ),
 (
   1,
-  'Oil change',
+  'Gas',
   '2022-01-26',
   196833,
   60
 ),
 (
   1,
-  'Oil change',
-  '2021-12-26',
+  'Engine swap',
+  '2022-01-26',
+  196833,
+  3000
+),
+(
+  1,
+  'Turbocharger',
+  '2022-01-26',
+  196833,
+  800
+),
+(
+  1,
+  'Blinker Fluid',
+  '2021-12-20',
   194821,
   30
 ),
 (
   1,
-  'Oil change',
+  'Tires',
   '2021-11-26',
   191821,
-  60
+  400
 ),
 (
   1,
-  'Oil change',
-  '2021-10-26',
-  189821,
-  40
+  'Rims',
+  '2021-11-26',
+  191821,
+  600
 ),
 (
   1,
