@@ -13,7 +13,7 @@ let center = {
   lat: 36.5843,
   lng: -121.7535
 };
-const library = [process.env.GOOGLE_LIBRARIES];
+const library = ['places'];
 class MyComponents extends React.Component {
 
   constructor(props) {
