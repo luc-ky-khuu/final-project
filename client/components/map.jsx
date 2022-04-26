@@ -1,7 +1,7 @@
 /* global google */
 
 import React from 'react';
-import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { LoadScript, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
@@ -115,18 +115,20 @@ class MyComponents extends React.Component {
     };
     return (
       <div className=' h-100 position-relative'>
-        <div ref={this.mapDivRef}></div>
         <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          mapContainerClassName=''
-          center={this.state.currentLocation ? this.state.currentLocation : center}
-          zoom={13}
-          options={defaultMapOptions}
-        >
-          {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
-          {this.state.places && this.myLocationMarker(this.state.currentLocation)}
-        </GoogleMap>
+        <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_TOKEN} libraries={['places']}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            mapContainerClassName=''
+            center={this.state.currentLocation ? this.state.currentLocation : center}
+            zoom={13}
+            options={defaultMapOptions}
+            ref={this.mapDivRef}
+          >
+            {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
+            {this.state.places && this.myLocationMarker(this.state.currentLocation)}
+          </GoogleMap>
+        </LoadScript>
       </div>
     );
   }
