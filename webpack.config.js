@@ -47,6 +47,6 @@ module.exports = {
     hints: false
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['GOOGLE_MAPS_TOKEN'])
+    new webpack.EnvironmentPlugin(['GOOGLE_MAPS_TOKEN', 'GOOGLE_LIBRARIES'])
   ]
 };
