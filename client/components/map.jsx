@@ -27,15 +27,11 @@ class MyComponents extends React.Component {
     this.closeInfoWindow = this.closeInfoWindow.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.createMarker = this.createMarker.bind(this);
+    // this.mapRef = React.createRef();
   }
 
   getLocation() {
-    const map = new google.maps.Map(
-      {
-        center: center,
-        zoom: 13,
-        streetViewControl: false
-      });
+    const map = new google.maps.Map({ center: center });
     navigator.geolocation.getCurrentPosition(
       position => {
         center = {
@@ -76,7 +72,7 @@ class MyComponents extends React.Component {
   myLocationMarker(location) {
     return (
       <>
-        <Marker icon={'http://maps.google.com/mapfiles/kml/paddle/blu-blank.png'} onLoad={() => this.openInfoWindow('myLocation')} position={location} onClick={() => this.openInfoWindow('myLocation')}>
+        <Marker icon={'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png'} onLoad={() => this.openInfoWindow('myLocation')} position={location} onClick={() => this.openInfoWindow('myLocation')}>
           {this.state.infoWindow === 'myLocation' && <InfoWindow position={location} onCloseClick={() => this.closeInfoWindow()}>
             <div>
               <p className='fw-bolder m-0'>Your Location</p>
@@ -113,6 +109,7 @@ class MyComponents extends React.Component {
     };
     return (
       <div className=' h-100 position-relative'>
+        {/* <div ref={this.mapRef}></div> */}
         <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
         <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_TOKEN} libraries={library}>
           <GoogleMap
@@ -121,11 +118,13 @@ class MyComponents extends React.Component {
             center={center}
             zoom={13}
             options={defaultMapOptions}
+            // ref={this.mapRef}
           >
             {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
             {this.state.places && this.myLocationMarker(this.state.currentLocation)}
           </GoogleMap>
         </LoadScript>
+
       </div>
     );
   }
