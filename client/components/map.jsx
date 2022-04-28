@@ -20,41 +20,50 @@ class MyComponents extends React.Component {
     super(props);
     this.state = {
       infoWindow: false,
-      currentLocation: null,
+      currentLocation: center,
       places: ''
     };
     this.openInfoWindow = this.openInfoWindow.bind(this);
     this.closeInfoWindow = this.closeInfoWindow.bind(this);
-    this.getLocation = this.getLocation.bind(this);
+    this.searchShops = this.searchShops.bind(this);
     this.createMarker = this.createMarker.bind(this);
-    // this.mapRef = React.createRef();
+    this.handleMapLoaded = this.handleMapLoaded.bind(this);
   }
 
-  getLocation() {
-    const map = new google.maps.Map({ center: center });
+  handleMapLoaded(map) {
     navigator.geolocation.getCurrentPosition(
       position => {
         center = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        const request = {
-          query: 'Mechanic',
-          location: center,
-          radius: '300'
-        };
-        const service = new google.maps.places.PlacesService(map);
-        service.textSearch(request, (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            this.setState({
-              currentLocation: center,
-              places: results
-            }, () => {
-              map.setCenter(this.state.currentLocation);
-            });
-          }
+        this.setState({
+          currentLocation: center,
+          map: map
+        },
+        () => {
+          this.searchShops();
+          map.setCenter(this.state.currentLocation);
         });
-      });
+      }
+    );
+  }
+
+  searchShops() {
+    const map = this.state.map;
+    const request = {
+      query: 'Mechanic',
+      location: this.state.currentLocation,
+      radius: '300'
+    };
+    const service = new google.maps.places.PlacesService(map);
+    service.textSearch(request, (results, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        this.setState({
+          places: results
+        });
+      }
+    });
   }
 
   openInfoWindow(index) {
@@ -109,16 +118,15 @@ class MyComponents extends React.Component {
     };
     return (
       <div className=' h-100 position-relative'>
-        {/* <div ref={this.mapRef}></div> */}
-        <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Search Mechanics Near Me</button>
         <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_TOKEN} libraries={library}>
           <GoogleMap
             mapContainerStyle={containerStyle}
+            onLoad={this.handleMapLoaded}
             mapContainerClassName=''
-            center={center}
+            center={this.state.currentLocation}
+            {...(this.state.maps ? { onCenterChanged: this.state.searchShops } : {})}
             zoom={13}
             options={defaultMapOptions}
-            // ref={this.mapRef}
           >
             {this.state.places && this.state.places.map((place, index) => this.createMarker(place, index))}
             {this.state.places && this.myLocationMarker(this.state.currentLocation)}
