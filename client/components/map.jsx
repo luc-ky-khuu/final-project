@@ -28,6 +28,21 @@ class MyComponents extends React.Component {
     this.searchShops = this.searchShops.bind(this);
     this.createMarker = this.createMarker.bind(this);
     this.handleMapLoaded = this.handleMapLoaded.bind(this);
+    this.getLocation = this.getLocation.bind(this);
+  }
+
+  getLocation() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        this.setState({
+          currentLocation: center
+        });
+      }
+    );
   }
 
   handleMapLoaded(map) {
@@ -118,6 +133,7 @@ class MyComponents extends React.Component {
     };
     return (
       <div className=' h-100 position-relative'>
+        <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Get My Location</button>
         <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_TOKEN} libraries={library}>
           <GoogleMap
             mapContainerStyle={containerStyle}
