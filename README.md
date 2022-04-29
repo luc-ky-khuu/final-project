@@ -52,7 +52,9 @@ Try the application live at [https://vehicle-expenses-tracker.herokuapp.com/](ht
     ```shell
     cp .env.example .env
     ```
-4. Start the PostgreSQL server
+4. Modify .env file with appropriate access tokens/keys
+    - AWS S3 and Google Maps tokens are required
+5. Start the PostgreSQL server
     ```shell
     sudo service postgresql start
     ```
