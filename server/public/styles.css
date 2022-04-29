@@ -53,10 +53,6 @@ ul {
   background-color: rgba(248, 249, 250, 1);
 }
 
-.disabled {
-  pointer-events: none;
-}
-
 .off-white-text,
 .icon-color {
   color: rgba(221, 221, 221, 1);
