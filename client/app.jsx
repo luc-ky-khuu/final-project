@@ -38,7 +38,9 @@ export default class App extends React.Component {
     if (!navigator.onLine) {
       return (
         <>
-          <h1>No Network Connection Detected</h1>
+          <div className="mt-4">
+            <h1>No Network Connection Detected</h1>
+          </div>
         </>
       );
     }

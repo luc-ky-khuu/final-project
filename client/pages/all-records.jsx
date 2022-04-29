@@ -93,8 +93,10 @@ class AllRecords extends React.Component {
     if (this.state.error) {
       return (
         <>
-          <h1>Sorry! Something Went Wrong.</h1>
-          <h1>{this.state.error}</h1>
+          <div className='mt-4'>
+            <h1>Sorry! Something Went Wrong.</h1>
+            <h1>{this.state.error}</h1>
+          </div>
         </>
       );
     } else if (this.state.loaded) {

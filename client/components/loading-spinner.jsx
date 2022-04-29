@@ -2,13 +2,6 @@ import React from 'react';
 
 class LoadingSpinner extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loadSuccess: true
-    };
-  }
-
   render() {
     return (
         <div className="row justify-center align-center">
