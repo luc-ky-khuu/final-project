@@ -4,9 +4,9 @@ class LoadingSpinner extends React.Component {
 
   render() {
     return (
-        <div className='row justify-center align-center'>
+        <div className='row mt-5 justify-center align-center'>
           <div className='position-relative'>
-            <div className='lds-hourglass spinner-position'></div>
+            <div className='lds-hourglass'></div>
           </div>
         </div>
     );
