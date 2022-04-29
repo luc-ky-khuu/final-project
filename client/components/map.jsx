@@ -118,7 +118,7 @@ class MyComponents extends React.Component {
                 <p key={`C${index}`} className='fw-bolder m-1'>{name}</p>
                 <p key={`D${index}`} className='m-0'>{splitAddress[0]}</p>
                 <p key={`E${index}`} className='m-0'>{`${splitAddress[1]}, ${splitAddress[2]}`}</p>
-                <a target="_blank" rel="noopener noreferrer" href={query} className='text-decoration-none'>
+                <a target='_blank' rel='noopener noreferrer' href={query} className='text-decoration-none'>
                   <p className='m-0'>View on Google Maps</p>
                 </a>
             </div>
@@ -132,7 +132,7 @@ class MyComponents extends React.Component {
       disableDefaultUI: true
     };
     return (
-      <div className=' h-100 position-relative'>
+      <div className='h-100 position-relative'>
         <button className='mt-2 btn btn-light search-button position-absolute' onClick={this.getLocation}>Get My Location</button>
         <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_TOKEN} libraries={library}>
           <GoogleMap

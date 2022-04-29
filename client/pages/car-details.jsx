@@ -156,19 +156,19 @@ class CarDetails extends React.Component {
     }
     return (
       <>
-        <div className="row mt-3 rounded overflow-hidden">
-          <div className="col-lg-12">
+        <div className='row mt-3 rounded overflow-hidden'>
+          <div className='col-lg-12'>
             <h1 className='py-3 work-sans fw-bold text-capitalize'>{year} {make} {model}</h1>
-            <div className="row mb-3">
-              <div className="col-lg-9 mb-lg-0 mb-3 position-relative">
+            <div className='row mb-3'>
+              <div className='col-lg-9 mb-lg-0 mb-3 position-relative'>
                 <CarForm car={this.state.car} updateCars={this.updateCar} newCar={false} />
-                <Card.Img className='h-100 shadow-sm p-0 rounded' src={photoUrl} alt="" />
+                <Card.Img className='h-100 shadow-sm p-0 rounded' src={photoUrl} alt='' />
               </div>
               <div className='col-lg-3 d-flex ps-lg-0'>
-                <div className="d-flex flex-lg-wrap w-100 gap-3">
+                <div className='d-flex flex-lg-wrap w-100 gap-3'>
                   <div className='col-lg-12 w-100 shadow-sm'>
-                    <Card className='fill border-0'>
-                      <Card.Header className='m-0 row bg-navbar-menu work-sans px-0 '>
+                    <Card className='h-100 border-0'>
+                      <Card.Header className='m-0 row bg-navbar-menu work-sans px-0'>
                         <h4 className='m-auto widget-title'>
                           Next Oil Change
                         </h4>
@@ -181,10 +181,10 @@ class CarDetails extends React.Component {
                     </Card>
                   </div>
                   <div className='col-lg-12 w-100 shadow-sm'>
-                    <Card className='fill border-0'>
-                      <Card.Header className='m-0 row bg-navbar-menu work-sans widget-title'>
+                    <Card className='h-100 border-0'>
+                      <Card.Header className='m-0 px-0 row bg-navbar-menu work-sans widget-title'>
                         <h4 className='m-auto widget-title px-4'>
-                          Total Cost
+                          Total Amount
                         </h4>
                       </Card.Header>
                       <Card.Body className='row body-sans widget-body-text py-lg-0 py-4'>
@@ -200,16 +200,16 @@ class CarDetails extends React.Component {
           </div>
         </div>
         <div className='row flex-row-reverse m-0 mb-3 overflow-hidden rounded'>
-          <div className="col-xl-7 ps-xl-3 p-0 mb-3 mb-xl-0">
-            <div className="row py-2 mx-0 bg-navbar-menu rounded-top shadow-sm overflow-hidden">
+          <div className='col-xl-7 ps-xl-3 p-0 mb-3 mb-xl-0'>
+            <div className='row py-2 mx-0 bg-navbar-menu rounded-top shadow-sm overflow-hidden'>
               <h2 className='col text-start'>Recent Records</h2>
-              <div className="col text-end ">
-                <a href="#" onClick={this.toggleAddRecordModal} className='text-reset'><i className="fs-3 bi bi-plus-circle pe-2"></i></a>
+              <div className='col text-end'>
+                <a href='#' onClick={this.toggleAddRecordModal} className='text-reset'><i className='fs-3 bi bi-plus-circle pe-2'></i></a>
               </div>
             </div>
             <Table striped className='m-0 rounded-bottom overflow-hidden'>
               <tbody className='fs-5 text-capitalize shadow-sm'>
-                {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr className='disabled'><td colSpan={4}>No Records To Display</td></tr>}
+                {this.state.records && this.state.records.length > 0 ? this.makeTable() : <tr><td colSpan={4}>No Records To Display</td></tr>}
                 {this.state.records && this.state.records.length > 0 && <tr>
                   <td colSpan={5}>
                     <a className='text-reset text-decoration-none fs-5' href={`#vehicle-records?vehicleId=${this.context.vehicleId}`}>View All Records</a>
@@ -218,7 +218,7 @@ class CarDetails extends React.Component {
               </tbody>
             </Table>
           </div>
-          <div className="p-0 pe-xl-1 col-xl-5">
+          <div className='p-0 pe-xl-1 col-xl-5'>
             <div className='map-size m-0 shadow-sm rounded overflow-hidden'>
               <Map />
             </div>
@@ -235,7 +235,7 @@ class CarDetails extends React.Component {
     if (this.state.error) {
       return (
         <>
-          <div className="mt-4">
+          <div className='mt-4'>
             <h1>Sorry! Something Went Wrong.</h1>
             <h1>{this.state.error}</h1>
           </div>

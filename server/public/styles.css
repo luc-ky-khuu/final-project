@@ -53,10 +53,6 @@ ul {
   background-color: rgba(248, 249, 250, 1);
 }
 
-.disabled {
-  pointer-events: none;
-}
-
 .off-white-text,
 .icon-color {
   color: rgba(221, 221, 221, 1);
@@ -65,10 +61,6 @@ ul {
 .btn:focus {
   outline: none;
   box-shadow: none;
-}
-
-.fill {
-  height: 100%;
 }
 
 .widget-title {
@@ -133,14 +125,6 @@ ul {
   height: calc(100vh - 70px);
 }
 
-.spinner-position {
-  text-align: center;
-  right: 0;
-  left: 0;
-  margin: auto;
-  top: 2.5rem;
-}
-
 .lds-hourglass {
   display: inline-block;
   position: absolute;
@@ -158,7 +142,7 @@ ul {
   margin: 8px;
   box-sizing: border-box;
   background: rgb(221, 221, 221);
-  border: 1.9rem solid rgb(221, 221, 221);
+  border: 2.5rem solid rgb(221, 221, 221);
   border-color: rgba(48, 71, 94, 1) transparent;
   animation: lds-hourglass 2s infinite;
 }

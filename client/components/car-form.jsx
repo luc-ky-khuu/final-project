@@ -58,25 +58,25 @@ class CarForm extends React.Component {
                   {...(this.state.newCar && { placeholder: 'Model' })}>
                 </Form.Control>
               </Form.Group>
-              <Form.Group controlId="photoUrl" className="mb-3">
+              <Form.Group controlId='photoUrl' className='mb-3'>
                 <Form.Control
-                  accept=".png, .jpg, .jpeg"
+                  accept='.png, .jpg, .jpeg'
                   onChange={this.handleChange}
                   ref={this.fileInputRef}
                   name='photoUrl'
-                  type="file"
+                  type='file'
                   />
               </Form.Group>
               {this.state.missingInput && <p className='text-danger m-0'>* Input Missing</p>}
             </Modal.Body>
-            <Modal.Footer className="work-sans">
-              <div className="col">
-                <Button variant="outline-light" className='w-100 blue-button border-0 work-sans' type="submit">
+            <Modal.Footer className='work-sans'>
+              <div className='col'>
+                <Button variant='outline-light' className='w-100 blue-button border-0 work-sans' type='submit'>
                   {this.state.newCar ? 'Add Vehicle' : 'Save Changes'}
                 </Button>
               </div>
-              <div className="col">
-                <Button variant="outline-light" className='w-100 border-0 red-button work-sans' onClick={this.toggleModal}>
+              <div className='col'>
+                <Button variant='outline-light' className='w-100 border-0 red-button work-sans' onClick={this.toggleModal}>
                   Close
                 </Button>
               </div>
@@ -162,11 +162,11 @@ class CarForm extends React.Component {
     return (
      <>
         {this.state.newCar
-          ? <a className='text-reset' href="#" onClick={this.toggleModal}>
-          <i className="bi fs-1 bi-plus-circle-fill"></i>
+          ? <a className='text-reset' href='#' onClick={this.toggleModal}>
+          <i className='bi fs-1 bi-plus-circle-fill'></i>
         </a>
           : <a href='#' onClick={this.toggleModal} className='fs-3 edit-icon position-absolute text-reset'>
-          <i className="bi bi-pencil-square icon-color"></i>
+          <i className='bi bi-pencil-square icon-color'></i>
         </a>}
        {this.addCarModal()}
      </>
