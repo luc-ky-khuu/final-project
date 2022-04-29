@@ -128,3 +128,7 @@ ul {
   max-width: 200px;
   margin: auto;
 }
+
+#menu {
+  height: calc(100vh - 70px);
+}

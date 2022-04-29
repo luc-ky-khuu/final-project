@@ -18,14 +18,17 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash)
+      route: parseRoute(window.location.hash),
+      isLoading: false
     };
+
   }
 
   componentDidMount() {
     window.addEventListener('hashchange', () => {
       this.setState({
-        route: parseRoute(window.location.hash)
+        route: parseRoute(window.location.hash),
+        isLoading: true
       });
     });
   }
@@ -54,7 +57,7 @@ export default class App extends React.Component {
         <Navbar route={this.state.route.path}/>
         <div className="container">
           <div className='justify-content-center row'>
-            <div className=" col-lg-2 d-none d-lg-block px-0 py-3">
+            <div className="col-lg-2 d-none d-lg-block px-0">
               <Menu />
             </div>
             <div className="text-center col-lg-10 ">
