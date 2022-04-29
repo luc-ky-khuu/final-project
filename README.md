@@ -27,6 +27,11 @@ Try the application live at [https://vehicle-expenses-tracker.herokuapp.com/](ht
 ![add-record-preview](https://user-images.githubusercontent.com/48267398/166075504-07e8c264-87b2-4e73-a77a-afb8c492682e.gif)
 ![maps-preview](https://user-images.githubusercontent.com/48267398/166075509-9eb7fea1-045b-4c9f-8358-7e140718ff89.gif)
 
+## Stretch Features
+- User can create an account
+- User can categorize their records
+- User can see a chart for their records
+
 ## Development
 
 ### System Requirements
