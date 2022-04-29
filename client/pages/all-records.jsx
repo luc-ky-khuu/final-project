@@ -38,19 +38,19 @@ class AllRecords extends React.Component {
         <Accordion.Item key={index} eventKey={index}>
           <Accordion.Header>
             {
-              <div className="row fs-5 w-100">
-                <div className="col-4">
-                  <p className="text-start m-lg-3 m-0">
+              <div className='row fs-5 w-100'>
+                <div className='col-4'>
+                  <p className='text-start m-lg-3 m-0'>
                     {item.datePerformed}
                   </p>
                 </div>
-                <div className="col-5">
-                  <p className="text-start m-lg-3 m-0 text-capitalize">
+                <div className='col-5'>
+                  <p className='text-start m-lg-3 m-0 text-capitalize'>
                     {item.names.join(', ')}
                   </p>
                 </div>
-                <div className="col-3 pe-4">
-                  <p className="text-end m-lg-3 m-0">
+                <div className='col-3 pe-4'>
+                  <p className='text-end m-lg-3 m-0'>
                     {item.mileage.toLocaleString()}
                   </p>
                 </div>
@@ -63,7 +63,7 @@ class AllRecords extends React.Component {
                 item.names.map((name, number) => {
                   return (
                     <li className='text-capitalize row fs-4 ms-4' key={number}>
-                      <p className=" col-1 ps-3 border-start border-secondary m-0"></p>
+                      <p className=' col-1 ps-3 border-start border-secondary m-0'></p>
                       <p className='col-6 text-start m-0 p-3 text-truncate'>
                         {name}
                       </p>

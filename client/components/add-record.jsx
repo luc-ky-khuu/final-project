@@ -65,34 +65,34 @@ class AddForm extends React.Component {
   render() {
     return (
       <>
-        <Form className='bg-white p-3 border rounded shadow open-sans' onSubmit={this.handleSubmit} >
+        <Form className='bg-white p-3 rounded' onSubmit={this.handleSubmit} >
           <h3 className='work-sans'>Add Record</h3>
-          <Form.Group className="mb-3" controlId="date">
-            <Form.Control type="date" name='date' value={this.state.date} onChange={this.handleChange} />
+          <Form.Group className='mb-3' controlId='date'>
+            <Form.Control type='date' name='date' value={this.state.date} onChange={this.handleChange} />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="maintenance">
-            <Form.Control name='record' placeholder="Record" value={this.state.record} onChange={this.handleChange}/>
+          <Form.Group className='mb-3' controlId='maintenance'>
+            <Form.Control name='record' placeholder='Record' value={this.state.record} onChange={this.handleChange}/>
           </Form.Group>
           <Row className='mb-3'>
-            <Form.Group as={Col} controlId="mileage">
-              <Form.Control name='mileage' placeholder="Mileage" value={this.state.mileage} onChange={this.handleChange} />
+            <Form.Group as={Col} controlId='mileage'>
+              <Form.Control name='mileage' placeholder='Mileage' value={this.state.mileage} onChange={this.handleChange} />
             </Form.Group>
-            <Form.Group as={Col} controlId="price">
+            <Form.Group as={Col} controlId='price'>
               <InputGroup>
                 <InputGroup.Text>$</InputGroup.Text>
-                <FormControl placeholder='Price' name='cost' value={this.state.cost} onChange={this.handleChange} aria-label="Amount (to the nearest dollar)" />
+                <FormControl placeholder='Price' name='cost' value={this.state.cost} onChange={this.handleChange} aria-label='Amount (to the nearest dollar)' />
               </InputGroup>
             </Form.Group>
           </Row>
           <Row className='justify-content-between'>
             {this.state.missingInput && <p className='text-danger'>* Input Missing</p>}
-            <div className="col">
-              <Button variant="outline-light" className='w-100 fs-5 blue-button border-0 work-sans' type="submit">
+            <div className='col'>
+              <Button variant='outline-light' className='w-100 fs-5 blue-button border-0 work-sans' type='submit'>
                 Add
               </Button>
             </div>
-            <div className="col">
-              <Button variant="outline-light" className='w-100 fs-5 border-0 red-button work-sans' onClick={this.reset}>
+            <div className='col'>
+              <Button variant='outline-light' className='w-100 fs-5 border-0 red-button work-sans' onClick={this.reset}>
                 Clear
               </Button>
             </div>

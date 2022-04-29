@@ -38,7 +38,7 @@ export default class App extends React.Component {
     if (!navigator.onLine) {
       return (
         <>
-          <div className="mt-4">
+          <div className='mt-4'>
             <h1>No Network Connection Detected</h1>
           </div>
         </>
@@ -62,12 +62,12 @@ export default class App extends React.Component {
     return (
       <>
         <Navbar route={this.state.route.path}/>
-        <div className="container">
+        <div className='container'>
           <div className='justify-content-center row'>
-            <div className="col-lg-2 d-none d-lg-block px-0">
+            <div className='col-lg-2 d-none d-lg-block px-0'>
               <Menu />
             </div>
-            <div className="text-center col-lg-10 ">
+            <div className='text-center col-lg-10 '>
               {this.renderPage()}
             </div>
           </div>

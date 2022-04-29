@@ -59,14 +59,14 @@ class MyCars extends React.Component {
               Are you sure you want to remove this car?  This will delete all of your data.
             </p>
           </Modal.Body>
-          <Modal.Footer className="work-sans">
-            <div className="col">
-              <Button variant="outline-dark" className='w-100 work-sans' onClick={this.toggleDeleteModal}>
+          <Modal.Footer className='work-sans'>
+            <div className='col'>
+              <Button variant='outline-dark' className='w-100 work-sans' onClick={this.toggleDeleteModal}>
                 Cancel
               </Button>
             </div>
-            <div className="col">
-              <Button variant="danger" className='w-100 border-0 red-button work-sans' onClick={this.deleteCar}>
+            <div className='col'>
+              <Button variant='danger' className='w-100 border-0 red-button work-sans' onClick={this.deleteCar}>
                 Delete
               </Button>
             </div>
@@ -96,20 +96,20 @@ class MyCars extends React.Component {
       <li className='position-relative' key={vehicleId.toString()}>
         <a className='text-reset text-decoration-none' href={`#garage/myCar?vehicleId=${vehicleId}`}>
           <Card className='row flex-nowrap shadow-sm rounded my-3 mx-0 flex-md-row-reverse align-items-center'>
-            <div className="col-md-9 p-0">
-              <Card.Img style={{ height: '20rem' }} variant="top" src={photoUrl} />
+            <div className='col-md-9 p-0'>
+              <Card.Img style={{ height: '20rem' }} variant='top' src={photoUrl} />
             </div>
             <Card.Body className='col-lg p-0'>
-              <h1 className="work-sans h1 text-center text-capitalize m-3">
-                <span className="d-md-block">{year} </span>
-                <span className="d-md-block text-break">{make} </span>
-                <span className="d-md-block text-break">{model}</span>
+              <h1 className='work-sans h1 text-center text-capitalize m-3'>
+                <span className='d-md-block'>{year} </span>
+                <span className='d-md-block text-break'>{make} </span>
+                <span className='d-md-block text-break'>{model}</span>
               </h1>
             </Card.Body>
           </Card>
         </a>
         <button onClick={() => this.toggleDeleteModal(index)} className='btn text-reset position-absolute trash-icon fs-3'>
-          <i className="bi bi-trash-fill trash-icon"></i>
+          <i className='bi bi-trash-fill trash-icon'></i>
         </button>
       </li>
     );
@@ -117,7 +117,7 @@ class MyCars extends React.Component {
 
   renderCars() {
     return (<>
-      <ul className="list-group list-group-flush list-unstyled">
+      <ul className='list-group list-group-flush list-unstyled'>
         {this.state.cars.length > 0 ? this.state.cars.map((car, index) => this.renderCar(car, index)) : <h3 className='text-center p-5'>No Cars To Display</h3>}
       </ul>
       <a href='#' className='text-reset'></a>
