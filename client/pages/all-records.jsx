@@ -101,7 +101,7 @@ class AllRecords extends React.Component {
       return (
         <>
           <h1 className='m-3 d-lg-block d-none'>Vehicle Records</h1>
-          {this.state.records ? this.displayRecordsList() : <p>no records</p>}
+          {this.state.records.length > 0 && this.state.records ? this.displayRecordsList() : <p>no records</p>}
         </>
       );
     } else {
