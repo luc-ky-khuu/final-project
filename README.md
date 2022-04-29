@@ -54,8 +54,12 @@ Try the application live at [https://vehicle-expenses-tracker.herokuapp.com/](ht
 6. Create the database
     ```shell
     createdb vehicleExpensesTracker
-    ```
-7. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
+    ``` 
+7. Import data into the database
+    ```shell
+    npm run db:import
+    ``` 
+8. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
     ```shell
     npm run dev
     ```
