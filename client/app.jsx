@@ -27,6 +27,7 @@ export default class App extends React.Component {
       this.setState({
         route: parseRoute(window.location.hash)
       });
+
     });
   }
 
@@ -34,6 +35,13 @@ export default class App extends React.Component {
     const { route } = this.state;
     const vehicleId = route.params.get('vehicleId');
     const contextValue = { vehicleId };
+    if (!navigator.onLine) {
+      return (
+        <>
+          <h1>No Network Connection Detected</h1>
+        </>
+      );
+    }
     if (route.path === 'garage') {
       return <MyCars />;
     } else if (route.path === 'garage/myCar') {
