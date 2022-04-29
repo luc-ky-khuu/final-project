@@ -18,17 +18,14 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash),
-      isLoading: false
+      route: parseRoute(window.location.hash)
     };
-
   }
 
   componentDidMount() {
     window.addEventListener('hashchange', () => {
       this.setState({
-        route: parseRoute(window.location.hash),
-        isLoading: true
+        route: parseRoute(window.location.hash)
       });
     });
   }

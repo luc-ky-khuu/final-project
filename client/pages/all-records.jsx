@@ -1,11 +1,12 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-
+import LoadingSpinner from '../components/loading-spinner';
 class AllRecords extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      records: null
+      records: null,
+      loaded: false
     };
   }
 
@@ -14,7 +15,8 @@ class AllRecords extends React.Component {
       .then(result => result.json())
       .then(result => {
         this.setState({
-          records: result
+          records: result,
+          loaded: true
         });
       })
       .catch(err => console.error(err));
@@ -82,12 +84,18 @@ class AllRecords extends React.Component {
   }
 
   render() {
-    return (
-      <>
-      <h1 className='m-3 d-lg-block d-none'>Vehicle Records</h1>
-        {this.state.records ? this.displayRecordsList() : <p>no records</p>}
-      </>
-    );
+    if (this.state.loaded) {
+      return (
+        <>
+          <h1 className='m-3 d-lg-block d-none'>Vehicle Records</h1>
+          {this.state.records ? this.displayRecordsList() : <p>no records</p>}
+        </>
+      );
+    } else {
+      return (
+        <LoadingSpinner />
+      );
+    }
   }
 }
 

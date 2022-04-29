@@ -4,6 +4,7 @@ import AddForm from '../components/add-record';
 import CarForm from '../components/car-form';
 import VehicleId from '../lib/vehicleId-context';
 import Map from '../components/map';
+import LoadingSpinner from '../components/loading-spinner';
 
 class CarDetails extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class CarDetails extends React.Component {
     this.toggleAddRecordModal = this.toggleAddRecordModal.bind(this);
     this.getNextOilChange = this.getNextOilChange.bind(this);
     this.updateCar = this.updateCar.bind(this);
+    this.renderCarDetails = this.renderCarDetails.bind(this);
   }
 
   componentDidMount() {
@@ -132,7 +134,7 @@ class CarDetails extends React.Component {
     });
   }
 
-  render() {
+  renderCarDetails() {
     const nextOilChange = this.getNextOilChange();
     const totalCost = this.calculateTotalCost();
     let { year, make, model, photoUrl } = this.state.car;
@@ -214,6 +216,18 @@ class CarDetails extends React.Component {
         </div>
       </>
     );
+  }
+
+  render() {
+    if (!this.state.records) {
+      return (
+        <LoadingSpinner />
+      );
+    } else {
+      return (
+        this.renderCarDetails()
+      );
+    }
   }
 }
 CarDetails.contextType = VehicleId;
