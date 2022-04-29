@@ -53,7 +53,6 @@ app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
   if (vehicleId < 1 || !Number(vehicleId)) {
     throw new ClientError(400, 'vehicleId must be a positive integer');
   }
-
   const sql = `
   select "v"."vehicleId",
        "v"."year",
@@ -106,6 +105,9 @@ app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
 
 app.get('/api/vehicles/:vehicleId/records', (req, res, next) => {
   const { vehicleId } = req.params;
+  if (vehicleId < 1 || !Number(vehicleId)) {
+    throw new ClientError(400, 'vehicleId must be a positive integer');
+  }
   const sql = `
     select  json_agg("maintenanceName") as "names",
             json_agg("cost") as "cost",
@@ -120,6 +122,9 @@ app.get('/api/vehicles/:vehicleId/records', (req, res, next) => {
   const params = [vehicleId];
   db.query(sql, params)
     .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(401, `No vehicle history with vehicleId ${vehicleId} found`);
+      }
       res.json(result.rows);
     })
     .catch(err => next(err));

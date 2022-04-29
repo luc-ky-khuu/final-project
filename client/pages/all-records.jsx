@@ -14,10 +14,16 @@ class AllRecords extends React.Component {
     fetch(`/api/vehicles/${this.props.vehicleId}/records`)
       .then(result => result.json())
       .then(result => {
-        this.setState({
-          records: result,
-          loaded: true
-        });
+        if (result.error) {
+          this.setState({
+            error: result.error
+          });
+        } else {
+          this.setState({
+            records: result,
+            loaded: true
+          });
+        }
       })
       .catch(err => console.error(err));
   }
@@ -84,7 +90,14 @@ class AllRecords extends React.Component {
   }
 
   render() {
-    if (this.state.loaded) {
+    if (this.state.error) {
+      return (
+        <>
+          <h1>Sorry! Something Went Wrong.</h1>
+          <h1>{this.state.error}</h1>
+        </>
+      );
+    } else if (this.state.loaded) {
       return (
         <>
           <h1 className='m-3 d-lg-block d-none'>Vehicle Records</h1>

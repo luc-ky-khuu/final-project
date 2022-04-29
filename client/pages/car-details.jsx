@@ -20,18 +20,31 @@ class CarDetails extends React.Component {
     this.getNextOilChange = this.getNextOilChange.bind(this);
     this.updateCar = this.updateCar.bind(this);
     this.renderCarDetails = this.renderCarDetails.bind(this);
+    this.displayError = this.displayError.bind(this);
   }
 
   componentDidMount() {
     fetch(`/api/garage/recent-history/${this.context.vehicleId}`)
       .then(result => result.json())
       .then(result => {
-        this.setState({
-          car: result,
-          records: result.records
-        });
+        if (result.error) {
+          this.setState({
+            error: result.error
+          });
+        } else {
+          this.setState({
+            car: result,
+            records: result.records
+          });
+        }
       })
       .catch(err => console.error(err));
+  }
+
+  displayError(error) {
+    this.setState({
+      error: error
+    });
   }
 
   addRecord(data) {
@@ -219,11 +232,18 @@ class CarDetails extends React.Component {
   }
 
   render() {
-    if (!this.state.records) {
+    if (this.state.error) {
+      return (
+        <>
+        <h1>Sorry! Something Went Wrong.</h1>
+        <h1>{this.state.error}</h1>
+        </>
+      );
+    } else if (!this.state.records) {
       return (
         <LoadingSpinner />
       );
-    } else {
+    } else if (this.state.records) {
       return (
         this.renderCarDetails()
       );

@@ -16,7 +16,7 @@ class Navigation extends React.Component {
             id="menu"
             aria-labelledby="menuList"
             placement="start"
-            className='bg-navbar-menu'
+            className='bg-navbar-menu h-100'
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title className='work-sans' id="menuList">Menu</Offcanvas.Title>
