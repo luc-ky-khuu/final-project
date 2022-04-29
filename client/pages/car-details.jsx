@@ -4,6 +4,7 @@ import AddForm from '../components/add-record';
 import CarForm from '../components/car-form';
 import VehicleId from '../lib/vehicleId-context';
 import Map from '../components/map';
+import LoadingSpinner from '../components/loading-spinner';
 
 class CarDetails extends React.Component {
   constructor(props) {
@@ -18,18 +19,32 @@ class CarDetails extends React.Component {
     this.toggleAddRecordModal = this.toggleAddRecordModal.bind(this);
     this.getNextOilChange = this.getNextOilChange.bind(this);
     this.updateCar = this.updateCar.bind(this);
+    this.renderCarDetails = this.renderCarDetails.bind(this);
+    this.displayError = this.displayError.bind(this);
   }
 
   componentDidMount() {
     fetch(`/api/garage/recent-history/${this.context.vehicleId}`)
       .then(result => result.json())
       .then(result => {
-        this.setState({
-          car: result,
-          records: result.records
-        });
+        if (result.error) {
+          this.setState({
+            error: result.error
+          });
+        } else {
+          this.setState({
+            car: result,
+            records: result.records
+          });
+        }
       })
       .catch(err => console.error(err));
+  }
+
+  displayError(error) {
+    this.setState({
+      error: error
+    });
   }
 
   addRecord(data) {
@@ -132,7 +147,7 @@ class CarDetails extends React.Component {
     });
   }
 
-  render() {
+  renderCarDetails() {
     const nextOilChange = this.getNextOilChange();
     const totalCost = this.calculateTotalCost();
     let { year, make, model, photoUrl } = this.state.car;
@@ -214,6 +229,27 @@ class CarDetails extends React.Component {
         </div>
       </>
     );
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <>
+          <div className="mt-4">
+            <h1>Sorry! Something Went Wrong.</h1>
+            <h1>{this.state.error}</h1>
+          </div>
+        </>
+      );
+    } else if (!this.state.records) {
+      return (
+        <LoadingSpinner />
+      );
+    } else if (this.state.records) {
+      return (
+        this.renderCarDetails()
+      );
+    }
   }
 }
 CarDetails.contextType = VehicleId;

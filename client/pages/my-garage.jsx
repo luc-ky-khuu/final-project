@@ -1,16 +1,19 @@
 import React from 'react';
 import { Card, Button, Modal } from 'react-bootstrap';
 import CarForm from '../components/car-form';
+import LoadingSpinner from '../components/loading-spinner';
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cars: [],
-      deleteModal: false
+      deleteModal: false,
+      loaded: false
     };
     this.updateCars = this.updateCars.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
     this.deleteCar = this.deleteCar.bind(this);
+    this.renderCars = this.renderCars.bind(this);
   }
 
   componentDidMount() {
@@ -78,7 +81,8 @@ class MyCars extends React.Component {
       .then(cars => cars.json())
       .then(result => {
         this.setState({
-          cars: result
+          cars: result,
+          loaded: true
         });
       });
   }
@@ -111,20 +115,30 @@ class MyCars extends React.Component {
     );
   }
 
-  render() {
+  renderCars() {
     return (<>
-        <ul className="list-group list-group-flush list-unstyled">
-          {this.state.cars.length > 0 ? this.state.cars.map((car, index) => this.renderCar(car, index)) : <h3 className='text-center p-5'>No Cars To Display</h3>}
-        </ul>
-        <a href='#' className='text-reset'></a>
-        <div>
-          <CarForm updateCars={this.updateCars} newCar={true}/>
-        </div>
-        <div>
-          {this.deleteModal()}
-        </div>
-      </>
+      <ul className="list-group list-group-flush list-unstyled">
+        {this.state.cars.length > 0 ? this.state.cars.map((car, index) => this.renderCar(car, index)) : <h3 className='text-center p-5'>No Cars To Display</h3>}
+      </ul>
+      <a href='#' className='text-reset'></a>
+      <div>
+        <CarForm updateCars={this.updateCars} newCar={true} />
+      </div>
+      <div>
+        {this.deleteModal()}
+      </div>
+    </>
     );
+  }
+
+  render() {
+    if (this.state.loaded) {
+      return this.renderCars();
+    } else {
+      return (
+        <LoadingSpinner />
+      );
+    }
   }
 }
 export default MyCars;

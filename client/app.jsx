@@ -27,6 +27,7 @@ export default class App extends React.Component {
       this.setState({
         route: parseRoute(window.location.hash)
       });
+
     });
   }
 
@@ -34,6 +35,15 @@ export default class App extends React.Component {
     const { route } = this.state;
     const vehicleId = route.params.get('vehicleId');
     const contextValue = { vehicleId };
+    if (!navigator.onLine) {
+      return (
+        <>
+          <div className="mt-4">
+            <h1>No Network Connection Detected</h1>
+          </div>
+        </>
+      );
+    }
     if (route.path === 'garage') {
       return <MyCars />;
     } else if (route.path === 'garage/myCar') {
@@ -54,7 +64,7 @@ export default class App extends React.Component {
         <Navbar route={this.state.route.path}/>
         <div className="container">
           <div className='justify-content-center row'>
-            <div className=" col-lg-2 d-none d-lg-block px-0 py-3">
+            <div className="col-lg-2 d-none d-lg-block px-0">
               <Menu />
             </div>
             <div className="text-center col-lg-10 ">

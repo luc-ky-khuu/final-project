@@ -8,7 +8,7 @@ class Navigation extends React.Component {
       title = 'Vehicle Records';
     }
     return (
-      <Navbar className="bg-component-blue navbar-dark" expand={'lg'} collapseOnSelect='true'>
+      <Navbar className="bg-component-blue navbar-dark sticky-top py-0" expand={'lg'} collapseOnSelect='true'>
         <Container className="justify-content-start">
           <Navbar.Brand className='work-sans d-none d-lg-block fs-1'>Vehicle Expenses Tracker</Navbar.Brand>
           <Navbar.Toggle aria-controls="menu" />
@@ -16,7 +16,7 @@ class Navigation extends React.Component {
             id="menu"
             aria-labelledby="menuList"
             placement="start"
-            className='bg-navbar-menu'
+            className='bg-navbar-menu h-100'
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title className='work-sans' id="menuList">Menu</Offcanvas.Title>

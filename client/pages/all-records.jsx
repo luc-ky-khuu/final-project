@@ -1,11 +1,12 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-
+import LoadingSpinner from '../components/loading-spinner';
 class AllRecords extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      records: null
+      records: null,
+      loaded: false
     };
   }
 
@@ -13,9 +14,16 @@ class AllRecords extends React.Component {
     fetch(`/api/vehicles/${this.props.vehicleId}/records`)
       .then(result => result.json())
       .then(result => {
-        this.setState({
-          records: result
-        });
+        if (result.error) {
+          this.setState({
+            error: result.error
+          });
+        } else {
+          this.setState({
+            records: result,
+            loaded: true
+          });
+        }
       })
       .catch(err => console.error(err));
   }
@@ -82,12 +90,27 @@ class AllRecords extends React.Component {
   }
 
   render() {
-    return (
-      <>
-      <h1 className='m-3 d-lg-block d-none'>Vehicle Records</h1>
-        {this.state.records ? this.displayRecordsList() : <p>no records</p>}
-      </>
-    );
+    if (this.state.error) {
+      return (
+        <>
+          <div className='mt-4'>
+            <h1>Sorry! Something Went Wrong.</h1>
+            <h1>{this.state.error}</h1>
+          </div>
+        </>
+      );
+    } else if (this.state.loaded) {
+      return (
+        <>
+          <h1 className='m-3 d-lg-block d-none'>Vehicle Records</h1>
+          {this.state.records.length > 0 && this.state.records ? this.displayRecordsList() : <p>no records</p>}
+        </>
+      );
+    } else {
+      return (
+        <LoadingSpinner />
+      );
+    }
   }
 }
 
