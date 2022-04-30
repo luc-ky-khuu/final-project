@@ -56,14 +56,14 @@ insert into "public"."records" (
 ),
 (
   1,
-  'Engine swap',
+  'New Engine',
   '2022-01-26',
   196833,
   3000
 ),
 (
   1,
-  'Turbocharger',
+  'Hybrid Batter',
   '2022-01-26',
   196833,
   800
