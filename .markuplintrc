@@ -25,7 +25,8 @@
     {
       "selector": "meta",
       "rules": {
-        "invalid-attr": false
+        "invalid-attr": false,
+        "required-attr": false
       }
     },
     {
@@ -42,12 +43,6 @@
     },
     {
       "selector": "a",
-      "rules": {
-        "character-reference": false
-      }
-    },
-    {
-      "selector": "script",
       "rules": {
         "character-reference": false
       }
