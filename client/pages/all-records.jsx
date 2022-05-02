@@ -111,7 +111,7 @@ class AllRecords extends React.Component {
               {
                 record.names.map((name, recordIndex) => {
                   return (
-                    <Form className='text-capitalize row fs-4 ms-5'
+                    <Form className='text-capitalize row fs-4 ms-lg-5 ms-0'
                           id={`${record.datePerformed} ${recordIndex}`} key={recordIndex}
                           onSubmit={event => this.handleSubmit(event, record, recordIndex, accIndex)}
                           >
@@ -119,7 +119,7 @@ class AllRecords extends React.Component {
                         <div className='col-6 text-start m-0 p-3 text-truncate'>
                           {recordToEdit === `${record.datePerformed} ${recordIndex}`
                             ? <Form.Control
-                            className='text-capitalize fs-4'
+                            className='text-capitalize fs-5'
                             type='name'
                             name='editRecordName'
                             value={this.state.editRecordName}
@@ -128,20 +128,20 @@ class AllRecords extends React.Component {
                             : name
                           }
                         </div>
-                        <div className='col-4 m-0 p-3 text-end'>
-                        {recordToEdit === `${record.datePerformed} ${recordIndex}`
-                          ? <InputGroup>
-                            <InputGroup.Text>$</InputGroup.Text>
-                              <Form.Control
-                                className='text-capitalize fs-4'
-                                type='name'
-                                name='editRecordCost'
-                                value={this.state.editRecordCost}
-                                onChange={this.handleChange}>
-                              </Form.Control>
-                          </InputGroup>
-                          : `$${record.cost[recordIndex].toLocaleString()}`
-                        }
+                        <div className='col-lg-4 col-3 m-0 text-end p-3'>
+                          {recordToEdit === `${record.datePerformed} ${recordIndex}`
+                            ? <InputGroup>
+                              <InputGroup.Text>$</InputGroup.Text>
+                                <Form.Control
+                                  className='text-capitalize fs-5'
+                                  type='name'
+                                  name='editRecordCost'
+                                  value={this.state.editRecordCost}
+                                  onChange={this.handleChange}>
+                                </Form.Control>
+                            </InputGroup>
+                            : `$${record.cost[recordIndex].toLocaleString()}`
+                          }
                         </div>
                       <div className='col-1 m-0 p-0 align-self-center'>
                         {!this.state.recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
@@ -150,8 +150,8 @@ class AllRecords extends React.Component {
                   );
                 })
               }
-              <div className='text-capitalize row fs-3 ms-5'>
-                <div className='col-11 m-0 p-3 text-end'>
+              <div className='text-capitalize row fs-3 ms-lg-5'>
+                <div className='col-lg-11 col-10 m-0 p-3 text-end'>
                   {this.state.recordToEdit !== null
                     ? <>
                       <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={this.state.recordToEdit}>Save</Button>
