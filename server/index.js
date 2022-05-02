@@ -170,9 +170,9 @@ app.put('/api/garage/:vehicleId/edit-records', (req, res, next) => {
             "maintenanceName" = $2,
             "mileage" = $3,
             "cost" = $4
-     where  "datePerformed" = $5,
-            "maintenanceName" = $6,
-            "mileage" = $7,
+     where  "datePerformed" = $5 and
+            "maintenanceName" = $6 and
+            "mileage" = $7 and
             "cost" = $8
     returning *
   `;
