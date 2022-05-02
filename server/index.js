@@ -163,6 +163,9 @@ app.put('/api/garage/:vehicleId/edit-records', (req, res, next) => {
     throw new ClientError(400, 'vehicleId must be a positive integer');
   }
   const { oldName, oldCost, newName, newCost, date } = req.body;
+  if (!oldName || !date || !newName || !newCost || !date) {
+    throw new ClientError(400, 'Input Missing');
+  }
   const params = [newName, newCost, oldName, oldCost, date];
   const sql = `
     update  "records"

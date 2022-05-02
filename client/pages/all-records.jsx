@@ -9,7 +9,8 @@ class AllRecords extends React.Component {
       loaded: false,
       recordToEdit: null,
       editRecordName: null,
-      editRecordCost: null
+      editRecordCost: null,
+      missingInput: false
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -42,13 +43,20 @@ class AllRecords extends React.Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      missingInput: false
     });
   }
 
   handleSubmit(event, record, recordIndex, accIndex) {
     event.preventDefault();
     const { editRecordName, editRecordCost, records } = this.state;
+    if (!editRecordName || !editRecordCost) {
+      this.setState({
+        missingInput: true
+      });
+      return;
+    }
     const updatedRecords = {
       date: record.datePerformed,
       oldName: record.names[recordIndex],
@@ -61,10 +69,6 @@ class AllRecords extends React.Component {
     newRecords[accIndex].total = (parseInt(records[accIndex].total) - parseInt(record.cost[recordIndex])) + parseInt(editRecordCost);
     names[recordIndex] = editRecordName;
     cost[recordIndex] = editRecordCost;
-    this.setState({
-      records: newRecords,
-      recordToEdit: null
-    });
     fetch(`/api/garage/${this.props.vehicleId}/edit-records`,
       {
         method: 'PUT',
@@ -75,6 +79,11 @@ class AllRecords extends React.Component {
       }
     )
       .then(result => result.json())
+      .then(result => this.setState({
+        records: newRecords,
+        recordToEdit: null,
+        missingInput: false
+      }))
       .catch(err => console.error(err));
   }
 
@@ -150,11 +159,12 @@ class AllRecords extends React.Component {
                       })
                     }
                     <div className='text-capitalize row fs-3 ms-lg-5'>
+                    {this.state.missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>* Entries cannot be empty</p>}
                       <div className='col-lg-11 col-10 m-0 p-3 text-end'>
                         {this.state.recordToEdit !== null
                           ? <>
                             <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={this.state.recordToEdit}>Save</Button>
-                            <Button variant='outline-light' className='border-0 work-sans red-button' onClick={() => this.setState({ recordToEdit: null })}>Cancel</Button>
+                            <Button variant='outline-light' className='border-0 work-sans red-button' onClick={() => this.setState({ recordToEdit: null, missingInput: false })}>Cancel</Button>
                             </>
                           : <>
                               <span className='fw-bolder'>Total: </span> ${parseInt(record.total).toLocaleString()}
