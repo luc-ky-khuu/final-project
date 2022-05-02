@@ -83,89 +83,88 @@ class AllRecords extends React.Component {
     return (
       <Accordion className='mt-3 mt-lg-0' defaultActiveKey={0}>
         {
-      records.map((record, accIndex) => {
-        return (
-        <Accordion.Item key={accIndex} eventKey={accIndex}>
-              <Accordion.Button disabled={this.state.recordToEdit}>
-            {
-              <div className='row fs-5 w-100'>
-                <div className='col-4'>
-                  <p className='text-start m-lg-3 m-0'>
-                    {record.datePerformed}
-                  </p>
-                </div>
-                <div className='col-5'>
-                  <p className='text-start m-lg-3 m-0 text-capitalize'>
-                    {record.names.join(', ')}
-                  </p>
-                </div>
-                <div className='col-3 pe-4'>
-                  <p className='text-end m-lg-3 m-0'>
-                    {record.mileage.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            }
-            </Accordion.Button>
-          <Accordion.Body>
-              {
-                record.names.map((name, recordIndex) => {
-                  return (
-                    <Form className='text-capitalize row fs-4 ms-lg-5 ms-0'
-                          id={`${record.datePerformed} ${recordIndex}`} key={recordIndex}
-                          onSubmit={event => this.handleSubmit(event, record, recordIndex, accIndex)}
-                          >
-                        <div className='col-1 ps-3 border-start border-secondary m-0'></div>
-                        <div className='col-6 text-start m-0 p-3 text-truncate'>
-                          {recordToEdit === `${record.datePerformed} ${recordIndex}`
-                            ? <Form.Control
-                            className='text-capitalize fs-5'
-                            type='name'
-                            name='editRecordName'
-                            value={this.state.editRecordName}
-                            onChange={this.handleChange}>
-                            </Form.Control>
-                            : name
-                          }
-                        </div>
-                        <div className='col-lg-4 col-3 m-0 text-end p-3'>
-                          {recordToEdit === `${record.datePerformed} ${recordIndex}`
-                            ? <InputGroup>
-                              <InputGroup.Text>$</InputGroup.Text>
-                                <Form.Control
-                                  className='text-capitalize fs-5'
-                                  type='name'
-                                  name='editRecordCost'
-                                  value={this.state.editRecordCost}
-                                  onChange={this.handleChange}>
-                                </Form.Control>
-                            </InputGroup>
-                            : `$${record.cost[recordIndex].toLocaleString()}`
-                          }
-                        </div>
-                      <div className='col-1 m-0 p-0 align-self-center'>
-                        {!this.state.recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
+          records.map((record, accIndex) => {
+            return (
+              <Accordion.Item key={accIndex} eventKey={accIndex}>
+                <Accordion.Button disabled={this.state.recordToEdit}>
+                  {
+                    <div className='row fs-5 w-100'>
+                      <div className='col-4'>
+                        <p className='text-start m-lg-3 m-0'>
+                          {record.datePerformed}
+                        </p>
                       </div>
-                    </Form>
-                  );
-                })
-              }
-              <div className='text-capitalize row fs-3 ms-lg-5'>
-                <div className='col-lg-11 col-10 m-0 p-3 text-end'>
-                  {this.state.recordToEdit !== null
-                    ? <>
-                      <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={this.state.recordToEdit}>Save</Button>
-                      <Button variant='outline-light' className='border-0 work-sans red-button' onClick={() => this.setState({ recordToEdit: null })}>Cancel</Button>
-                      </>
-                    : <>
-                        <span className='fw-bolder'>Total: </span> ${parseInt(record.total).toLocaleString()}
-                      </>}
-                </div>
-              </div>
-          </Accordion.Body>
-        </Accordion.Item>
-        );
-      })
+                      <div className='col-5'>
+                        <p className='text-start m-lg-3 m-0 text-capitalize'>
+                          {record.names.join(', ')}
+                        </p>
+                      </div>
+                      <div className='col-3 pe-4'>
+                        <p className='text-end m-lg-3 m-0'>
+                          {record.mileage.toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  }
+                </Accordion.Button>
+                <Accordion.Body>
+                    {
+                      record.names.map((name, recordIndex) => {
+                        return (
+                          <Form className='text-capitalize row fs-4 ms-lg-5 ms-0'
+                            id={`${record.datePerformed} ${recordIndex}`} key={recordIndex}
+                            onSubmit={event => this.handleSubmit(event, record, recordIndex, accIndex)}>
+                            <div className='col-1 ps-3 border-start border-secondary m-0'></div>
+                            <div className='col-6 text-start m-0 p-3 text-truncate'>
+                              {recordToEdit === `${record.datePerformed} ${recordIndex}`
+                                ? <Form.Control
+                                    className='text-capitalize fs-5'
+                                    type='name'
+                                    name='editRecordName'
+                                    value={this.state.editRecordName}
+                                    onChange={this.handleChange}>
+                                  </Form.Control>
+                                : name
+                              }
+                            </div>
+                            <div className='col-lg-4 col-3 m-0 text-end p-3'>
+                              {recordToEdit === `${record.datePerformed} ${recordIndex}`
+                                ? <InputGroup>
+                                    <InputGroup.Text>$</InputGroup.Text>
+                                    <Form.Control
+                                      className='text-capitalize fs-5'
+                                      type='name'
+                                      name='editRecordCost'
+                                      value={this.state.editRecordCost}
+                                      onChange={this.handleChange}>
+                                    </Form.Control>
+                                  </InputGroup>
+                                : `$${record.cost[recordIndex].toLocaleString()}`
+                              }
+                            </div>
+                            <div className='col-1 m-0 p-0 align-self-center'>
+                              {!this.state.recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
+                            </div>
+                          </Form>
+                        );
+                      })
+                    }
+                    <div className='text-capitalize row fs-3 ms-lg-5'>
+                      <div className='col-lg-11 col-10 m-0 p-3 text-end'>
+                        {this.state.recordToEdit !== null
+                          ? <>
+                            <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={this.state.recordToEdit}>Save</Button>
+                            <Button variant='outline-light' className='border-0 work-sans red-button' onClick={() => this.setState({ recordToEdit: null })}>Cancel</Button>
+                            </>
+                          : <>
+                              <span className='fw-bolder'>Total: </span> ${parseInt(record.total).toLocaleString()}
+                            </>}
+                      </div>
+                    </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            );
+          })
         }
       </Accordion>
     );
