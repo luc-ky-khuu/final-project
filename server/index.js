@@ -162,18 +162,15 @@ app.put('/api/garage/:vehicleId/edit-records', (req, res, next) => {
   if (vehicleId < 1 || !Number(vehicleId)) {
     throw new ClientError(400, 'vehicleId must be a positive integer');
   }
-  const { date, name, mileage, cost, newDate, newName, newMileage, newCost } = req.body;
-  const params = [newDate, newName, newMileage, newCost, date, name, mileage, cost];
+  const { oldName, oldCost, newName, newCost, date } = req.body;
+  const params = [newName, newCost, oldName, oldCost, date];
   const sql = `
     update  "records"
-       set  "datePerformed" = $1,
-            "maintenanceName" = $2,
-            "mileage" = $3,
-            "cost" = $4
-     where  "datePerformed" = $5 and
-            "maintenanceName" = $6 and
-            "mileage" = $7 and
-            "cost" = $8
+       set  "maintenanceName" = $1,
+            "cost" = $2
+     where  "maintenanceName" = $3 and
+            "cost" = $4 and
+            "datePerformed" = $5
     returning *
   `;
   db.query(sql, params)

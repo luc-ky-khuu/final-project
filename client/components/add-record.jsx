@@ -16,10 +16,7 @@ class AddForm extends React.Component {
   }
 
   handleSubmit(event) {
-    if (event) {
-      event.preventDefault();
-    }
-
+    event.preventDefault();
     const { date, cost, record, mileage } = this.state;
     if (!date || !cost || !record || !mileage) {
       this.setState({
