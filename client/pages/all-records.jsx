@@ -11,6 +11,7 @@ class AllRecords extends React.Component {
       editingName: null,
       editingCost: null
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -34,7 +35,14 @@ class AllRecords extends React.Component {
   editItem(item, number) {
     this.setState({
       editing: `${item.datePerformed} ${number}`,
-      editingName: item.names[number]
+      editingName: item.names[number],
+      editingCost: item.cost[number]
+    });
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
     });
   }
 
@@ -78,7 +86,7 @@ class AllRecords extends React.Component {
                             ? <Form.Control
                             className='text-capitalize'
                             type='name'
-                            name={item}
+                            name='editingName'
                             value={this.state.editingName}
                             onChange={this.handleChange}>
                             </Form.Control>
@@ -86,7 +94,16 @@ class AllRecords extends React.Component {
                           }
                         </p>
                         <p className='col-4 m-0 p-3 text-end'>
-                          {`$${item.cost[number].toLocaleString()}`}
+                        {editing === `${item.datePerformed} ${number}`
+                          ? <Form.Control
+                            className='text-capitalize'
+                            type='name'
+                            name='editingCost'
+                            value={this.state.editingCost}
+                            onChange={this.handleChange}>
+                          </Form.Control>
+                          : `$${item.cost[number].toLocaleString()}`
+                        }
                         </p>
                       <p className='col-1 m-0 p-0 align-self-center'>
                         <a className='btn fs-4' onClick={() => this.editItem(item, number)}><i className="bi bi-pencil-square"></i></a>
