@@ -68,20 +68,19 @@ class AllRecords extends React.Component {
                         {name}
                       </p>
                       <p className='col-4 m-0 p-3 text-end'>
-                        {`$${item.cost[number]}`}
+                        {`$${item.cost[number].toLocaleString()}`}
                       </p>
-
                     </li>
                   );
                 })
               }
               <li className='text-capitalize row fs-3 ms-5'>
                 <p className='col-11 m-0 p-3 text-end'>
-                  {<span className='fw-bolder'>Total: </span>} {`$${item.total}`}
+                  {<span className='fw-bolder'>Total: </span>} {`$${parseInt(item.total).toLocaleString()}`}
                 </p>
-                  <p className='col-1 m-0 p-0 align-self-center'>
-                    <a className='btn fs-4'><i className="bi bi-pencil-square"></i></a>
-                  </p>
+                <p className='col-1 m-0 p-0 align-self-center'>
+                  <a className='btn fs-4'><i className="bi bi-pencil-square"></i></a>
+                </p>
               </li>
             </ul>
           </Accordion.Body>
