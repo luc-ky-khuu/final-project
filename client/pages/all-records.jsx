@@ -53,7 +53,13 @@ class AllRecords extends React.Component {
     const { editRecordName, editRecordCost, records } = this.state;
     if (!editRecordName || !editRecordCost) {
       this.setState({
-        missingInput: true
+        missingInput: '* Entries Cannot Be Empty'
+      });
+      return;
+    }
+    if (isNaN(editRecordCost)) {
+      this.setState({
+        missingInput: '* "Cost" Must Only Contain Numbers'
       });
       return;
     }
@@ -159,7 +165,7 @@ class AllRecords extends React.Component {
                       })
                     }
                     <div className='text-capitalize row fs-3 ms-lg-5'>
-                    {this.state.missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>* Entries cannot be empty</p>}
+                    {this.state.missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>{this.state.missingInput}</p>}
                       <div className='col-lg-11 col-10 m-0 p-3 text-end'>
                         {this.state.recordToEdit !== null
                           ? <>
