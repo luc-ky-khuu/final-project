@@ -63,13 +63,14 @@ class AllRecords extends React.Component {
                 item.names.map((name, number) => {
                   return (
                     <li className='text-capitalize row fs-4 ms-4' key={number}>
-                      <p className=' col-1 ps-3 border-start border-secondary m-0'></p>
+                      <p className='col-1 ps-3 border-start border-secondary m-0'></p>
                       <p className='col-6 text-start m-0 p-3 text-truncate'>
                         {name}
                       </p>
                       <p className='col-4 m-0 p-3 text-end'>
                         {`$${item.cost[number]}`}
                       </p>
+
                     </li>
                   );
                 })
@@ -78,6 +79,9 @@ class AllRecords extends React.Component {
                 <p className='col-11 m-0 p-3 text-end'>
                   {<span className='fw-bolder'>Total: </span>} {`$${item.total}`}
                 </p>
+                  <p className='col-1 m-0 p-0 align-self-center'>
+                    <a className='btn fs-4'><i className="bi bi-pencil-square"></i></a>
+                  </p>
               </li>
             </ul>
           </Accordion.Body>
