@@ -1,12 +1,15 @@
 import React from 'react';
-import Accordion from 'react-bootstrap/Accordion';
+import { Accordion, Form } from 'react-bootstrap';
 import LoadingSpinner from '../components/loading-spinner';
 class AllRecords extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       records: null,
-      loaded: false
+      loaded: false,
+      editing: null,
+      editingName: null,
+      editingCost: null
     };
   }
 
@@ -28,8 +31,15 @@ class AllRecords extends React.Component {
       .catch(err => console.error(err));
   }
 
+  editItem(item, number) {
+    this.setState({
+      editing: `${item.datePerformed} ${number}`,
+      editingName: item.names[number]
+    });
+  }
+
   displayRecordsList() {
-    const { records } = this.state;
+    const { records, editing } = this.state;
     return (
       <Accordion className='mt-3 mt-lg-0' defaultActiveKey={0}>
         {
@@ -58,31 +68,38 @@ class AllRecords extends React.Component {
             }
           </Accordion.Header>
           <Accordion.Body>
-            <ul>
               {
                 item.names.map((name, number) => {
                   return (
-                    <li className='text-capitalize row fs-4 ms-4' key={number}>
-                      <p className='col-1 ps-3 border-start border-secondary m-0'></p>
-                      <p className='col-6 text-start m-0 p-3 text-truncate'>
-                        {name}
+                    <Form className='text-capitalize row fs-4 ms-5' key={number}>
+                        <p className='col-1 ps-3 border-start border-secondary m-0'></p>
+                        <p className='col-6 text-start m-0 p-3 text-truncate'>
+                          {editing === `${item.datePerformed} ${number}`
+                            ? <Form.Control
+                            className='text-capitalize'
+                            type='name'
+                            name={item}
+                            value={this.state.editingName}
+                            onChange={this.handleChange}>
+                            </Form.Control>
+                            : name
+                          }
+                        </p>
+                        <p className='col-4 m-0 p-3 text-end'>
+                          {`$${item.cost[number].toLocaleString()}`}
+                        </p>
+                      <p className='col-1 m-0 p-0 align-self-center'>
+                        <a className='btn fs-4' onClick={() => this.editItem(item, number)}><i className="bi bi-pencil-square"></i></a>
                       </p>
-                      <p className='col-4 m-0 p-3 text-end'>
-                        {`$${item.cost[number].toLocaleString()}`}
-                      </p>
-                    </li>
+                    </Form>
                   );
                 })
               }
-              <li className='text-capitalize row fs-3 ms-5'>
+              <div className='text-capitalize row fs-3 ms-5'>
                 <p className='col-11 m-0 p-3 text-end'>
                   {<span className='fw-bolder'>Total: </span>} {`$${parseInt(item.total).toLocaleString()}`}
                 </p>
-                <p className='col-1 m-0 p-0 align-self-center'>
-                  <a className='btn fs-4'><i className="bi bi-pencil-square"></i></a>
-                </p>
-              </li>
-            </ul>
+              </div>
           </Accordion.Body>
         </Accordion.Item>
         );
