@@ -33,11 +33,11 @@ class AllRecords extends React.Component {
       .catch(err => console.error(err));
   }
 
-  editRecord(record, number) {
+  editRecord(record, recordIndex) {
     this.setState({
-      recordToEdit: `${record.datePerformed} ${number}`,
-      editRecordName: record.names[number],
-      editRecordCost: record.cost[number]
+      recordToEdit: `${record.datePerformed} ${recordIndex}`,
+      editRecordName: record.names[recordIndex],
+      editRecordCost: record.cost[recordIndex]
     });
   }
 
@@ -47,15 +47,24 @@ class AllRecords extends React.Component {
     });
   }
 
-  handleSubmit(event, record, number) {
+  handleSubmit(event, record, recordIndex, accIndex) {
     event.preventDefault();
+    const { editRecordName, editRecordCost, records } = this.state;
     const updatedRecords = {
       date: record.datePerformed,
-      oldName: record.names[number],
-      oldCost: record.cost[number],
-      newName: this.state.editRecordName,
-      newCost: this.state.editRecordCost
+      oldName: record.names[recordIndex],
+      oldCost: record.cost[recordIndex],
+      newName: editRecordName,
+      newCost: editRecordCost
     };
+    const newRecords = [...records];
+    const { names, cost } = newRecords[accIndex];
+    newRecords[accIndex].total = (parseInt(records[accIndex].total) - parseInt(record.cost[recordIndex])) + parseInt(editRecordCost);
+    names[recordIndex] = editRecordName;
+    cost[recordIndex] = editRecordCost;
+    this.setState({
+      records: newRecords
+    });
     fetch(`/api/garage/${this.props.vehicleId}/edit-records`,
       {
         method: 'PUT',
@@ -81,9 +90,9 @@ class AllRecords extends React.Component {
     return (
       <Accordion className='mt-3 mt-lg-0' defaultActiveKey={0}>
         {
-      records.map((record, index) => {
+      records.map((record, accIndex) => {
         return (
-        <Accordion.Item key={index} eventKey={index}>
+        <Accordion.Item key={accIndex} eventKey={accIndex}>
           <Accordion.Header>
             {
               <div className='row fs-5 w-100'>
@@ -107,15 +116,15 @@ class AllRecords extends React.Component {
           </Accordion.Header>
           <Accordion.Body>
               {
-                record.names.map((name, number) => {
+                record.names.map((name, recordIndex) => {
                   return (
                     <Form className='text-capitalize row fs-4 ms-5'
-                          id={`${record.datePerformed} ${number}`} key={number}
-                          onSubmit={event => this.handleSubmit(event, record, number)}
+                          id={`${record.datePerformed} ${recordIndex}`} key={recordIndex}
+                          onSubmit={event => this.handleSubmit(event, record, recordIndex, accIndex)}
                           >
                         <p className='col-1 ps-3 border-start border-secondary m-0'></p>
                         <p className='col-6 text-start m-0 p-3 text-truncate'>
-                          {recordToEdit === `${record.datePerformed} ${number}`
+                          {recordToEdit === `${record.datePerformed} ${recordIndex}`
                             ? <Form.Control
                             className='text-capitalize'
                             type='name'
@@ -127,7 +136,7 @@ class AllRecords extends React.Component {
                           }
                         </p>
                         <p className='col-4 m-0 p-3 text-end'>
-                        {recordToEdit === `${record.datePerformed} ${number}`
+                        {recordToEdit === `${record.datePerformed} ${recordIndex}`
                           ? <Form.Control
                             className='text-capitalize'
                             type='name'
@@ -135,11 +144,11 @@ class AllRecords extends React.Component {
                             value={this.state.editRecordCost}
                             onChange={this.handleChange}>
                           </Form.Control>
-                          : `$${record.cost[number].toLocaleString()}`
+                          : `$${record.cost[recordIndex].toLocaleString()}`
                         }
                         </p>
                       <p className='col-1 m-0 p-0 align-self-center'>
-                        <a className='btn fs-4' onClick={() => this.editRecord(record, number)}><i className="bi bi-pencil-square"></i></a>
+                        <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>
                       </p>
                     </Form>
                   );
