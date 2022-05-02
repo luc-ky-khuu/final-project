@@ -10,11 +10,11 @@ ul {
   list-style-type: none;
 }
 
-.accordion-item:nth-child(odd) h2 > button {
+.accordion-item:nth-child(odd) button.accordion-button {
   background-color: rgb(214, 214, 214);
 }
 
-.accordion-item:nth-child(even) h2 > button {
+.accordion-item:nth-child(even) button.accordion-button {
   background-color: rgb(239, 247, 255);
 }
 

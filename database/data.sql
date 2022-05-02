@@ -63,7 +63,7 @@ insert into "public"."records" (
 ),
 (
   1,
-  'Hybrid Batter',
+  'Hybrid Battery',
   '2022-01-26',
   196833,
   800

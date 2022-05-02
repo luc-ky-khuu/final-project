@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, Form, Button } from 'react-bootstrap';
+import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
 import LoadingSpinner from '../components/loading-spinner';
 class AllRecords extends React.Component {
   constructor(props) {
@@ -12,7 +12,6 @@ class AllRecords extends React.Component {
       editRecordCost: null
     };
     this.handleChange = this.handleChange.bind(this);
-    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -63,7 +62,8 @@ class AllRecords extends React.Component {
     names[recordIndex] = editRecordName;
     cost[recordIndex] = editRecordCost;
     this.setState({
-      records: newRecords
+      records: newRecords,
+      recordToEdit: null
     });
     fetch(`/api/garage/${this.props.vehicleId}/edit-records`,
       {
@@ -75,14 +75,7 @@ class AllRecords extends React.Component {
       }
     )
       .then(result => result.json())
-      .then(result => this.reset())
       .catch(err => console.error(err));
-  }
-
-  reset() {
-    this.setState({
-      recordToEdit: null
-    });
   }
 
   displayRecordsList() {
@@ -93,7 +86,7 @@ class AllRecords extends React.Component {
       records.map((record, accIndex) => {
         return (
         <Accordion.Item key={accIndex} eventKey={accIndex}>
-          <Accordion.Header>
+              <Accordion.Button disabled={this.state.recordToEdit}>
             {
               <div className='row fs-5 w-100'>
                 <div className='col-4'>
@@ -113,7 +106,7 @@ class AllRecords extends React.Component {
                 </div>
               </div>
             }
-          </Accordion.Header>
+            </Accordion.Button>
           <Accordion.Body>
               {
                 record.names.map((name, recordIndex) => {
@@ -122,11 +115,11 @@ class AllRecords extends React.Component {
                           id={`${record.datePerformed} ${recordIndex}`} key={recordIndex}
                           onSubmit={event => this.handleSubmit(event, record, recordIndex, accIndex)}
                           >
-                        <p className='col-1 ps-3 border-start border-secondary m-0'></p>
-                        <p className='col-6 text-start m-0 p-3 text-truncate'>
+                        <div className='col-1 ps-3 border-start border-secondary m-0'></div>
+                        <div className='col-6 text-start m-0 p-3 text-truncate'>
                           {recordToEdit === `${record.datePerformed} ${recordIndex}`
                             ? <Form.Control
-                            className='text-capitalize'
+                            className='text-capitalize fs-4'
                             type='name'
                             name='editRecordName'
                             value={this.state.editRecordName}
@@ -134,28 +127,31 @@ class AllRecords extends React.Component {
                             </Form.Control>
                             : name
                           }
-                        </p>
-                        <p className='col-4 m-0 p-3 text-end'>
+                        </div>
+                        <div className='col-4 m-0 p-3 text-end'>
                         {recordToEdit === `${record.datePerformed} ${recordIndex}`
-                          ? <Form.Control
-                            className='text-capitalize'
-                            type='name'
-                            name='editRecordCost'
-                            value={this.state.editRecordCost}
-                            onChange={this.handleChange}>
-                          </Form.Control>
+                          ? <InputGroup>
+                            <InputGroup.Text>$</InputGroup.Text>
+                              <Form.Control
+                                className='text-capitalize fs-4'
+                                type='name'
+                                name='editRecordCost'
+                                value={this.state.editRecordCost}
+                                onChange={this.handleChange}>
+                              </Form.Control>
+                          </InputGroup>
                           : `$${record.cost[recordIndex].toLocaleString()}`
                         }
-                        </p>
-                      <p className='col-1 m-0 p-0 align-self-center'>
-                        <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>
-                      </p>
+                        </div>
+                      <div className='col-1 m-0 p-0 align-self-center'>
+                        {!this.state.recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
+                      </div>
                     </Form>
                   );
                 })
               }
               <div className='text-capitalize row fs-3 ms-5'>
-                <p className='col-11 m-0 p-3 text-end'>
+                <div className='col-11 m-0 p-3 text-end'>
                   {this.state.recordToEdit !== null
                     ? <>
                       <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={this.state.recordToEdit}>Save</Button>
@@ -164,7 +160,7 @@ class AllRecords extends React.Component {
                     : <>
                         <span className='fw-bolder'>Total: </span> ${parseInt(record.total).toLocaleString()}
                       </>}
-                </p>
+                </div>
               </div>
           </Accordion.Body>
         </Accordion.Item>
