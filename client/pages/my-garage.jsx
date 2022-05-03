@@ -1,8 +1,7 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
+import { Card, Button, Modal } from 'react-bootstrap';
 import CarForm from '../components/car-form';
 import LoadingSpinner from '../components/loading-spinner';
-import DeleteModal from '../components/delete-modal';
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
@@ -49,6 +48,32 @@ class MyCars extends React.Component {
       deleteModal: !this.state.deleteModal,
       vehicleIndex: index
     });
+  }
+
+  deleteModal() {
+    return (
+      <>
+         <Modal size='sm' centered show={this.state.deleteModal} onHide={this.toggleDeleteModal}>
+          <Modal.Body>
+            <p className='fs-4 m-0'>
+              Are you sure you want to remove this car?  This will delete all of your data.
+            </p>
+          </Modal.Body>
+          <Modal.Footer className='work-sans'>
+            <div className='col'>
+              <Button variant='outline-dark' className='w-100 work-sans' onClick={this.toggleDeleteModal}>
+                Cancel
+              </Button>
+            </div>
+            <div className='col'>
+              <Button variant='danger' className='w-100 border-0 red-button work-sans' onClick={this.deleteCar}>
+                Delete
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
   }
 
   getCars() {
@@ -100,7 +125,7 @@ class MyCars extends React.Component {
         <CarForm updateCars={this.updateCars} newCar={true} />
       </div>
       <div>
-        <DeleteModal showModal={this.state.deleteModal} toggle={this.toggleDeleteModal} delete={this.deleteCar}/>
+        {this.deleteModal()}
       </div>
     </>
     );
