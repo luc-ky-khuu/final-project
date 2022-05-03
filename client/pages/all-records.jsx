@@ -157,7 +157,7 @@ class AllRecords extends React.Component {
                                       onChange={this.handleChange}>
                                     </Form.Control>
                                   </InputGroup>
-                                : `$${record.cost[recordIndex].toLocaleString()}`
+                                : `$${parseInt(record.cost[recordIndex]).toLocaleString()}`
                               }
                             </div>
                             <div className='col-1 m-0 p-0 align-self-center'>
