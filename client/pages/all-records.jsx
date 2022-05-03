@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
+import { Accordion, Form, Button, InputGroup, Modal } from 'react-bootstrap';
 import LoadingSpinner from '../components/loading-spinner';
 class AllRecords extends React.Component {
   constructor(props) {
@@ -10,9 +10,14 @@ class AllRecords extends React.Component {
       recordToEdit: null,
       editRecordName: null,
       editRecordCost: null,
-      missingInput: false
+      editRecordDate: null,
+      missingInput: false,
+      deleteModal: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+    this.deleteRecord = this.deleteRecord.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +41,7 @@ class AllRecords extends React.Component {
   editRecord(record, recordIndex) {
     this.setState({
       recordToEdit: `${record.datePerformed} ${recordIndex}`,
+      editRecordDate: record.datePerformed,
       editRecordName: record.names[recordIndex],
       editRecordCost: record.cost[recordIndex]
     });
@@ -88,23 +94,40 @@ class AllRecords extends React.Component {
       }
     )
       .then(result => result.json())
-      .then(result => this.setState({
-        records: newRecords,
-        recordToEdit: null,
-        missingInput: false
-      }))
+      .then(result => this.reset(newRecords))
       .catch(err => console.error(err));
   }
 
   displayRecordsList() {
-    const { records, recordToEdit } = this.state;
+    const { records, recordToEdit, editRecordCost, editRecordName, missingInput } = this.state;
     return (
       <Accordion className='mt-3 mt-lg-0' defaultActiveKey={0}>
+        <Accordion.Item className="px-3" disabled={true}>
+          {
+            <div className='row fs-5 w-100 h-50'>
+              <div className='col-4'>
+                <p className='text-start fw-bolder m-lg-3 m-0'>
+                  Date
+                </p>
+              </div>
+              <div className='col-5'>
+                <p className='text-start m-lg-3 fw-bolder m-0 text-capitalize'>
+                  Description
+                </p>
+              </div>
+              <div className='col-3 pe-4'>
+                <p className='text-end m-lg-3 fw-bolder  m-0'>
+                  Mileage
+                </p>
+              </div>
+            </div>
+          }
+          </Accordion.Item>
         {
           records.map((record, accIndex) => {
             return (
               <Accordion.Item key={accIndex} eventKey={accIndex}>
-                <Accordion.Button disabled={this.state.recordToEdit}>
+                <Accordion.Button disabled={recordToEdit}>
                   {
                     <div className='row fs-5 w-100'>
                       <div className='col-4'>
@@ -139,7 +162,7 @@ class AllRecords extends React.Component {
                                     className='text-capitalize fs-5'
                                     type='name'
                                     name='editRecordName'
-                                    value={this.state.editRecordName}
+                                    value={editRecordName}
                                     onChange={this.handleChange}>
                                   </Form.Control>
                                 : name
@@ -153,7 +176,7 @@ class AllRecords extends React.Component {
                                       className='text-capitalize fs-5'
                                       type='name'
                                       name='editRecordCost'
-                                      value={this.state.editRecordCost}
+                                      value={editRecordCost}
                                       onChange={this.handleChange}>
                                     </Form.Control>
                                   </InputGroup>
@@ -161,18 +184,20 @@ class AllRecords extends React.Component {
                               }
                             </div>
                             <div className='col-1 m-0 p-0 align-self-center'>
-                              {!this.state.recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
+                              {!recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
+                              {recordToEdit === `${record.datePerformed} ${recordIndex}` && <a className='btn fs-4 text-danger' onClick={this.toggleDeleteModal}><i className="bi bi-x-square"></i></a>}
                             </div>
+                            {recordToEdit === `${record.datePerformed} ${recordIndex}` && this.deleteModal(record, recordIndex, accIndex)}
                           </Form>
                         );
                       })
                     }
                     <div className='text-capitalize row fs-3 ms-lg-5'>
-                    {this.state.missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>{this.state.missingInput}</p>}
+                    {missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>{missingInput}</p>}
                       <div className='col-lg-11 col-10 m-0 p-3 text-end'>
-                        {this.state.recordToEdit !== null
+                        {recordToEdit !== null
                           ? <>
-                            <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={this.state.recordToEdit}>Save</Button>
+                            <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={recordToEdit}>Save</Button>
                             <Button variant='outline-light' className='border-0 work-sans red-button' onClick={() => this.setState({ recordToEdit: null, missingInput: false })}>Cancel</Button>
                             </>
                           : <>
@@ -187,6 +212,78 @@ class AllRecords extends React.Component {
         }
       </Accordion>
     );
+  }
+
+  deleteRecord(record, recordIndex, accIndex) {
+    const recordToDelete = {
+      date: record.datePerformed,
+      cost: record.cost[recordIndex],
+      name: record.names[recordIndex]
+    };
+    fetch(`/api/garage/${this.props.vehicleId}/delete-record`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recordToDelete)
+      })
+      .then(result => result.json())
+      .then(result => {
+        const newRecords = [...this.state.records];
+        newRecords[accIndex].names.splice(recordIndex, 1);
+        newRecords[accIndex].cost.splice(recordIndex, 1);
+        newRecords[accIndex].total = parseInt(newRecords[accIndex].total) - parseInt(recordToDelete.cost);
+        if (newRecords[accIndex].names.length === 0) {
+          newRecords.splice(accIndex, 1);
+        }
+        this.reset(newRecords);
+      })
+      .catch(err => console.error(err));
+  }
+
+  deleteModal(record, recordIndex, accIndex) {
+    return (
+      <>
+        <Modal size='sm' centered show={this.state.deleteModal} onHide={this.toggleDeleteModal}>
+          <Modal.Body>
+            <p className='fs-4 m-0'>
+              Are you sure you want to remove this record?
+            </p>
+          </Modal.Body>
+          <Modal.Footer className='work-sans'>
+            <div className='col'>
+              <Button variant='outline-dark' className='w-100 work-sans' onClick={this.toggleDeleteModal}>
+                Cancel
+              </Button>
+            </div>
+            <div className='col'>
+              <Button variant='danger' className='w-100 border-0 red-button work-sans' onClick={() => this.deleteRecord(record, recordIndex, accIndex)}>
+                Delete
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+
+  toggleDeleteModal() {
+    this.setState({
+      deleteModal: !this.state.deleteModal
+    });
+  }
+
+  reset(newRecords) {
+    this.setState({
+      records: newRecords,
+      recordToEdit: null,
+      editRecordCost: null,
+      editRecordName: null,
+      editRecordDate: null,
+      missingInput: false,
+      deleteModal: false
+    });
   }
 
   render() {

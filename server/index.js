@@ -163,7 +163,7 @@ app.put('/api/garage/:vehicleId/edit-records', (req, res, next) => {
     throw new ClientError(400, 'vehicleId must be a positive integer');
   }
   const { oldName, oldCost, newName, newCost, date } = req.body;
-  if (!oldName || !date || !newName || !newCost || !date) {
+  if (!oldName || !oldCost || !newName || !newCost || !date) {
     throw new ClientError(400, 'Input Missing');
   }
   const params = [newName, newCost, oldName, oldCost, date];
@@ -179,6 +179,30 @@ app.put('/api/garage/:vehicleId/edit-records', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/garage/:vehicleId/delete-record', (req, res, next) => {
+  const { vehicleId } = req.params;
+  if (vehicleId < 1 || !Number(vehicleId)) {
+    throw new ClientError(400, 'vehicleId must be a positive integer');
+  }
+  const { cost, name, date } = req.body;
+  if (!cost || !date || !name) {
+    throw new ClientError(400, 'Input Missing');
+  }
+  const params = [name, cost, date, vehicleId];
+  const sql = `
+    delete  from "records"
+     where  "maintenanceName" = $1 and
+            "cost" = $2 and
+            "datePerformed" = $3 and
+            "vehicleId" = $4
+  `;
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
     })
     .catch(err => next(err));
 });
