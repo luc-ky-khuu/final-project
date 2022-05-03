@@ -50,12 +50,15 @@ class AllRecords extends React.Component {
 
   handleSubmit(event, record, recordIndex, accIndex) {
     event.preventDefault();
-    const { editRecordName, editRecordCost, records } = this.state;
+    let { editRecordName, editRecordCost, records } = this.state;
     if (!editRecordName || !editRecordCost) {
       this.setState({
         missingInput: '* Entries Cannot Be Empty'
       });
       return;
+    }
+    if (editRecordCost.includes(',')) {
+      editRecordCost = editRecordCost.replace(/,/g, '');
     }
     if (isNaN(editRecordCost)) {
       this.setState({
