@@ -16,14 +16,23 @@ class AddForm extends React.Component {
   }
 
   handleSubmit(event) {
-    if (event) {
-      event.preventDefault();
+    event.preventDefault();
+    let { date, cost, record, mileage } = this.state;
+    if (mileage.includes(',')) {
+      mileage = mileage.replace(/,/g, '');
     }
-
-    const { date, cost, record, mileage } = this.state;
+    if (cost.includes(',')) {
+      cost = cost.replace(/,/g, '');
+    }
+    if (isNaN(cost) || isNaN(mileage)) {
+      this.setState({
+        missingInput: '* No Special Characters Allowed In Mileage Or Cost'
+      });
+      return;
+    }
     if (!date || !cost || !record || !mileage) {
       this.setState({
-        missingInput: true
+        missingInput: '* Input Missing'
       });
       return;
     }
@@ -85,7 +94,7 @@ class AddForm extends React.Component {
             </Form.Group>
           </Row>
           <Row className='justify-content-between'>
-            {this.state.missingInput && <p className='text-danger'>* Input Missing</p>}
+            {this.state.missingInput && <p className='text-danger'>{this.state.missingInput}</p>}
             <div className='col'>
               <Button variant='outline-light' className='w-100 fs-5 blue-button border-0 work-sans' type='submit'>
                 Add

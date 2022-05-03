@@ -157,6 +157,32 @@ app.put('/api/garage/edit-car/:vehicleId', uploadsMiddleware, (req, res, next) =
     .catch(err => next(err));
 });
 
+app.put('/api/garage/:vehicleId/edit-records', (req, res, next) => {
+  const { vehicleId } = req.params;
+  if (vehicleId < 1 || !Number(vehicleId)) {
+    throw new ClientError(400, 'vehicleId must be a positive integer');
+  }
+  const { oldName, oldCost, newName, newCost, date } = req.body;
+  if (!oldName || !date || !newName || !newCost || !date) {
+    throw new ClientError(400, 'Input Missing');
+  }
+  const params = [newName, newCost, oldName, oldCost, date];
+  const sql = `
+    update  "records"
+       set  "maintenanceName" = $1,
+            "cost" = $2
+     where  "maintenanceName" = $3 and
+            "cost" = $4 and
+            "datePerformed" = $5
+    returning *
+  `;
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.delete('/api/garage/delete-car/:vehicleId', (req, res, next) => {
   const { vehicleId } = req.params;
   if (vehicleId < 1 || !Number(vehicleId)) {

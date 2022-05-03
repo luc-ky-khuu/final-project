@@ -16,7 +16,7 @@ class CarDetails extends React.Component {
     };
     this.makeTable = this.makeTable.bind(this);
     this.addRecord = this.addRecord.bind(this);
-    this.toggleAddRecordModal = this.toggleAddRecordModal.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.getNextOilChange = this.getNextOilChange.bind(this);
     this.updateCar = this.updateCar.bind(this);
     this.renderCarDetails = this.renderCarDetails.bind(this);
@@ -132,18 +132,18 @@ class CarDetails extends React.Component {
 
   showAddForm() {
     return (
-      <Modal size='md' show={this.state.recordModal} onHide={this.toggleAddRecordModal} centered>
-        <AddForm vehicleId={this.context.vehicleId} toggleModal={this.toggleAddRecordModal} addRecord={this.addRecord}/>
+      <Modal size='md' show={this.state.recordModal} onHide={() => this.toggleModal('recordModal') } centered>
+        <AddForm vehicleId={this.context.vehicleId} toggleModal={() => this.toggleModal('recordModal')} addRecord={this.addRecord}/>
       </Modal>
     );
   }
 
-  toggleAddRecordModal(event) {
+  toggleModal(modal) {
     if (event) {
       event.preventDefault();
     }
     this.setState({
-      recordModal: !this.state.recordModal
+      [modal]: !this.state[modal]
     });
   }
 
@@ -204,7 +204,7 @@ class CarDetails extends React.Component {
             <div className='row py-2 mx-0 bg-navbar-menu rounded-top shadow-sm overflow-hidden'>
               <h2 className='col text-start'>Recent Records</h2>
               <div className='col text-end'>
-                <a href='#' onClick={this.toggleAddRecordModal} className='text-reset'><i className='fs-3 bi bi-plus-circle pe-2'></i></a>
+                <a href='#' onClick={() => this.toggleModal('recordModal')} className='text-reset'><i className='fs-3 bi bi-plus-circle pe-2'></i></a>
               </div>
             </div>
             <Table striped className='m-0 rounded-bottom overflow-hidden'>
