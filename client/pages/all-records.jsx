@@ -185,7 +185,7 @@ class AllRecords extends React.Component {
                             </div>
                             <div className='col-1 m-0 p-0 align-self-center'>
                               {!recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
-                              {recordToEdit === `${record.datePerformed} ${recordIndex}` && <a className='btn fs-4 text-danger' onClick={this.toggleDeleteModal}><i className="bi bi-x-square"></i></a>}
+                              {recordToEdit === `${record.datePerformed} ${recordIndex}` && <a className='btn fs-4 text-danger' onClick={() => this.setState({ recordToEdit: null, missingInput: false })}><i className="bi bi-x-square"></i></a>}
                             </div>
                             {recordToEdit === `${record.datePerformed} ${recordIndex}` && this.deleteModal(record, recordIndex, accIndex)}
                           </Form>
@@ -198,7 +198,7 @@ class AllRecords extends React.Component {
                         {recordToEdit !== null
                           ? <>
                             <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={recordToEdit}>Save</Button>
-                            <Button variant='outline-light' className='border-0 work-sans red-button' onClick={() => this.setState({ recordToEdit: null, missingInput: false })}>Cancel</Button>
+                            <Button variant='outline-light' className='border-0 work-sans red-button' onClick={this.toggleDeleteModal}>Delete</Button>
                             </>
                           : <>
                               <span className='fw-bolder'>Total: </span> ${parseInt(record.total).toLocaleString()}
