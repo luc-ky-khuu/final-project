@@ -102,6 +102,27 @@ class AllRecords extends React.Component {
     const { records, recordToEdit, editRecordCost, editRecordName, missingInput } = this.state;
     return (
       <Accordion className='mt-3 mt-lg-0' defaultActiveKey={0}>
+        <Accordion.Item className="px-3" disabled={true}>
+          {
+            <div className='row fs-5 w-100 h-50'>
+              <div className='col-4'>
+                <p className='text-start fw-bolder m-lg-3 m-0'>
+                  Date
+                </p>
+              </div>
+              <div className='col-5'>
+                <p className='text-start m-lg-3 fw-bolder m-0 text-capitalize'>
+                  Description
+                </p>
+              </div>
+              <div className='col-3 pe-4'>
+                <p className='text-end m-lg-3 fw-bolder  m-0'>
+                  Mileage
+                </p>
+              </div>
+            </div>
+          }
+          </Accordion.Item>
         {
           records.map((record, accIndex) => {
             return (
@@ -199,11 +220,6 @@ class AllRecords extends React.Component {
       cost: record.cost[recordIndex],
       name: record.names[recordIndex]
     };
-    const newRecords = [...this.state.records];
-    newRecords[accIndex].names.splice(recordIndex, 1);
-    newRecords[accIndex].cost.splice(recordIndex, 1);
-    newRecords[accIndex].total = parseInt(newRecords[accIndex].total) - parseInt(recordToDelete.cost);
-
     fetch(`/api/garage/${this.props.vehicleId}/delete-record`,
       {
         method: 'DELETE',
@@ -213,7 +229,16 @@ class AllRecords extends React.Component {
         body: JSON.stringify(recordToDelete)
       })
       .then(result => result.json())
-      .then(result => this.reset(newRecords))
+      .then(result => {
+        const newRecords = [...this.state.records];
+        newRecords[accIndex].names.splice(recordIndex, 1);
+        newRecords[accIndex].cost.splice(recordIndex, 1);
+        newRecords[accIndex].total = parseInt(newRecords[accIndex].total) - parseInt(recordToDelete.cost);
+        if (newRecords[accIndex].names.length === 0) {
+          newRecords.splice(accIndex, 1);
+        }
+        this.reset(newRecords);
+      })
       .catch(err => console.error(err));
   }
 

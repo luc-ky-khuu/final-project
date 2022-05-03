@@ -199,7 +199,6 @@ app.delete('/api/garage/:vehicleId/delete-record', (req, res, next) => {
             "cost" = $2 and
             "datePerformed" = $3 and
             "vehicleId" = $4
-    returning *
   `;
   db.query(sql, params)
     .then(result => {
