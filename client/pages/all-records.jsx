@@ -1,6 +1,7 @@
 import React from 'react';
 import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
 import LoadingSpinner from '../components/loading-spinner';
+import DeleteModal from '../components/delete-modal';
 class AllRecords extends React.Component {
   constructor(props) {
     super(props);
@@ -10,9 +11,12 @@ class AllRecords extends React.Component {
       recordToEdit: null,
       editRecordName: null,
       editRecordCost: null,
-      missingInput: false
+      missingInput: false,
+      deleteModal: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+    this.deleteRecord = this.deleteRecord.bind(this);
   }
 
   componentDidMount() {
@@ -162,6 +166,7 @@ class AllRecords extends React.Component {
                             </div>
                             <div className='col-1 m-0 p-0 align-self-center'>
                               {!this.state.recordToEdit && <a className='btn fs-4' onClick={() => this.editRecord(record, recordIndex)}><i className="bi bi-pencil-square"></i></a>}
+                              {this.state.recordToEdit === `${record.datePerformed} ${recordIndex}` && <a className='btn fs-4 text-danger' onClick={this.toggleDeleteModal}><i className="bi bi-x-square"></i></a>}
                             </div>
                           </Form>
                         );
@@ -179,6 +184,7 @@ class AllRecords extends React.Component {
                               <span className='fw-bolder'>Total: </span> ${parseInt(record.total).toLocaleString()}
                             </>}
                       </div>
+                    <DeleteModal showModal={this.state.deleteModal} toggle={this.toggleDeleteModal} delete={() => this.deleteRecord(record)} />
                     </div>
                 </Accordion.Body>
               </Accordion.Item>
@@ -187,6 +193,32 @@ class AllRecords extends React.Component {
         }
       </Accordion>
     );
+  }
+
+  deleteRecord(record) {
+    const { editRecordCost, editRecordName } = this.state;
+    const recordToDelete = {
+      cost: editRecordCost,
+      name: editRecordName,
+      date: record.datePerformed
+    };
+    fetch(`/api/garage/${this.props.vehicleId}/delete-record`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recordToDelete)
+      })
+      .then(result => result.json())
+      .then(result => this.toggleDeleteModal())
+      .catch(err => console.error(err));
+  }
+
+  toggleDeleteModal() {
+    this.setState({
+      deleteModal: !this.state.deleteModal
+    });
   }
 
   render() {
