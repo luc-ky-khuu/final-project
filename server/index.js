@@ -81,14 +81,18 @@ app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
+app.post('/api/garage/add-record/:vehicleId', uploadsMiddleware, (req, res, next) => {
   const { vehicleId } = req.params;
-  const { record, date, mileage, cost, photoUrl } = req.body;
+  const { record, date, mileage, cost } = req.body;
   if (vehicleId < 1 || !Number(vehicleId)) {
     throw new ClientError(400, 'vehicleId must be a positive integer');
   }
   if (!record || !date || !mileage || !cost) {
     throw new ClientError(400, 'Maintenance name, date, mileage, and cost are required');
+  }
+  let photoUrl = null;
+  if (req.file) {
+    photoUrl = req.file.location;
   }
   const sql = `
     insert  into "records" ("vehicleId", "maintenanceName", "datePerformed", "mileage", "cost", "receiptUrl")

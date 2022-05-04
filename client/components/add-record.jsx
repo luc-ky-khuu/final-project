@@ -8,8 +8,7 @@ class AddForm extends React.Component {
       date: '',
       cost: '',
       record: '',
-      mileage: '',
-      photoUrl: ''
+      mileage: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -19,7 +18,7 @@ class AddForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let { date, cost, record, mileage, photoUrl } = this.state;
+    let { date, cost, record, mileage } = this.state;
     if (mileage.includes(',')) {
       mileage = mileage.replace(/,/g, '');
     }
@@ -39,25 +38,21 @@ class AddForm extends React.Component {
       return;
     }
     const formData = new FormData();
-    formData.append('photoUrl', photoUrl);
-    formData.append('data', date);
+    formData.append('photoUrl', this.fileInputRef.current.files[0]);
+    formData.append('date', date);
     formData.append('cost', cost);
     formData.append('record', record);
     formData.append('mileage', mileage);
-    formData.append('vehicleId', this.props.vehicleId);
     fetch(`/api/garage/add-record/${this.props.vehicleId}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: formData
     })
       .then(result => result.json())
       .then(data => {
-        this.reset();
         this.fileInputRef.current.value = null;
         this.props.toggleModal();
         this.props.addRecord(data);
+        this.reset();
       })
       .catch(err => console.error(err));
   }
@@ -75,8 +70,7 @@ class AddForm extends React.Component {
       date: '',
       cost: '',
       record: '',
-      mileage: '',
-      photoUrl: ''
+      mileage: ''
     });
   }
 
@@ -103,7 +97,6 @@ class AddForm extends React.Component {
             </Form.Group>
           </Row>
           <Form.Group controlId='photoUrl' className='mb-3'>
-            <Form.Label>Upload Receipt</Form.Label>
             <Form.Control
               accept='.png, .jpg, .jpeg'
               onChange={this.handleChange}

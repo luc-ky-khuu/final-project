@@ -99,13 +99,17 @@ class AllRecords extends React.Component {
       .catch(err => console.error(err));
   }
 
-  displayReceipts(record, recordIndex) {
+  displayReceipts(record) {
     return (
-      record.receipt.map((receipt, receiptIndex) => {
-        return (
-          <img key={receipt[receiptIndex]} src={receipt}></img>
-        );
-      })
+      <div className="row receipt-container">
+        {
+          record.receipt.map((receipt, index) => {
+            return (
+              <img className='col-1 receipt' key={receipt[index]} src={receipt}></img>
+            );
+          })
+        }
+      </div>
     );
   }
 
@@ -199,16 +203,15 @@ class AllRecords extends React.Component {
                               {recordToEdit === `${record.datePerformed} ${recordIndex}` && <a className='btn fs-4 text-danger' onClick={() => this.setState({ recordToEdit: null, missingInput: false })}><i className="bi bi-x-square"></i></a>}
                             </div>
                             {recordToEdit === `${record.datePerformed} ${recordIndex}` && this.deleteModal(record, recordIndex, accIndex)}
-                            <div className='col-lg-4 col-3'>
-                              {record.receipt[0] && this.displayReceipts(record, recordIndex)}
-                            </div>
                           </Form>
                         );
                       })
                     }
-                    <div className='text-capitalize row fs-3 ms-lg-5'>
+                    <div className='text-capitalize row fs-3 ms-lg-5 mt-3'>
                     {missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>{missingInput}</p>}
-
+                      <div className='col-lg-4 col-3'>
+                        {record.receipt[0] && this.displayReceipts(record)}
+                      </div>
                       <div className='col-lg-7 col-6 m-0 p-3 text-end'>
                         {recordToEdit !== null
                           ? <>
