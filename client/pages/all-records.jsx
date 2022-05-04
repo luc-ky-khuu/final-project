@@ -12,13 +12,16 @@ class AllRecords extends React.Component {
       editRecordCost: null,
       editRecordDate: null,
       missingInput: false,
-      deleteModal: false
+      deleteModal: false,
+      pictureModal: false,
+      pictureToDisplay: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
     this.deleteRecord = this.deleteRecord.bind(this);
     this.reset = this.reset.bind(this);
     this.displayReceipts = this.displayReceipts.bind(this);
+    this.togglePictureModal = this.togglePictureModal.bind(this);
   }
 
   componentDidMount() {
@@ -97,20 +100,6 @@ class AllRecords extends React.Component {
       .then(result => result.json())
       .then(result => this.reset(newRecords))
       .catch(err => console.error(err));
-  }
-
-  displayReceipts(record) {
-    return (
-      <div className="row receipt-container">
-        {
-          record.receipt.map((receipt, index) => {
-            return (
-              <img className='col-1 receipt' key={receipt[index]} src={receipt}></img>
-            );
-          })
-        }
-      </div>
-    );
   }
 
   displayRecordsList() {
@@ -209,10 +198,10 @@ class AllRecords extends React.Component {
                     }
                     <div className='text-capitalize row fs-3 ms-lg-5 mt-3'>
                     {missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>{missingInput}</p>}
-                      <div className='col-lg-4 col-3'>
+                    <div className='col-lg-7 col-6'>
                         {record.receipt[0] && this.displayReceipts(record)}
                       </div>
-                      <div className='col-lg-7 col-6 m-0 p-3 text-end'>
+                      <div className='col-lg-4 col-5 m-0 p-3 text-end'>
                         {recordToEdit !== null
                           ? <>
                             <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={recordToEdit}>Save</Button>
@@ -284,6 +273,46 @@ class AllRecords extends React.Component {
         </Modal>
       </>
     );
+  }
+
+  displayReceipts(record) {
+    return (
+      <div className="row flex-nowrap receipt-container">
+        {
+          record.receipt.map((receipt, index) => {
+            return (
+              <button key={receipt} className='receipt btn h-100 col-2'>
+                  <img src={receipt} onClick={this.togglePictureModal}></img>
+                  {this.pictureModal(receipt)}
+              </button>
+            );
+          })
+        }
+      </div>
+    );
+  }
+
+  pictureModal() {
+    return (
+      <>
+        <Modal centered show={this.state.pictureModal} onHide={() => this.togglePictureModal()}>
+            <img className='h-50' src={this.state.pictureToDisplay}></img>
+        </Modal>
+      </>
+    );
+  }
+
+  togglePictureModal(event) {
+    if (!event) {
+      this.setState({
+        pictureModal: !this.state.pictureModal
+      });
+    }
+    this.setState({
+      pictureModal: !this.state.pictureModal,
+      pictureToDisplay: event.target.src
+    });
+
   }
 
   toggleDeleteModal() {

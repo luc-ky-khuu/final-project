@@ -129,6 +129,7 @@ ul {
 
 .receipt-container {
   height: 80px;
+  overflow-x: auto;
 }
 
 #menu {
