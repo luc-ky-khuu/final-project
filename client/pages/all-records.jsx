@@ -18,6 +18,7 @@ class AllRecords extends React.Component {
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
     this.deleteRecord = this.deleteRecord.bind(this);
     this.reset = this.reset.bind(this);
+    this.displayReceipts = this.displayReceipts.bind(this);
   }
 
   componentDidMount() {
@@ -96,6 +97,16 @@ class AllRecords extends React.Component {
       .then(result => result.json())
       .then(result => this.reset(newRecords))
       .catch(err => console.error(err));
+  }
+
+  displayReceipts(record, recordIndex) {
+    return (
+      record.receipt.map((receipt, receiptIndex) => {
+        return (
+          <img key={receipt[receiptIndex]} src={receipt}></img>
+        );
+      })
+    );
   }
 
   displayRecordsList() {
@@ -188,13 +199,17 @@ class AllRecords extends React.Component {
                               {recordToEdit === `${record.datePerformed} ${recordIndex}` && <a className='btn fs-4 text-danger' onClick={() => this.setState({ recordToEdit: null, missingInput: false })}><i className="bi bi-x-square"></i></a>}
                             </div>
                             {recordToEdit === `${record.datePerformed} ${recordIndex}` && this.deleteModal(record, recordIndex, accIndex)}
+                            <div className='col-lg-4 col-3'>
+                              {record.receipt[0] && this.displayReceipts(record, recordIndex)}
+                            </div>
                           </Form>
                         );
                       })
                     }
                     <div className='text-capitalize row fs-3 ms-lg-5'>
                     {missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>{missingInput}</p>}
-                      <div className='col-lg-11 col-10 m-0 p-3 text-end'>
+
+                      <div className='col-lg-7 col-6 m-0 p-3 text-end'>
                         {recordToEdit !== null
                           ? <>
                             <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={recordToEdit}>Save</Button>

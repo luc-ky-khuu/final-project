@@ -38,18 +38,24 @@ class AddForm extends React.Component {
       });
       return;
     }
-
-    const newRecord = { photoUrl, date, cost, record, mileage, vehicleId: this.props.vehicleId };
+    const formData = new FormData();
+    formData.append('photoUrl', photoUrl);
+    formData.append('data', date);
+    formData.append('cost', cost);
+    formData.append('record', record);
+    formData.append('mileage', mileage);
+    formData.append('vehicleId', this.props.vehicleId);
     fetch(`/api/garage/add-record/${this.props.vehicleId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newRecord)
+      body: formData
     })
       .then(result => result.json())
       .then(data => {
         this.reset();
+        this.fileInputRef.current.value = null;
         this.props.toggleModal();
         this.props.addRecord(data);
       })
