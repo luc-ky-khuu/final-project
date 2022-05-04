@@ -83,7 +83,7 @@ app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
 
 app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
   const { vehicleId } = req.params;
-  const { record, date, mileage, cost } = req.body;
+  const { record, date, mileage, cost, photoUrl } = req.body;
   if (vehicleId < 1 || !Number(vehicleId)) {
     throw new ClientError(400, 'vehicleId must be a positive integer');
   }
@@ -91,11 +91,11 @@ app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
     throw new ClientError(400, 'Maintenance name, date, mileage, and cost are required');
   }
   const sql = `
-    insert  into "records" ("vehicleId", "maintenanceName", "datePerformed", "mileage", "cost")
-    values  ($1, $2, $3, $4, $5)
+    insert  into "records" ("vehicleId", "maintenanceName", "datePerformed", "mileage", "cost", "receiptUrl")
+    values  ($1, $2, $3, $4, $5, $6)
     returning *
   `;
-  const params = [vehicleId, record, date, mileage, cost];
+  const params = [vehicleId, record, date, mileage, cost, photoUrl];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);

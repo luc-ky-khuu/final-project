@@ -8,16 +8,18 @@ class AddForm extends React.Component {
       date: '',
       cost: '',
       record: '',
-      mileage: ''
+      mileage: '',
+      photoUrl: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.reset = this.reset.bind(this);
+    this.fileInputRef = React.createRef();
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    let { date, cost, record, mileage } = this.state;
+    let { date, cost, record, mileage, photoUrl } = this.state;
     if (mileage.includes(',')) {
       mileage = mileage.replace(/,/g, '');
     }
@@ -37,7 +39,7 @@ class AddForm extends React.Component {
       return;
     }
 
-    const newRecord = { date, cost, record, mileage, vehicleId: this.props.vehicleId };
+    const newRecord = { photoUrl, date, cost, record, mileage, vehicleId: this.props.vehicleId };
     fetch(`/api/garage/add-record/${this.props.vehicleId}`, {
       method: 'POST',
       headers: {
@@ -67,7 +69,8 @@ class AddForm extends React.Component {
       date: '',
       cost: '',
       record: '',
-      mileage: ''
+      mileage: '',
+      photoUrl: ''
     });
   }
 
@@ -93,6 +96,16 @@ class AddForm extends React.Component {
               </InputGroup>
             </Form.Group>
           </Row>
+          <Form.Group controlId='photoUrl' className='mb-3'>
+            <Form.Label>Upload Receipt</Form.Label>
+            <Form.Control
+              accept='.png, .jpg, .jpeg'
+              onChange={this.handleChange}
+              ref={this.fileInputRef}
+              name='photoUrl'
+              type='file'
+            />
+          </Form.Group>
           <Row className='justify-content-between'>
             {this.state.missingInput && <p className='text-danger'>{this.state.missingInput}</p>}
             <div className='col'>
