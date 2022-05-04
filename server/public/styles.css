@@ -121,6 +121,17 @@ ul {
   margin: auto;
 }
 
+.receipt {
+  overflow: hidden;
+  height: 100%;
+  width: 80px;
+}
+
+.receipt-container {
+  height: 80px;
+  overflow-x: auto;
+}
+
 #menu {
   height: calc(100vh - 70px);
 }

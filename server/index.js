@@ -81,7 +81,7 @@ app.get('/api/garage/recent-history/:vehicleId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
+app.post('/api/garage/add-record/:vehicleId', uploadsMiddleware, (req, res, next) => {
   const { vehicleId } = req.params;
   const { record, date, mileage, cost } = req.body;
   if (vehicleId < 1 || !Number(vehicleId)) {
@@ -90,12 +90,16 @@ app.post('/api/garage/add-record/:vehicleId', (req, res, next) => {
   if (!record || !date || !mileage || !cost) {
     throw new ClientError(400, 'Maintenance name, date, mileage, and cost are required');
   }
+  let photoUrl = null;
+  if (req.file) {
+    photoUrl = req.file.location;
+  }
   const sql = `
-    insert  into "records" ("vehicleId", "maintenanceName", "datePerformed", "mileage", "cost")
-    values  ($1, $2, $3, $4, $5)
+    insert  into "records" ("vehicleId", "maintenanceName", "datePerformed", "mileage", "cost", "receiptUrl")
+    values  ($1, $2, $3, $4, $5, $6)
     returning *
   `;
-  const params = [vehicleId, record, date, mileage, cost];
+  const params = [vehicleId, record, date, mileage, cost, photoUrl];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);
@@ -113,7 +117,8 @@ app.get('/api/vehicles/:vehicleId/records', (req, res, next) => {
             json_agg("cost") as "cost",
             sum("cost") as "total",
             "mileage",
-            to_char("datePerformed"::date, 'yyyy-mm-dd') as "datePerformed"
+            to_char("datePerformed"::date, 'yyyy-mm-dd') as "datePerformed",
+            json_agg("receiptUrl") as "receipt"
       from  "records"
      where  "vehicleId" = $1
      group  by "datePerformed", mileage

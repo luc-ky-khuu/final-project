@@ -36,7 +36,8 @@ CREATE TABLE "public"."records" (
 	"maintenanceName" TEXT NOT NULL,
 	"datePerformed" DATE NOT NULL,
 	"mileage" integer NOT NULL,
-	"cost" integer NOT NULL
+	"cost" integer NOT NULL,
+  "receiptUrl" TEXT
 ) WITH (
   OIDS=FALSE
 );

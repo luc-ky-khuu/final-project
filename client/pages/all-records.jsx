@@ -12,12 +12,16 @@ class AllRecords extends React.Component {
       editRecordCost: null,
       editRecordDate: null,
       missingInput: false,
-      deleteModal: false
+      deleteModal: false,
+      receiptModal: false,
+      pictureToDisplay: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
     this.deleteRecord = this.deleteRecord.bind(this);
     this.reset = this.reset.bind(this);
+    this.displayReceipts = this.displayReceipts.bind(this);
+    this.toggleReceiptModal = this.toggleReceiptModal.bind(this);
   }
 
   componentDidMount() {
@@ -192,9 +196,12 @@ class AllRecords extends React.Component {
                         );
                       })
                     }
-                    <div className='text-capitalize row fs-3 ms-lg-5'>
+                    <div className='text-capitalize row fs-3 ms-lg-5 mt-3'>
                     {missingInput && <p className='fs-5 col-lg-11 col-10 m-0 p-3 text-end text-danger'>{missingInput}</p>}
-                      <div className='col-lg-11 col-10 m-0 p-3 text-end'>
+                    <div className='col-lg-7 col-6'>
+                        {record.receipt[0] && this.displayReceipts(record)}
+                      </div>
+                      <div className='col-lg-4 col-5 m-0 p-3 text-end'>
                         {recordToEdit !== null
                           ? <>
                             <Button variant='outline-light' className='border-0 work-sans blue-button me-3' type='submit' form={recordToEdit}>Save</Button>
@@ -266,6 +273,46 @@ class AllRecords extends React.Component {
         </Modal>
       </>
     );
+  }
+
+  displayReceipts(record) {
+    return (
+      <div className="row flex-nowrap gap-2 receipt-container">
+        {
+          record.receipt.map((receipt, index) => {
+            return (
+              <button key={receipt} className='receipt border border-dark btn h-100 col-2'>
+                  <img className='receipt' src={receipt} onClick={this.toggleReceiptModal}></img>
+                  {this.receiptModal(receipt)}
+              </button>
+            );
+          })
+        }
+      </div>
+    );
+  }
+
+  receiptModal() {
+    return (
+      <>
+        <Modal centered show={this.state.receiptModal} onHide={() => this.toggleReceiptModal()}>
+            <img className='h-50' src={this.state.pictureToDisplay}></img>
+        </Modal>
+      </>
+    );
+  }
+
+  toggleReceiptModal(event) {
+    if (!event) {
+      this.setState({
+        receiptModal: !this.state.receiptModal
+      });
+    }
+    this.setState({
+      receiptModal: !this.state.receiptModal,
+      pictureToDisplay: event.target.src
+    });
+
   }
 
   toggleDeleteModal() {
