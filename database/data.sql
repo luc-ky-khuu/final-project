@@ -137,4 +137,68 @@ insert into "public"."records" (
   '2022-03-01',
   140122,
   5
-);
+),
+(
+  1,
+  'gas',
+  '2022-05-04',
+  203000,
+  60,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651695637975.png'
+),
+(
+  1,
+  'headlight',
+  '2022-05-04',
+  203000,
+  60,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651695725654.jpg'
+),
+(
+  1,
+  'radiator',
+  '2022-05-04',
+  203000,
+  300,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651695770694.jpg'
+),
+(
+  1,
+  'oil change',
+  '2022-05-04',
+  203000,
+  70,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651695928055.png'
+),
+(
+  1,
+  'car wash',
+  '2022-05-04',
+  203000,
+  21,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651696147837.png'
+),
+(
+  1,
+  'registration',
+  '2022-05-04',
+  203000,
+  21,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651696169653.jpg'
+),
+(
+  1,
+  'registration',
+  '2022-05-04',
+  203000,
+  180,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651696209670.jpg'
+),
+(
+  1,
+  'registration',
+  '2022-05-04',
+  203000,
+  123,
+  'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651696288792.png'
+)

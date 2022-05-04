@@ -13,7 +13,7 @@ class AllRecords extends React.Component {
       editRecordDate: null,
       missingInput: false,
       deleteModal: false,
-      pictureModal: false,
+      receiptModal: false,
       pictureToDisplay: null
     };
     this.handleChange = this.handleChange.bind(this);
@@ -21,7 +21,7 @@ class AllRecords extends React.Component {
     this.deleteRecord = this.deleteRecord.bind(this);
     this.reset = this.reset.bind(this);
     this.displayReceipts = this.displayReceipts.bind(this);
-    this.togglePictureModal = this.togglePictureModal.bind(this);
+    this.toggleReceiptModal = this.toggleReceiptModal.bind(this);
   }
 
   componentDidMount() {
@@ -277,13 +277,13 @@ class AllRecords extends React.Component {
 
   displayReceipts(record) {
     return (
-      <div className="row flex-nowrap receipt-container">
+      <div className="row flex-nowrap gap-2 receipt-container">
         {
           record.receipt.map((receipt, index) => {
             return (
-              <button key={receipt} className='receipt btn h-100 col-2'>
-                  <img src={receipt} onClick={this.togglePictureModal}></img>
-                  {this.pictureModal(receipt)}
+              <button key={receipt} className='receipt border border-dark btn h-100 col-2'>
+                  <img className='receipt' src={receipt} onClick={this.toggleReceiptModal}></img>
+                  {this.receiptModal(receipt)}
               </button>
             );
           })
@@ -292,24 +292,24 @@ class AllRecords extends React.Component {
     );
   }
 
-  pictureModal() {
+  receiptModal() {
     return (
       <>
-        <Modal centered show={this.state.pictureModal} onHide={() => this.togglePictureModal()}>
+        <Modal centered show={this.state.receiptModal} onHide={() => this.toggleReceiptModal()}>
             <img className='h-50' src={this.state.pictureToDisplay}></img>
         </Modal>
       </>
     );
   }
 
-  togglePictureModal(event) {
+  toggleReceiptModal(event) {
     if (!event) {
       this.setState({
-        pictureModal: !this.state.pictureModal
+        receiptModal: !this.state.receiptModal
       });
     }
     this.setState({
-      pictureModal: !this.state.pictureModal,
+      receiptModal: !this.state.receiptModal,
       pictureToDisplay: event.target.src
     });
 
