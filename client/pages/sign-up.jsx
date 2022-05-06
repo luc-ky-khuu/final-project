@@ -1,12 +1,28 @@
 import React from 'react';
+import { Form, Button } from 'react-bootstrap';
 
 class SignUp extends React.Component {
 
   render() {
     return (
       <>
-        <div>
-          test
+        <h3 className='m-5'>
+          Sign Up For An Account
+        </h3>
+        <div className='d-flex row justify-content-center'>
+          <Form className='w-50 p-5 bg-white'>
+            <Form.Group className="mb-3 text-start" controlId="newUsername">
+              <Form.Label>Username</Form.Label>
+              <Form.Control type="text" name='username' placeholder="Enter username" />
+            </Form.Group>
+            <Form.Group className="mb-3 text-start" controlId="newPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" name='username' placeholder="Password" />
+            </Form.Group>
+            <Button className='w-100' variant="primary" type="submit">
+              Sign Up
+            </Button>
+          </Form>
         </div>
       </>
     );

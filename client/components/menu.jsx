@@ -15,7 +15,7 @@ class Menu extends React.Component {
             </li>
             <li className='p-3 fs-5 border-0 bg-transparent list-group-item list-group-item-action'>
               <a className='text-decoration-none text-reset' href='#'>
-                SignUp
+                Sign-Up
               </a>
             </li>
           </ul>
