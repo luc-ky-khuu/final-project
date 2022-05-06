@@ -245,13 +245,13 @@ app.post('/api/auth/sign-up', (req, res, next) => {
       const params = [username, hashed];
       const sql = `
         insert  into "users" ("username", "hashedPassword")
-        values($1, $2)
+                values($1, $2)
+        on conflict ("username") do nothing
         returning *
       `;
       db.query(sql, params)
         .then(result => {
-          const [userInfo] = result.rows;
-          res.status(201).json(userInfo);
+          res.status(201).json(result.rows);
         })
         .catch(err => {
           next(err);
