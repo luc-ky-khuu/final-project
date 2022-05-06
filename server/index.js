@@ -6,6 +6,7 @@ const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
 const app = express();
 const uploadsMiddleware = require('./uploadsMiddleware');
+const argon2 = require('argon2');
 
 app.use(staticMiddleware);
 
@@ -231,6 +232,34 @@ app.delete('/api/garage/delete-car/:vehicleId', (req, res, next) => {
       res.json(result.rows);
     })
     .catch(err => next(err));
+});
+
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+  argon2
+    .hash(password)
+    .then(hashed => {
+      const params = [username, hashed];
+      const sql = `
+        insert  into "users" ("username", "hashedPassword")
+        values($1, $2)
+        returning *
+      `;
+      db.query(sql, params)
+        .then(result => {
+          const [userInfo] = result.rows;
+          res.status(201).json(userInfo);
+        })
+        .catch(err => {
+          next(err);
+        });
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 app.use(errorMiddleware);
