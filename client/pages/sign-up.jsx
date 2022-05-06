@@ -8,7 +8,8 @@ class SignUp extends React.Component {
       username: '',
       password: '',
       error: '',
-      didSignUp: null
+      badName: null,
+      didSignUp: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,11 +19,39 @@ class SignUp extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+    if (this.state.badName) {
+      if (event.target.value.length >= 6 && event.target.name === 'username') {
+        this.setState({
+          badName: null
+        });
+      }
+    }
+    if (this.state.badPw) {
+      if (event.target.value.length >= 6 && event.target.name === 'password') {
+        this.setState({
+          badPw: null
+        });
+      }
+    }
+
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const { username, password } = this.state;
+    if (username.length < 6 || password.length < 6) {
+      if (username.length < 6) {
+        this.setState({
+          badName: 'Username must be at least 6 characters long'
+        });
+      }
+      if (password.length < 6) {
+        this.setState({
+          badPw: 'Password must be at least 6 characters long'
+        });
+      }
+      return;
+    }
     const info = {
       username: username,
       password: password
@@ -36,7 +65,7 @@ class SignUp extends React.Component {
       .then(userInfo => {
         if (!userInfo[0]) {
           this.setState({
-            didSignUp: false
+            badName: 'Username already exists, please make another'
           });
         } else {
           this.setState({
@@ -51,7 +80,9 @@ class SignUp extends React.Component {
   reset() {
     this.setState({
       username: '',
-      password: ''
+      password: '',
+      badPw: null,
+      badName: null
     });
   }
 
@@ -66,17 +97,28 @@ class SignUp extends React.Component {
             <Form.Group className="mb-3 text-start" controlId="newUsername">
               <Form.Label>Username</Form.Label>
               <Form.Control onChange={this.handleChange} value={this.state.username} type="text" name='username' placeholder="Enter username" />
-              {this.state.didSignUp === false &&
-                <p className='text-danger text-start'>
-                  Username already exists, please make another
-                </p>
+              {this.state.badName
+                ? <p className='text-danger text-start'>
+                    {this.state.badName}
+                  </p>
+                : <p className='text-muted'>
+                    Username must be at least 6 characters long
+                  </p>
               }
             </Form.Group>
             <Form.Group className="mb-3 text-start" controlId="newPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control onChange={this.handleChange} value={this.state.password} type="password" name='password' placeholder="Password" />
+              {this.state.badPw
+                ? <p className='text-danger text-start'>
+                  {this.state.badPw}
+                </p>
+                : <p className='text-muted'>
+                  Password must be at least 6 characters long
+                </p>
+              }
             </Form.Group>
-            {this.state.didSignUp === true &&
+            {this.state.didSignUp &&
               <p className='text-success text-start'>
                 Successfully Signed Up!
               </p>
