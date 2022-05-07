@@ -2,8 +2,8 @@ insert into "public"."users" (
   "username",
   "hashedPassword"
 ) values (
-  'admin',
-  'password'
+  'admin1',
+  '$argon2i$v=19$m=4096,t=3,p=1$9QVdBM4S/omp5Sdkmdx9tg$hPTzDPr8RlMpTveZJHKc9BK5vcgj+8bWQuWqKEsRKhM'
 );
 
 insert into "public"."vehicles" (
