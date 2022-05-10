@@ -164,7 +164,7 @@ class SignUp extends React.Component {
               </OverlayTrigger>
               {this.state.badName === 'Username already exists' &&
                 <p className='text-danger text-start'>
-                  Username already exists. Please make choose a different username.
+                  Username already exists. Please choose a different username.
                 </p>
               }
             </Form.Group>
