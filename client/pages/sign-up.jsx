@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
 class SignUp extends React.Component {
   constructor(props) {
@@ -13,11 +13,12 @@ class SignUp extends React.Component {
       pwHasNum: null,
       pwHasUpper: null,
       pwHasLower: null,
-      didSignUp: false,
-      tooltip: null
+      didSignUp: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.pwTooltip = this.pwTooltip.bind(this);
+    this.usernameTooltip = this.usernameTooltip.bind(this);
   }
 
   handleChange(event) {
@@ -31,7 +32,7 @@ class SignUp extends React.Component {
         });
       } else {
         this.setState({
-          badName: 'Username must be at least 6 characters long'
+          badName: 'At least 6 characters long'
         });
       }
     }
@@ -72,7 +73,7 @@ class SignUp extends React.Component {
     if (username.length < 6 || password.length < 6 || !pwHasUpper || !pwHasLower || !pwHasNum) {
       if (username.length < 6) {
         this.setState({
-          badName: 'Username must be at least 6 characters long'
+          badName: 'At least 6 characters long'
         });
       }
       if (password.length < 6) {
@@ -122,6 +123,42 @@ class SignUp extends React.Component {
       .catch(err => console.error(err));
   }
 
+  pwTooltip(props) {
+    return (
+      <Popover {...props}>
+        <Popover.Header>
+          Password Requirements:
+        </Popover.Header>
+        <Popover.Body>
+            <p {...(this.state.goodPwLength === false && { className: 'text-danger' })}>At least 6 characters long</p>
+            <p {...(this.state.pwHasUpper === false && { className: 'text-danger' })}>One uppercase letter</p>
+            <p {...(this.state.pwHasLower === false && { className: 'text-danger' })}>One lowercase letter</p>
+            <p {...(this.state.pwHasNum === false && { className: 'text-danger' })}>One number</p>
+        </Popover.Body>
+      </Popover>
+    );
+  }
+
+  usernameTooltip(props) {
+    return (
+      <Popover {...props}>
+        <Popover.Header>
+          Username Requirements
+        </Popover.Header>
+        <Popover.Body>
+          {this.state.badName
+            ? <p className='text-danger text-start'>
+              {this.state.badName}
+            </p>
+            : <p className='text-muted'>
+              At least 6 characters long
+            </p>
+          }
+        </Popover.Body>
+      </Popover>
+    );
+  }
+
   reset() {
     this.setState({
       username: '',
@@ -141,30 +178,23 @@ class SignUp extends React.Component {
             </h3>
             <Form.Group className="mb-3 text-start" controlId="newUsername">
               <Form.Label>Username</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.username} type="text" name='username'/>
-              {this.state.badName
-                ? <p className='text-danger text-start'>
-                    {this.state.badName}
-                  </p>
-                : <p className='text-muted'>
-                    Username must be at least 6 characters long
-                  </p>
-              }
+              <OverlayTrigger
+                placement="right"
+                trigger="focus"
+                overlay={this.usernameTooltip}
+              >
+                <Form.Control onChange={this.handleChange} value={this.state.username} type="text" name='username' />
+              </OverlayTrigger>
             </Form.Group>
             <Form.Group className="mb-3 text-start" controlId="newPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.password} type="password" name='password'/>
-                  <div className='text-muted' >
-                    <p>
-                      Password must:
-                    </p>
-                    <ul>
-                      <li {...(this.state.goodPwLength === false && { className: 'text-danger' })}>Be at least 6 characters long</li>
-                      <li {...(this.state.pwHasUpper === false && { className: 'text-danger' })}>Have one uppercase letter</li>
-                      <li {...(this.state.pwHasLower === false && { className: 'text-danger' })}>Have one lowercase letter</li>
-                      <li {...(this.state.pwHasNum === false && { className: 'text-danger' })}>Have one number</li>
-                    </ul>
-                  </div>
+              <OverlayTrigger
+                placement="right"
+                trigger="focus"
+                overlay={this.pwTooltip}
+              >
+                <Form.Control onChange={this.handleChange} value={this.state.password} type="password" name='password' />
+              </OverlayTrigger>
             </Form.Group>
             {this.state.didSignUp &&
               <p className='text-success text-start'>
