@@ -13,7 +13,8 @@ class SignUp extends React.Component {
       pwHasNum: null,
       pwHasUpper: null,
       pwHasLower: null,
-      didSignUp: false
+      didSignUp: false,
+      tooltip: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,29 +24,30 @@ class SignUp extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    if (this.state.badName) {
-      if (event.target.value.length >= 6 && event.target.name === 'username') {
+    if (event.target.name === 'username') {
+      if (event.target.value.length >= 6) {
         this.setState({
           badName: null
         });
       } else {
         this.setState({
-          badName: true
+          badName: 'Username must be at least 6 characters long'
         });
       }
     }
-    if (!this.state.goodPwLength) {
-      if (event.target.value.length >= 6 && event.target.name === 'password') {
-        this.setState({
-          goodPwLength: true
-        });
-      } else {
-        this.setState({
-          goodPwLength: false
-        });
-      }
-    }
+
     if (event.target.name === 'password') {
+      if (!this.state.goodPwLength) {
+        if (event.target.value.length >= 6) {
+          this.setState({
+            goodPwLength: true
+          });
+        } else {
+          this.setState({
+            goodPwLength: false
+          });
+        }
+      }
       this.checkPwRequirements(event.target.value, /[A-Z]/g, 'pwHasUpper');
       this.checkPwRequirements(event.target.value, /[a-z]/g, 'pwHasLower');
       this.checkPwRequirements(event.target.value, /[0-9]/g, 'pwHasNum');
