@@ -28,6 +28,10 @@ class SignUp extends React.Component {
         this.setState({
           badName: null
         });
+      } else {
+        this.setState({
+          badName: true
+        });
       }
     }
     if (!this.state.goodPwLength) {
@@ -35,25 +39,28 @@ class SignUp extends React.Component {
         this.setState({
           goodPwLength: true
         });
+      } else {
+        this.setState({
+          goodPwLength: false
+        });
       }
     }
-    if (event.target.name === 'password' && event.nativeEvent.data) {
-      const char = event.nativeEvent.data.charCodeAt(0);
-      if (char >= 97 && char <= 122) {
-        this.setState({
-          pwHasLower: true
-        });
-      }
-      if (char >= 65 && char <= 90) {
-        this.setState({
-          pwHasUpper: true
-        });
-      }
-      if (char >= 48 && char <= 57) {
-        this.setState({
-          pwHasNum: true
-        });
-      }
+    if (event.target.name === 'password') {
+      this.checkPwRequirements(event.target.value, /[A-Z]/g, 'pwHasUpper');
+      this.checkPwRequirements(event.target.value, /[a-z]/g, 'pwHasLower');
+      this.checkPwRequirements(event.target.value, /[0-9]/g, 'pwHasNum');
+    }
+  }
+
+  checkPwRequirements(pw, regex, state) {
+    if (pw.match(regex)) {
+      this.setState({
+        [state]: true
+      });
+    } else {
+      this.setState({
+        [state]: false
+      });
     }
   }
 
