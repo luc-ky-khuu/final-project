@@ -7,7 +7,6 @@ class SignUp extends React.Component {
     this.state = {
       username: '',
       password: '',
-      error: '',
       badName: null,
       goodPwLength: null,
       pwHasNum: null,
@@ -124,14 +123,11 @@ class SignUp extends React.Component {
           Username Requirements
         </Popover.Header>
         <Popover.Body>
-          {this.state.badName === 'At least 6 characters long'
-            ? <p className='text-danger text-start'>
+          <p {...(this.state.badName === 'At least 6 characters long'
+            ? { className: 'text-danger' }
+            : { className: 'text-muted' })}>
               At least 6 characters long
-            </p>
-            : <p className='text-muted'>
-              At least 6 characters long
-            </p>
-          }
+          </p>
         </Popover.Body>
       </Popover>
     );
@@ -142,7 +138,10 @@ class SignUp extends React.Component {
       username: '',
       password: '',
       goodPwLength: null,
-      badName: null
+      badName: null,
+      pwHasNum: null,
+      pwHasUpper: null,
+      pwHasLower: null
     });
   }
 
