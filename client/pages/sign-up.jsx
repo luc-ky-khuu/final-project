@@ -89,7 +89,7 @@ class SignUp extends React.Component {
       .then(userInfo => {
         if (!userInfo[0]) {
           this.setState({
-            badName: 'Username already exists, please make another'
+            badName: 'Username already exists'
           });
         } else {
           this.setState({
@@ -124,9 +124,9 @@ class SignUp extends React.Component {
           Username Requirements
         </Popover.Header>
         <Popover.Body>
-          {this.state.badName
+          {this.state.badName === 'At least 6 characters long'
             ? <p className='text-danger text-start'>
-              {this.state.badName}
+              At least 6 characters long
             </p>
             : <p className='text-muted'>
               At least 6 characters long
@@ -163,6 +163,11 @@ class SignUp extends React.Component {
               >
                 <Form.Control onChange={this.handleChange} value={this.state.username} type="text" name='username' />
               </OverlayTrigger>
+              {this.state.badName === 'Username already exists' &&
+                <p className='text-danger text-start'>
+                  Username already exists. Please make choose a different username.
+                </p>
+              }
             </Form.Group>
             <Form.Group className="mb-3 text-start" controlId="newPassword">
               <Form.Label>Password</Form.Label>
