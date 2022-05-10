@@ -13,7 +13,7 @@ class SignUp extends React.Component {
       pwHasNum: null,
       pwHasUpper: null,
       pwHasLower: null,
-      didSignUp: false
+      didSignUp: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,7 +28,7 @@ class SignUp extends React.Component {
     if (event.target.name === 'username') {
       if (event.target.value.length >= 6) {
         this.setState({
-          badName: null
+          badName: false
         });
       } else {
         this.setState({
@@ -71,31 +71,9 @@ class SignUp extends React.Component {
     event.preventDefault();
     const { username, password, pwHasUpper, pwHasLower, pwHasNum } = this.state;
     if (username.length < 6 || password.length < 6 || !pwHasUpper || !pwHasLower || !pwHasNum) {
-      if (username.length < 6) {
-        this.setState({
-          badName: 'At least 6 characters long'
-        });
-      }
-      if (password.length < 6) {
-        this.setState({
-          goodPwLength: false
-        });
-      }
-      if (!pwHasUpper) {
-        this.setState({
-          pwHasUpper: false
-        });
-      }
-      if (!pwHasLower) {
-        this.setState({
-          pwHasLower: false
-        });
-      }
-      if (!pwHasNum) {
-        this.setState({
-          pwHasNum: false
-        });
-      }
+      this.setState({
+        didSignUp: false
+      });
       return;
     }
     const info = {
@@ -196,9 +174,14 @@ class SignUp extends React.Component {
                 <Form.Control onChange={this.handleChange} value={this.state.password} type="password" name='password' />
               </OverlayTrigger>
             </Form.Group>
-            {this.state.didSignUp &&
+            {this.state.didSignUp === true &&
               <p className='text-success text-start'>
                 Account Created Successfully!
+              </p>
+             }
+             {this.state.didSignUp === false &&
+              <p className='text-danger text-start'>
+                Error creating account. Please check password and username requirements
               </p>
             }
             <Button className='mt-3 w-100 border-0 blue-button' variant="primary" type="submit">
