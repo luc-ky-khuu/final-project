@@ -60,7 +60,7 @@ class SignUp extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const { username, password, pwHasUpper, pwHasLower, pwHasNum } = this.state;
-    if (username.length < 6 || password.length < 6 || !(pwHasUpper || pwHasLower || pwHasNum)) {
+    if (username.length < 6 || password.length < 6 || !pwHasUpper || !pwHasLower || !pwHasNum) {
       if (username.length < 6) {
         this.setState({
           badName: 'Username must be at least 6 characters long'
@@ -126,7 +126,7 @@ class SignUp extends React.Component {
     return (
       <>
         <div className='d-flex row justify-content-center m-5'>
-          <Form className='w-50 p-5 bg-white' onSubmit={this.handleSubmit}>
+          <Form className='col-8 col-lg-6 p-5 bg-white' onSubmit={this.handleSubmit}>
             <h3 className='mb-4'>
               Create Account
             </h3>
