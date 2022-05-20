@@ -79,7 +79,7 @@ class SignUp extends React.Component {
       username: username,
       password: password
     };
-    fetch('/api/auth/sign-up', {
+    fetch('/api/auth/sign-in', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(info)

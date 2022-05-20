@@ -268,7 +268,19 @@ app.post('/api/auth/sign-in', (req, res) => {
   if (!username || !password) {
     throw new ClientError(400, 'username and password are required fields');
   }
-
+  const sql = `
+    select  *
+      from  "users"
+     where  "username" = $1
+  `;
+  const params = [username];
+  db.query(sql, params)
+    .then(result => {
+      const [userInfo] = result.rows;
+      if (!userInfo) {
+        throw new ClientError(401, 'invalid login');
+      }
+    });
 });
 
 app.use(errorMiddleware);
