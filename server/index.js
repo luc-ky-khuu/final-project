@@ -4,6 +4,7 @@ const db = require('./db');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
+// const jwt = require('jsonwebtoken');
 const app = express();
 const uploadsMiddleware = require('./uploadsMiddleware');
 const argon2 = require('argon2');
@@ -260,6 +261,10 @@ app.post('/api/auth/sign-up', (req, res, next) => {
     .catch(err => {
       next(err);
     });
+});
+
+app.post('/api/auth/sign-in', (req, res) => {
+
 });
 
 app.use(errorMiddleware);
