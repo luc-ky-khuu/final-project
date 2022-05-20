@@ -263,7 +263,7 @@ app.post('/api/auth/sign-up', (req, res, next) => {
     });
 });
 
-app.post('/api/auth/sign-in', (req, res) => {
+app.post('/api/auth/sign-in', (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(400, 'username and password are required fields');
@@ -290,9 +290,15 @@ app.post('/api/auth/sign-in', (req, res) => {
             username: userInfo.username
           };
           const token = jwt.sing(payload, process.env.JSON_PRIVATE_TOKEN);
-          res.status(201).json(token);
-        });
-    });
+          const resJSON = {
+            token: token,
+            user: payload
+          };
+          res.status(201).json(resJSON);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
