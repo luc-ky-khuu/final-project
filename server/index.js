@@ -4,7 +4,7 @@ const db = require('./db');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const app = express();
 const uploadsMiddleware = require('./uploadsMiddleware');
 const argon2 = require('argon2');
@@ -285,7 +285,12 @@ app.post('/api/auth/sign-in', (req, res) => {
           if (!result) {
             throw new ClientError(401, 'invalid login');
           }
-
+          const payload = {
+            userId: userInfo.userId,
+            username: userInfo.username
+          };
+          const token = jwt.sing(payload, process.env.JSON_PRIVATE_TOKEN);
+          res.status(201).json(token);
         });
     });
 });
