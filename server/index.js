@@ -280,6 +280,13 @@ app.post('/api/auth/sign-in', (req, res) => {
       if (!userInfo) {
         throw new ClientError(401, 'invalid login');
       }
+      argon2.verify(userInfo.hashedPassowrd, password)
+        .then(result => {
+          if (!result) {
+            throw new ClientError(401, 'invalid login');
+          }
+
+        });
     });
 });
 
