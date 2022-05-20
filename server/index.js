@@ -264,6 +264,10 @@ app.post('/api/auth/sign-up', (req, res, next) => {
 });
 
 app.post('/api/auth/sign-in', (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
 
 });
 
