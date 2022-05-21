@@ -5,7 +5,7 @@ import Menu from './components/menu';
 import CarDetails from './pages/car-details';
 import AllRecords from './pages/all-records';
 import VehicleId from './lib/vehicleId-context';
-import SignUp from './pages/sign-up';
+import SignIn from './pages/sign-in';
 
 function parseRoute(hashRoute) {
   if (hashRoute.startsWith('#')) {
@@ -56,7 +56,7 @@ export default class App extends React.Component {
     } else if (route.path === 'vehicle-records') {
       return <AllRecords vehicleId={vehicleId}/>;
     }
-    return <SignUp />;
+    return <SignIn />;
   }
 
   render() {

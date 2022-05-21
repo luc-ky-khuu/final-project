@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
-class SignUp extends React.Component {
+class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +12,8 @@ class SignUp extends React.Component {
       pwHasNum: null,
       pwHasUpper: null,
       pwHasLower: null,
-      didSignUp: null
+      didSignUp: null,
+      action: 'sign-in'
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -79,7 +80,7 @@ class SignUp extends React.Component {
       username: username,
       password: password
     };
-    fetch('/api/auth/sign-in', {
+    fetch('/api/auth/sign-up', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(info)
@@ -146,12 +147,13 @@ class SignUp extends React.Component {
   }
 
   render() {
+    const { action } = this.state;
     return (
       <>
         <div className='d-flex row justify-content-center m-5'>
           <Form className='col-8 col-lg-6 p-5 bg-white' onSubmit={this.handleSubmit}>
             <h3 className='mb-4'>
-              Create Account
+              {action === 'sign-in' ? 'Sign In' : 'Create Account'}
             </h3>
             <Form.Group className="mb-3 text-start" controlId="newUsername">
               <Form.Label>Username</Form.Label>
@@ -159,6 +161,7 @@ class SignUp extends React.Component {
                 placement="right"
                 trigger="focus"
                 overlay={this.usernameTooltip}
+                show={action !== 'sign-in'}
               >
                 <Form.Control onChange={this.handleChange} value={this.state.username} type="text" name='username' />
               </OverlayTrigger>
@@ -174,6 +177,7 @@ class SignUp extends React.Component {
                 placement="right"
                 trigger="focus"
                 overlay={this.pwTooltip}
+                show={action !== 'sign-in'}
               >
                 <Form.Control onChange={this.handleChange} value={this.state.password} type="password" name='password' />
               </OverlayTrigger>
@@ -189,7 +193,7 @@ class SignUp extends React.Component {
               </p>
             }
             <Button className='mt-3 w-100 border-0 blue-button' variant="primary" type="submit">
-              Sign Up
+              Sign In
             </Button>
           </Form>
         </div>
@@ -198,4 +202,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+export default SignIn;
