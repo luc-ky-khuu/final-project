@@ -156,7 +156,12 @@ class SignIn extends React.Component {
               {action === 'sign-in' ? 'Sign In' : 'Create Account'}
             </h3>
             <Form.Group className="mb-3 text-start" controlId="newUsername">
-              <Form.Label>Username</Form.Label>
+              <Form.Label className='d-flex flex-nowrap justify-content-between fw-bolder'>
+                Username
+                <p className='m-0 account-form'> Need an account?
+                  <a onClick={event => event.preventDefault()} className='fw-bolder account-form-button text-decoration-none'> Sign Up</a>
+                </p>
+              </Form.Label>
               <OverlayTrigger
                 placement="right"
                 trigger="focus"
@@ -172,7 +177,7 @@ class SignIn extends React.Component {
               }
             </Form.Group>
             <Form.Group className="mb-3 text-start" controlId="newPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className='fw-bolder'>Password</Form.Label>
               <OverlayTrigger
                 placement="right"
                 trigger="focus"
