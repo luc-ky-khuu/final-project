@@ -8,12 +8,81 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const uploadsMiddleware = require('./uploadsMiddleware');
 const argon2 = require('argon2');
+const authorization = require('./authorization');
 
 app.use(staticMiddleware);
 
 const jsonMiddleware = express.json();
 
 app.use(jsonMiddleware);
+
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+  argon2
+    .hash(password)
+    .then(hashed => {
+      const params = [username, hashed];
+      const sql = `
+        insert  into "users" ("username", "hashedPassword")
+                values($1, $2)
+        on conflict ("username") do nothing
+        returning *
+      `;
+      db.query(sql, params)
+        .then(result => {
+          res.status(201).json(result.rows);
+        })
+        .catch(err => {
+          next(err);
+        });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+app.post('/api/auth/sign-in', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+  const sql = `
+    select  *
+      from  "users"
+     where  "username" = $1
+  `;
+  const params = [username];
+  db.query(sql, params)
+    .then(result => {
+      const [userInfo] = result.rows;
+      if (!userInfo) {
+        throw new ClientError(401, 'invalid login');
+      }
+      argon2.verify(userInfo.hashedPassword, password)
+        .then(result => {
+          if (!result) {
+            throw new ClientError(401, 'invalid login');
+          }
+          const payload = {
+            userId: userInfo.userId,
+            username: userInfo.username
+          };
+          const token = jwt.sign(payload, process.env.JSON_PRIVATE_TOKEN);
+          const resJSON = {
+            token: token,
+            user: payload
+          };
+          res.status(201).json(resJSON);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.use(authorization);
 
 app.get('/api/garage', (req, res) => {
   const sql = `
@@ -231,72 +300,6 @@ app.delete('/api/garage/delete-car/:vehicleId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);
-    })
-    .catch(err => next(err));
-});
-
-app.post('/api/auth/sign-up', (req, res, next) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    throw new ClientError(400, 'username and password are required fields');
-  }
-  argon2
-    .hash(password)
-    .then(hashed => {
-      const params = [username, hashed];
-      const sql = `
-        insert  into "users" ("username", "hashedPassword")
-                values($1, $2)
-        on conflict ("username") do nothing
-        returning *
-      `;
-      db.query(sql, params)
-        .then(result => {
-          res.status(201).json(result.rows);
-        })
-        .catch(err => {
-          next(err);
-        });
-    })
-    .catch(err => {
-      next(err);
-    });
-});
-
-app.post('/api/auth/sign-in', (req, res, next) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    throw new ClientError(400, 'username and password are required fields');
-  }
-  const sql = `
-    select  *
-      from  "users"
-     where  "username" = $1
-  `;
-  const params = [username];
-  db.query(sql, params)
-    .then(result => {
-      const [userInfo] = result.rows;
-      if (!userInfo) {
-        throw new ClientError(401, 'invalid login');
-      }
-      argon2.verify(userInfo.hashedPassword, password)
-        .then(result => {
-          if (!result) {
-            throw new ClientError(401, 'invalid login');
-          }
-          const payload = {
-            userId: userInfo.userId,
-            username: userInfo.username
-          };
-          const token = jwt.sign(payload, process.env.JSON_PRIVATE_TOKEN);
-          const resJSON = {
-            token: token,
-            user: payload
-          };
-          res.status(201).json(resJSON);
-        })
-        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
