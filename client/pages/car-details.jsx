@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
 import CarForm from '../components/car-form';
-import VehicleId from '../lib/vehicleId-context';
+import VehicleContext from '../lib/vehicleContext-context';
 import Map from '../components/map';
 import LoadingSpinner from '../components/loading-spinner';
 
@@ -252,5 +252,5 @@ class CarDetails extends React.Component {
     }
   }
 }
-CarDetails.contextType = VehicleId;
+CarDetails.contextType = VehicleContext;
 export default CarDetails;

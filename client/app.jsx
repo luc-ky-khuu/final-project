@@ -4,7 +4,7 @@ import MyCars from './pages/my-garage';
 import Menu from './components/menu';
 import CarDetails from './pages/car-details';
 import AllRecords from './pages/all-records';
-import VehicleId from './lib/vehicleId-context';
+import VehicleContext from './lib/vehicleContext-context';
 import SignIn from './pages/sign-in';
 import decodeToken from '../server/decode-token';
 
@@ -20,8 +20,11 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash)
+      route: parseRoute(window.location.hash),
+      isAuthorizing: true,
+      user: null
     };
+    this.handleSignIn = this.handleSignIn.bind(this);
   }
 
   componentDidMount() {
@@ -44,7 +47,6 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     const vehicleId = route.params.get('vehicleId');
-    const contextValue = { vehicleId };
     if (!navigator.onLine) {
       return (
         <>
@@ -58,9 +60,7 @@ export default class App extends React.Component {
       return <MyCars />;
     } else if (route.path === 'garage/myCar') {
       return (
-        <VehicleId.Provider value={contextValue}>
-          <CarDetails />
-        </VehicleId.Provider>
+        <CarDetails />
       );
     } else if (route.path === 'vehicle-records') {
       return <AllRecords vehicleId={vehicleId}/>;
@@ -69,19 +69,24 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { route, user } = this.state;
+    const vehicleId = route.params.get('vehicleId');
+    const contextValue = { vehicleId, user };
     return (
       <>
-        <Navbar route={this.state.route.path}/>
-        <div className='container'>
-          <div className='justify-content-center row'>
-            <div className='col-lg-2 d-none d-lg-block px-0'>
-              <Menu />
-            </div>
-            <div className='text-center col-lg-10 '>
-              {this.renderPage()}
+        <VehicleContext.Provider value={contextValue}>
+          <Navbar route={this.state.route.path}/>
+          <div className='container'>
+            <div className='justify-content-center row'>
+              <div className='col-lg-2 d-none d-lg-block px-0'>
+                <Menu />
+              </div>
+              <div className='text-center col-lg-10 '>
+                {this.renderPage()}
+              </div>
             </div>
           </div>
-        </div>
+        </VehicleContext.Provider>
       </>
     );
   }
