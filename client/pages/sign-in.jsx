@@ -13,12 +13,13 @@ class SignIn extends React.Component {
       pwHasUpper: null,
       pwHasLower: null,
       didSignUp: null,
-      action: 'sign-in'
+      action: 'Sign-In'
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.pwTooltip = this.pwTooltip.bind(this);
     this.usernameTooltip = this.usernameTooltip.bind(this);
+    this.changeForm = this.changeForm.bind(this);
   }
 
   handleChange(event) {
@@ -134,6 +135,17 @@ class SignIn extends React.Component {
     );
   }
 
+  changeForm(event) {
+    event.preventDefault();
+    const sign = {
+      'Sign-In': 'Sign-Up',
+      'Sign-Up': 'Sign-In'
+    };
+    this.setState({
+      action: sign[this.state.action]
+    });
+  }
+
   reset() {
     this.setState({
       username: '',
@@ -153,20 +165,19 @@ class SignIn extends React.Component {
         <div className='d-flex row justify-content-center m-5'>
           <Form className='col-8 col-lg-6 p-5 bg-white' onSubmit={this.handleSubmit}>
             <h3 className='mb-4'>
-              {action === 'sign-in' ? 'Sign In' : 'Create Account'}
+              {action === 'Sign-In' ? 'Sign In' : 'Create Account'}
             </h3>
             <Form.Group className="mb-3 text-start" controlId="newUsername">
               <Form.Label className='d-flex flex-nowrap justify-content-between fw-bolder'>
                 Username
-                <p className='m-0 account-form'> Need an account?
-                  <a onClick={event => event.preventDefault()} className='fw-bolder account-form-button text-decoration-none'> Sign Up</a>
+                <p className='m-0 account-form'> {action === 'Sign-Up' ? 'Have an Account?' : 'Need an account?'}
+                  <a onClick={event => this.changeForm(event)} className='fw-bolder account-form-button text-decoration-none'> {action === 'Sign-Up' ? 'Sign-In' : 'Sign-Up'}</a>
                 </p>
               </Form.Label>
               <OverlayTrigger
                 placement="right"
-                trigger="focus"
+                trigger={action === 'Sign-Up' && 'focus'}
                 overlay={this.usernameTooltip}
-                show={action !== 'sign-in'}
               >
                 <Form.Control onChange={this.handleChange} value={this.state.username} type="text" name='username' />
               </OverlayTrigger>
@@ -180,9 +191,8 @@ class SignIn extends React.Component {
               <Form.Label className='fw-bolder'>Password</Form.Label>
               <OverlayTrigger
                 placement="right"
-                trigger="focus"
+                trigger={action === 'Sign-Up' && 'focus'}
                 overlay={this.pwTooltip}
-                show={action !== 'sign-in'}
               >
                 <Form.Control onChange={this.handleChange} value={this.state.password} type="password" name='password' />
               </OverlayTrigger>
@@ -198,7 +208,7 @@ class SignIn extends React.Component {
               </p>
             }
             <Button className='mt-3 w-100 border-0 blue-button' variant="primary" type="submit">
-              Sign In
+              {action}
             </Button>
           </Form>
         </div>
