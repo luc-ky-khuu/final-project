@@ -6,6 +6,7 @@ import CarDetails from './pages/car-details';
 import AllRecords from './pages/all-records';
 import VehicleId from './lib/vehicleId-context';
 import SignIn from './pages/sign-in';
+import decodeToken from '../server/decode-token';
 
 function parseRoute(hashRoute) {
   if (hashRoute.startsWith('#')) {
@@ -28,8 +29,16 @@ export default class App extends React.Component {
       this.setState({
         route: parseRoute(window.location.hash)
       });
-
     });
+    const token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
+    const user = token ? decodeToken(token) : null;
+    this.setState({ user, isAuthorizing: false });
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('vehicle-expenses-tracker-jwt', token);
+    this.setState({ user });
   }
 
   renderPage() {
