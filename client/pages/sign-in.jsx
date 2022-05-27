@@ -70,7 +70,7 @@ class SignIn extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { username, password, pwHasUpper, pwHasLower, pwHasNum } = this.state;
+    const { username, password, pwHasUpper, pwHasLower, pwHasNum, action } = this.state;
     if (username.length < 6 || password.length < 6 || !pwHasUpper || !pwHasLower || !pwHasNum) {
       this.setState({
         didSignUp: false
@@ -81,25 +81,38 @@ class SignIn extends React.Component {
       username: username,
       password: password
     };
-    fetch('/api/auth/sign-up', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(info)
-    })
-      .then(result => result.json())
-      .then(userInfo => {
-        if (!userInfo[0]) {
-          this.setState({
-            badName: 'Username already exists'
-          });
-        } else {
-          this.setState({
-            didSignUp: true
-          });
-          this.reset();
-        }
+    if (action === 'Sign-Up') {
+      fetch('/api/auth/sign-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(info)
       })
-      .catch(err => console.error(err));
+        .then(result => result.json())
+        .then(userInfo => {
+          if (!userInfo[0]) {
+            this.setState({
+              badName: 'Username already exists'
+            });
+          } else {
+            this.setState({
+              didSignUp: true
+            });
+            this.reset();
+          }
+        })
+        .catch(err => console.error(err));
+    } else {
+      fetch('/api/auth/sign-in', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(info)
+      })
+        .then(result => result.json())
+        .then(userInfo => {
+          // console.log(userInfo);
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   pwTooltip(props) {
@@ -165,7 +178,7 @@ class SignIn extends React.Component {
         <div className='d-flex row justify-content-center m-5'>
           <Form className='col-8 col-lg-6 p-5 bg-white' onSubmit={this.handleSubmit}>
             <h3 className='mb-4'>
-              {action === 'Sign-In' ? 'Sign In' : 'Create Account'}
+              {action === 'Sign-In' ? 'Sign-In' : 'Create Account'}
             </h3>
             <Form.Group className="mb-3 text-start" controlId="newUsername">
               <Form.Label className='d-flex flex-nowrap justify-content-between fw-bolder'>

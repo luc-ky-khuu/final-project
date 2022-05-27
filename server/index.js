@@ -280,7 +280,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       if (!userInfo) {
         throw new ClientError(401, 'invalid login');
       }
-      argon2.verify(userInfo.hashedPassowrd, password)
+      argon2.verify(userInfo.hashedPassword, password)
         .then(result => {
           if (!result) {
             throw new ClientError(401, 'invalid login');
@@ -289,7 +289,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
             userId: userInfo.userId,
             username: userInfo.username
           };
-          const token = jwt.sing(payload, process.env.JSON_PRIVATE_TOKEN);
+          const token = jwt.sign(payload, process.env.JSON_PRIVATE_TOKEN);
           const resJSON = {
             token: token,
             user: payload
