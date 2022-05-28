@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
-import VehicleId from '../lib/vehicleId-context';
+import VehicleContext from '../lib/vehicleContext-context';
 class CarForm extends React.Component {
 
   constructor(props) {
@@ -173,5 +173,5 @@ class CarForm extends React.Component {
     );
   }
 }
-CarForm.contextType = VehicleId;
+CarForm.contextType = VehicleContext;
 export default CarForm;

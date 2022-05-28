@@ -70,8 +70,9 @@ export default class App extends React.Component {
 
   render() {
     const { route, user } = this.state;
+    const { handleSignIn } = this;
     const vehicleId = route.params.get('vehicleId');
-    const contextValue = { vehicleId, user };
+    const contextValue = { vehicleId, user, handleSignIn };
     return (
       <>
         <VehicleContext.Provider value={contextValue}>

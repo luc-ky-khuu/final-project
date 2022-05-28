@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import VehicleContext from '../lib/vehicleContext-context';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -109,7 +110,7 @@ class SignIn extends React.Component {
       })
         .then(result => result.json())
         .then(userInfo => {
-          // console.log(userInfo);
+          this.context.handleSignIn(userInfo);
         })
         .catch(err => console.error(err));
     }
@@ -229,5 +230,5 @@ class SignIn extends React.Component {
     );
   }
 }
-
+SignIn.contextType = VehicleContext;
 export default SignIn;
