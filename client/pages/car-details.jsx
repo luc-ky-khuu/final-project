@@ -2,10 +2,9 @@ import React from 'react';
 import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
 import CarForm from '../components/car-form';
-import VehicleContext from '../lib/vehicleContext-context';
+import Context from '../lib/vehicleContext-context';
 import Map from '../components/map';
 import LoadingSpinner from '../components/loading-spinner';
-
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +23,11 @@ class CarDetails extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/garage/recent-history/${this.context.vehicleId}`)
+    fetch(`/api/garage/recent-history/${this.context.vehicleId}`,
+      {
+        headers: { 'X-Access-Token': this.context.token }
+      }
+    )
       .then(result => result.json())
       .then(result => {
         if (result.error) {
@@ -252,5 +255,5 @@ class CarDetails extends React.Component {
     }
   }
 }
-CarDetails.contextType = VehicleContext;
+CarDetails.contextType = Context;
 export default CarDetails;

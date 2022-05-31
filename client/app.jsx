@@ -33,16 +33,16 @@ export default class App extends React.Component {
         route: parseRoute(window.location.hash)
       });
     });
-    const token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
-    const user = token ? decodeToken(token) : null;
+    this.token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
+    const user = this.token ? decodeToken(this.token) : null;
     this.setState({ user, isAuthorizing: false });
   }
 
   handleSignIn(result) {
     const { user, token } = result;
     window.localStorage.setItem('vehicle-expenses-tracker-jwt', token);
+    this.token = token;
     this.setState({ user });
-    // need to figure out way to pass token to x-access-token header
   }
 
   renderPage() {
@@ -74,9 +74,8 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.isAuthorizing) return null;
-    const token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
     const { route, user } = this.state;
-    const { handleSignIn } = this;
+    const { handleSignIn, token } = this;
     const vehicleId = route.params.get('vehicleId');
     const contextValue = { vehicleId, user, handleSignIn, token };
     return (

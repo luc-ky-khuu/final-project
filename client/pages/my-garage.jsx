@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Button, Modal } from 'react-bootstrap';
 import CarForm from '../components/car-form';
 import LoadingSpinner from '../components/loading-spinner';
-import vehicleContext from '../lib/vehicleContext-context';
+import Context from '../lib/vehicleContext-context';
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
@@ -30,7 +30,8 @@ class MyCars extends React.Component {
   deleteCar() {
     const { cars, vehicleIndex } = this.state;
     fetch(`/api/garage/delete-car/${cars[vehicleIndex].vehicleId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: { 'X-Access-Token': this.context.token }
     })
       .then(result => result.json())
       .then(result => {
@@ -144,5 +145,5 @@ class MyCars extends React.Component {
     }
   }
 }
-MyCars.contextType = vehicleContext;
+MyCars.contextType = Context;
 export default MyCars;

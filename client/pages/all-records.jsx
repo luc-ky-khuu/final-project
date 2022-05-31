@@ -1,6 +1,7 @@
 import React from 'react';
 import { Accordion, Form, Button, InputGroup, Modal } from 'react-bootstrap';
 import LoadingSpinner from '../components/loading-spinner';
+import Context from '../lib/vehicleContext-context';
 class AllRecords extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +26,9 @@ class AllRecords extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/vehicles/${this.props.vehicleId}/records`)
+    fetch(`/api/vehicles/${this.props.vehicleId}/records`, {
+      headers: { 'X-Access-Token': this.context.token }
+    })
       .then(result => result.json())
       .then(result => {
         if (result.error) {
@@ -92,7 +95,8 @@ class AllRecords extends React.Component {
       {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Access-Token': this.context.token
         },
         body: JSON.stringify(updatedRecords)
       }
@@ -231,7 +235,8 @@ class AllRecords extends React.Component {
       {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Access-Token': this.context.token
         },
         body: JSON.stringify(recordToDelete)
       })
@@ -357,5 +362,5 @@ class AllRecords extends React.Component {
     }
   }
 }
-
+AllRecords.contextType = Context;
 export default AllRecords;
