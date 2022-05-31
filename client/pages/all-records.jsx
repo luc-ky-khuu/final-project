@@ -228,13 +228,13 @@ class AllRecords extends React.Component {
   }
 
   deleteRecord(record, recordIndex, accIndex) {
-    const { vehicleId, token, user } = this.context;
+    const { vehicleId, token } = this.context;
     const recordToDelete = {
       date: record.datePerformed,
       cost: record.cost[recordIndex],
       name: record.names[recordIndex]
     };
-    fetch(`/api/garage/${vehicleId}/${user.userId}/delete-record`,
+    fetch(`/api/garage/${vehicleId}/delete-record`,
       {
         method: 'DELETE',
         headers: {
