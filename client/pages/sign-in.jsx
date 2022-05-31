@@ -96,8 +96,10 @@ class SignIn extends React.Component {
             });
           } else {
             this.setState({
-              didSignUp: true
+              didSignUp: true,
+              action: 'Sign-In'
             });
+            setTimeout(() => this.setState({ didSignUp: null }), 3000);
             this.reset();
           }
         })

@@ -61,7 +61,12 @@ export default class App extends React.Component {
   }
 
   renderPage() {
-    const { route } = this.state;
+    const { route, user } = this.state;
+    const page = {
+      garage: <MyCars />,
+      'garage/myCar': <CarDetails />,
+      'vehicle-records': <AllRecords />
+    };
     if (!navigator.onLine) {
       return (
         <>
@@ -71,15 +76,11 @@ export default class App extends React.Component {
         </>
       );
     }
-    if (!this.state.user) {
+    if (!user) {
       this.redirect();
       return <SignIn />;
-    } else if (route.path === 'garage') {
-      return <MyCars />;
-    } else if (route.path === 'garage/myCar') {
-      return <CarDetails />;
-    } else if (route.path === 'vehicle-records') {
-      return <AllRecords />;
+    } else if (page[route.path]) {
+      return page[route.path];
     }
     return <SignIn />;
   }
