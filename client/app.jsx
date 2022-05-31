@@ -25,6 +25,7 @@ export default class App extends React.Component {
       user: null
     };
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.redirect = this.redirect.bind(this);
   }
 
   componentDidMount() {
@@ -42,7 +43,21 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('vehicle-expenses-tracker-jwt', token);
     this.token = token;
-    this.setState({ user });
+    this.setState({
+      user
+    });
+    this.redirect();
+  }
+
+  redirect() {
+    const url = new URL(window.location);
+    if (this.state.user) {
+      url.hash = 'garage';
+    } else {
+      url.hash = '#sign-in';
+    }
+    window.location.replace(url);
+    return null;
   }
 
   renderPage() {
@@ -57,14 +72,12 @@ export default class App extends React.Component {
       );
     }
     if (!this.state.user) {
+      this.redirect();
       return <SignIn />;
-    }
-    if (route.path === 'garage') {
+    } else if (route.path === 'garage') {
       return <MyCars />;
     } else if (route.path === 'garage/myCar') {
-      return (
-        <CarDetails />
-      );
+      return <CarDetails />;
     } else if (route.path === 'vehicle-records') {
       return <AllRecords />;
     }
