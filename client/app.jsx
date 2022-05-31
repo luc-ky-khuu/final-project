@@ -6,7 +6,7 @@ import CarDetails from './pages/car-details';
 import AllRecords from './pages/all-records';
 import VehicleContext from './lib/vehicleContext-context';
 import SignIn from './pages/sign-in';
-import decodeToken from '../server/decode-token';
+import decodeToken from './lib/decode-token';
 
 function parseRoute(hashRoute) {
   if (hashRoute.startsWith('#')) {
@@ -42,6 +42,7 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('vehicle-expenses-tracker-jwt', token);
     this.setState({ user });
+    // need to figure out way to pass token to x-access-token header
   }
 
   renderPage() {
@@ -56,6 +57,9 @@ export default class App extends React.Component {
         </>
       );
     }
+    if (!this.state.user) {
+      return <SignIn />;
+    }
     if (route.path === 'garage') {
       return <MyCars />;
     } else if (route.path === 'garage/myCar') {
@@ -69,10 +73,12 @@ export default class App extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthorizing) return null;
+    const token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
     const { route, user } = this.state;
     const { handleSignIn } = this;
     const vehicleId = route.params.get('vehicleId');
-    const contextValue = { vehicleId, user, handleSignIn };
+    const contextValue = { vehicleId, user, handleSignIn, token };
     return (
       <>
         <VehicleContext.Provider value={contextValue}>

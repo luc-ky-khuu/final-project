@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Button, Modal } from 'react-bootstrap';
 import CarForm from '../components/car-form';
 import LoadingSpinner from '../components/loading-spinner';
+import vehicleContext from '../lib/vehicleContext-context';
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
@@ -77,7 +78,9 @@ class MyCars extends React.Component {
   }
 
   getCars() {
-    fetch('/api/garage')
+    fetch('/api/garage', {
+      headers: { 'X-Access-Token': this.context.token }
+    })
       .then(cars => cars.json())
       .then(result => {
         this.setState({
@@ -141,4 +144,5 @@ class MyCars extends React.Component {
     }
   }
 }
+MyCars.contextType = vehicleContext;
 export default MyCars;
