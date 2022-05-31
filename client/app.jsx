@@ -47,7 +47,6 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
-    const vehicleId = route.params.get('vehicleId');
     if (!navigator.onLine) {
       return (
         <>
@@ -67,7 +66,7 @@ export default class App extends React.Component {
         <CarDetails />
       );
     } else if (route.path === 'vehicle-records') {
-      return <AllRecords vehicleId={vehicleId}/>;
+      return <AllRecords />;
     }
     return <SignIn />;
   }

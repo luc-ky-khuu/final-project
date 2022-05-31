@@ -26,7 +26,7 @@ class AllRecords extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/vehicles/${this.props.vehicleId}/records`, {
+    fetch(`/api/vehicles/${this.context.vehicleId}/records`, {
       headers: { 'X-Access-Token': this.context.token }
     })
       .then(result => result.json())
@@ -91,7 +91,7 @@ class AllRecords extends React.Component {
     newRecords[accIndex].total = (parseInt(records[accIndex].total) - parseInt(record.cost[recordIndex])) + parseInt(editRecordCost);
     names[recordIndex] = editRecordName;
     cost[recordIndex] = editRecordCost;
-    fetch(`/api/garage/${this.props.vehicleId}/edit-records`,
+    fetch(`/api/garage/${this.context.vehicleId}/edit-records`,
       {
         method: 'PUT',
         headers: {
@@ -231,7 +231,7 @@ class AllRecords extends React.Component {
       cost: record.cost[recordIndex],
       name: record.names[recordIndex]
     };
-    fetch(`/api/garage/${this.props.vehicleId}/delete-record`,
+    fetch(`/api/garage/${this.context.vehicleId}/delete-record`,
       {
         method: 'DELETE',
         headers: {
