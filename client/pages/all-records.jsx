@@ -65,7 +65,7 @@ class AllRecords extends React.Component {
   handleSubmit(event, record, recordIndex, accIndex) {
     event.preventDefault();
     let { editRecordName, editRecordCost, records } = this.state;
-    const { vehicleId, token, user } = this.context;
+    const { vehicleId, token } = this.context;
     if (!editRecordName || !editRecordCost) {
       this.setState({
         missingInput: '* Entries Cannot Be Empty'
@@ -93,7 +93,7 @@ class AllRecords extends React.Component {
     newRecords[accIndex].total = (parseInt(records[accIndex].total) - parseInt(record.cost[recordIndex])) + parseInt(editRecordCost);
     names[recordIndex] = editRecordName;
     cost[recordIndex] = editRecordCost;
-    fetch(`/api/garage/${vehicleId}/${user.userId}/edit-records`,
+    fetch(`/api/garage/${vehicleId}/edit-records`,
       {
         method: 'PUT',
         headers: {

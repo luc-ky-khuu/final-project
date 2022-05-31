@@ -29,8 +29,8 @@ class MyCars extends React.Component {
 
   deleteCar() {
     const { cars, vehicleIndex } = this.state;
-    const { token, user } = this.context;
-    fetch(`/api/garage/delete-car/${cars[vehicleIndex].vehicleId}/${user.userId}`, {
+    const { token } = this.context;
+    fetch(`/api/garage/delete-car/${cars[vehicleIndex].vehicleId}`, {
       method: 'DELETE',
       headers: { 'X-Access-Token': token }
     })

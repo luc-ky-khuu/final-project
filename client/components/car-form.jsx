@@ -150,7 +150,7 @@ class CarForm extends React.Component {
         .then(resetState)
         .catch(err => console.error(err));
     } else {
-      fetch(`/api/garage/edit-car/${vehicleId}/${user.userId}`, {
+      fetch(`/api/garage/edit-car/${vehicleId}`, {
         method: 'PUT',
         body: formData,
         headers: { 'X-Access-Token': token }

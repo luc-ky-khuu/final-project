@@ -23,9 +23,10 @@ class CarDetails extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/garage/recent-history/${this.context.vehicleId}`,
+    const { vehicleId, token, user } = this.context;
+    fetch(`/api/garage/recent-history/${vehicleId}/${user.userId}`,
       {
-        headers: { 'X-Access-Token': this.context.token }
+        headers: { 'X-Access-Token': token }
       }
     )
       .then(result => result.json())

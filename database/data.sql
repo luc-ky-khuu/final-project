@@ -3,7 +3,11 @@ insert into "public"."users" (
   "hashedPassword"
 ) values (
   'admin1',
-  '$argon2i$v=19$m=4096,t=3,p=1$9QVdBM4S/omp5Sdkmdx9tg$hPTzDPr8RlMpTveZJHKc9BK5vcgj+8bWQuWqKEsRKhM'
+  '$argon2i$v=19$m=16,t=2,p=1$NHFHUHVmTG5zRjVIYkJ4dA$mtPk5AmXOWSdmOdKO+UXdQ'
+),
+(
+  'admin2',
+  '$argon2i$v=19$m=16,t=2,p=1$Y3BnQ2tTU2xTY3pXdENhbQ$vKjuD33cQoISV4h5ThrEvQ'
 );
 
 insert into "public"."vehicles" (
@@ -20,7 +24,7 @@ insert into "public"."vehicles" (
   'https://vehicle-expenses-tracker.s3.us-west-1.amazonaws.com/1651706851795.jpg'
 ),
 (
-  1,
+  2,
   2010,
   'Honda',
   'Civic',
