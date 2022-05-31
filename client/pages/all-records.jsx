@@ -315,12 +315,12 @@ class AllRecords extends React.Component {
       this.setState({
         receiptModal: !this.state.receiptModal
       });
+    } else {
+      this.setState({
+        receiptModal: !this.state.receiptModal,
+        pictureToDisplay: event.target.src
+      });
     }
-    this.setState({
-      receiptModal: !this.state.receiptModal,
-      pictureToDisplay: event.target.src
-    });
-
   }
 
   toggleDeleteModal() {
