@@ -118,6 +118,7 @@ class CarForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const { year, make, model } = this.state;
+    const { user, token, vehicleId } = this.context;
     const formData = new FormData();
     formData.append('year', year);
     formData.append('make', make);
@@ -140,19 +141,19 @@ class CarForm extends React.Component {
         });
         return;
       }
-      fetch('/api/garage/add-car', {
+      fetch(`/api/garage/add-car/${user.userId}`, {
         method: 'POST',
         body: formData,
-        headers: { 'X-Access-Token': this.context.token }
+        headers: { 'X-Access-Token': token }
       })
         .then(res => res.json())
         .then(resetState)
         .catch(err => console.error(err));
     } else {
-      fetch(`/api/garage/edit-car/${this.context.vehicleId}`, {
+      fetch(`/api/garage/edit-car/${vehicleId}/${user.userId}`, {
         method: 'PUT',
         body: formData,
-        headers: { 'X-Access-Token': this.context.token }
+        headers: { 'X-Access-Token': token }
       })
         .then(res => res.json())
         .then(resetState)

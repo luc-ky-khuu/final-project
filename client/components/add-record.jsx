@@ -20,6 +20,7 @@ class AddForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     let { date, cost, record, mileage } = this.state;
+    const { token, user, vehicleId } = this.context;
     if (mileage.includes(',')) {
       mileage = mileage.replace(/,/g, '');
     }
@@ -44,10 +45,10 @@ class AddForm extends React.Component {
     formData.append('cost', cost);
     formData.append('record', record);
     formData.append('mileage', mileage);
-    fetch(`/api/garage/add-record/${this.context.vehicleId}`, {
+    fetch(`/api/garage/add-record/${vehicleId}/${user.userId}`, {
       method: 'POST',
       body: formData,
-      headers: { 'X-Access-Token': this.context.token }
+      headers: { 'X-Access-Token': token }
     })
       .then(result => result.json())
       .then(data => {

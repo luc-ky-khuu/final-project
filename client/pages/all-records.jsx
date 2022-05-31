@@ -26,8 +26,9 @@ class AllRecords extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/vehicles/${this.context.vehicleId}/records`, {
-      headers: { 'X-Access-Token': this.context.token }
+    const { vehicleId, token, user } = this.context;
+    fetch(`/api/vehicles/${vehicleId}/${user.userId}/records`, {
+      headers: { 'X-Access-Token': token }
     })
       .then(result => result.json())
       .then(result => {
@@ -64,6 +65,7 @@ class AllRecords extends React.Component {
   handleSubmit(event, record, recordIndex, accIndex) {
     event.preventDefault();
     let { editRecordName, editRecordCost, records } = this.state;
+    const { vehicleId, token, user } = this.context;
     if (!editRecordName || !editRecordCost) {
       this.setState({
         missingInput: '* Entries Cannot Be Empty'
@@ -91,12 +93,12 @@ class AllRecords extends React.Component {
     newRecords[accIndex].total = (parseInt(records[accIndex].total) - parseInt(record.cost[recordIndex])) + parseInt(editRecordCost);
     names[recordIndex] = editRecordName;
     cost[recordIndex] = editRecordCost;
-    fetch(`/api/garage/${this.context.vehicleId}/edit-records`,
+    fetch(`/api/garage/${vehicleId}/${user.userId}/edit-records`,
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-Access-Token': this.context.token
+          'X-Access-Token': token
         },
         body: JSON.stringify(updatedRecords)
       }
@@ -226,17 +228,18 @@ class AllRecords extends React.Component {
   }
 
   deleteRecord(record, recordIndex, accIndex) {
+    const { vehicleId, token, user } = this.context;
     const recordToDelete = {
       date: record.datePerformed,
       cost: record.cost[recordIndex],
       name: record.names[recordIndex]
     };
-    fetch(`/api/garage/${this.context.vehicleId}/delete-record`,
+    fetch(`/api/garage/${vehicleId}/${user.userId}/delete-record`,
       {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'X-Access-Token': this.context.token
+          'X-Access-Token': token
         },
         body: JSON.stringify(recordToDelete)
       })
