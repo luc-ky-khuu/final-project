@@ -142,7 +142,8 @@ class CarForm extends React.Component {
       }
       fetch('/api/garage/add-car', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: { 'X-Access-Token': this.context.token }
       })
         .then(res => res.json())
         .then(resetState)
@@ -150,7 +151,8 @@ class CarForm extends React.Component {
     } else {
       fetch(`/api/garage/edit-car/${this.context.vehicleId}`, {
         method: 'PUT',
-        body: formData
+        body: formData,
+        headers: { 'X-Access-Token': this.context.token }
       })
         .then(res => res.json())
         .then(resetState)

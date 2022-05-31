@@ -136,7 +136,7 @@ class CarDetails extends React.Component {
   showAddForm() {
     return (
       <Modal size='md' show={this.state.recordModal} onHide={() => this.toggleModal('recordModal') } centered>
-        <AddForm vehicleId={this.context.vehicleId} toggleModal={() => this.toggleModal('recordModal')} addRecord={this.addRecord}/>
+        <AddForm toggleModal={() => this.toggleModal('recordModal')} addRecord={this.addRecord}/>
       </Modal>
     );
   }
