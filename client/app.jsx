@@ -91,7 +91,7 @@ export default class App extends React.Component {
     return (
       <>
         <VehicleContext.Provider value={contextValue}>
-          <Navbar route={this.state.route.path}/>
+          <Navbar route={route.path} user={user}/>
           <div className='container'>
             <div className='justify-content-center row'>
               <div className='col-lg-2 d-none d-lg-block px-0'>

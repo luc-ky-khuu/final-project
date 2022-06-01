@@ -7,6 +7,10 @@ class Navigation extends React.Component {
     if (this.props.route === 'vehicle-records') {
       title = 'Vehicle Records';
     }
+    let menuItem = 'Sign-In';
+    if (this.props.user) {
+      menuItem = 'garage';
+    }
     return (
       <Navbar className='bg-component-blue navbar-dark sticky-top py-0' expand={'lg'} collapseOnSelect='true'>
         <Container className='justify-content-start'>
@@ -23,7 +27,7 @@ class Navigation extends React.Component {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className='flex-grow-1 pe-3'>
-                <Nav.Link className='open-sans text-reset text-decoration-none border-bottom w-50' href='#garage'>Garage</Nav.Link>
+                <Nav.Link className='open-sans text-reset text-capitalize text-decoration-none border-bottom w-50' href={`#${menuItem}`}>{menuItem}</Nav.Link>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>

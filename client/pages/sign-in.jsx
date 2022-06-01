@@ -170,14 +170,14 @@ class SignIn extends React.Component {
     return (
       <>
         <div className='d-flex row justify-content-center m-5'>
-          <Form className='col-8 col-lg-6 p-5 bg-white' onSubmit={this.handleSubmit}>
+          <Form className='col-12 col-lg-10 p-5 bg-white' onSubmit={this.handleSubmit}>
             <h3 className='mb-4'>
               {action === 'Sign-In' ? 'Sign-In' : 'Create Account'}
             </h3>
             <Form.Group className="mb-3 text-start" controlId="newUsername">
               <Form.Label className='d-flex flex-nowrap justify-content-between fw-bolder'>
                 Username
-                <p className='m-0 account-form'> {action === 'Sign-Up' ? 'Have an Account?' : 'Need an account?'}
+                <p className='m-0 account-form fs-7'> {action === 'Sign-Up' ? 'Have an Account?' : 'Need an account?'}
                   <a onClick={event => this.changeForm(event)} className='fw-bolder account-form-button text-decoration-none'> {action === 'Sign-Up' ? 'Sign-In' : 'Sign-Up'}</a>
                 </p>
               </Form.Label>
