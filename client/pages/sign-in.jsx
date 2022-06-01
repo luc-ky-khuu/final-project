@@ -170,7 +170,7 @@ class SignIn extends React.Component {
     return (
       <>
         <div className='d-flex row justify-content-center m-5'>
-          <Form className='col-12 col-lg-10 p-5 bg-white' onSubmit={this.handleSubmit}>
+          <Form className='col-12 col-lg-8 p-5 bg-white' onSubmit={this.handleSubmit}>
             <h3 className='mb-4'>
               {action === 'Sign-In' ? 'Sign-In' : 'Create Account'}
             </h3>
