@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import VehicleContext from '../lib/vehicleContext-context';
 
-class SignUp extends React.Component {
+class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,12 +13,14 @@ class SignUp extends React.Component {
       pwHasNum: null,
       pwHasUpper: null,
       pwHasLower: null,
-      didSignUp: null
+      didSignUp: null,
+      action: 'Sign-In'
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.pwTooltip = this.pwTooltip.bind(this);
     this.usernameTooltip = this.usernameTooltip.bind(this);
+    this.changeForm = this.changeForm.bind(this);
   }
 
   handleChange(event) {
@@ -68,7 +71,7 @@ class SignUp extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { username, password, pwHasUpper, pwHasLower, pwHasNum } = this.state;
+    const { username, password, pwHasUpper, pwHasLower, pwHasNum, action } = this.state;
     if (username.length < 6 || password.length < 6 || !pwHasUpper || !pwHasLower || !pwHasNum) {
       this.setState({
         didSignUp: false
@@ -79,22 +82,28 @@ class SignUp extends React.Component {
       username: username,
       password: password
     };
-    fetch('/api/auth/sign-up', {
+    fetch(`/api/auth/${action}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(info)
     })
       .then(result => result.json())
       .then(userInfo => {
-        if (!userInfo[0]) {
-          this.setState({
-            badName: 'Username already exists'
-          });
+        if (action === 'Sign-Up') {
+          if (!userInfo[0]) {
+            this.setState({
+              badName: 'Username already exists'
+            });
+          } else {
+            this.setState({
+              didSignUp: true,
+              action: 'Sign-In'
+            });
+            setTimeout(() => this.setState({ didSignUp: null }), 3000);
+            this.reset();
+          }
         } else {
-          this.setState({
-            didSignUp: true
-          });
-          this.reset();
+          this.context.handleSignIn(userInfo);
         }
       })
       .catch(err => console.error(err));
@@ -133,6 +142,17 @@ class SignUp extends React.Component {
     );
   }
 
+  changeForm(event) {
+    event.preventDefault();
+    const sign = {
+      'Sign-In': 'Sign-Up',
+      'Sign-Up': 'Sign-In'
+    };
+    this.setState({
+      action: sign[this.state.action]
+    });
+  }
+
   reset() {
     this.setState({
       username: '',
@@ -146,18 +166,24 @@ class SignUp extends React.Component {
   }
 
   render() {
+    const { action } = this.state;
     return (
       <>
         <div className='d-flex row justify-content-center m-5'>
-          <Form className='col-8 col-lg-6 p-5 bg-white' onSubmit={this.handleSubmit}>
+          <Form className='col-12 col-lg-8 p-5 bg-white' onSubmit={this.handleSubmit}>
             <h3 className='mb-4'>
-              Create Account
+              {action === 'Sign-In' ? 'Sign-In' : 'Create Account'}
             </h3>
             <Form.Group className="mb-3 text-start" controlId="newUsername">
-              <Form.Label>Username</Form.Label>
+              <Form.Label className='d-flex flex-nowrap justify-content-between fw-bolder'>
+                Username
+                <p className='m-0 account-form fs-7'> {action === 'Sign-Up' ? 'Have an Account?' : 'Need an account?'}
+                  <a onClick={event => this.changeForm(event)} className='fw-bolder account-form-button text-decoration-none'> {action === 'Sign-Up' ? 'Sign-In' : 'Sign-Up'}</a>
+                </p>
+              </Form.Label>
               <OverlayTrigger
                 placement="right"
-                trigger="focus"
+                trigger={action === 'Sign-Up' && 'focus'}
                 overlay={this.usernameTooltip}
               >
                 <Form.Control onChange={this.handleChange} value={this.state.username} type="text" name='username' />
@@ -169,10 +195,10 @@ class SignUp extends React.Component {
               }
             </Form.Group>
             <Form.Group className="mb-3 text-start" controlId="newPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className='fw-bolder'>Password</Form.Label>
               <OverlayTrigger
                 placement="right"
-                trigger="focus"
+                trigger={action === 'Sign-Up' && 'focus'}
                 overlay={this.pwTooltip}
               >
                 <Form.Control onChange={this.handleChange} value={this.state.password} type="password" name='password' />
@@ -189,7 +215,7 @@ class SignUp extends React.Component {
               </p>
             }
             <Button className='mt-3 w-100 border-0 blue-button' variant="primary" type="submit">
-              Sign Up
+              {action}
             </Button>
           </Form>
         </div>
@@ -197,5 +223,5 @@ class SignUp extends React.Component {
     );
   }
 }
-
-export default SignUp;
+SignIn.contextType = VehicleContext;
+export default SignIn;

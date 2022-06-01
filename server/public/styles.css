@@ -132,6 +132,20 @@ ul {
   overflow-x: auto;
 }
 
+.account-form {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.account-form-button {
+  cursor: pointer;
+  color: rgba(48, 71, 94, 1);
+}
+
+.fs-7 {
+  font-size: 0.9rem;
+}
+
 #menu {
   height: calc(100vh - 70px);
 }

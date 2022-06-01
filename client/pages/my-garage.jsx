@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Button, Modal } from 'react-bootstrap';
 import CarForm from '../components/car-form';
 import LoadingSpinner from '../components/loading-spinner';
+import Context from '../lib/vehicleContext-context';
 class MyCars extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +30,8 @@ class MyCars extends React.Component {
   deleteCar() {
     const { cars, vehicleIndex } = this.state;
     fetch(`/api/garage/delete-car/${cars[vehicleIndex].vehicleId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
     })
       .then(result => result.json())
       .then(result => {
@@ -77,7 +79,10 @@ class MyCars extends React.Component {
   }
 
   getCars() {
-    fetch('/api/garage')
+    const { user } = this.context;
+    fetch(`api/garage/${user.userId}`, {
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
+    })
       .then(cars => cars.json())
       .then(result => {
         this.setState({
@@ -141,4 +146,5 @@ class MyCars extends React.Component {
     }
   }
 }
+MyCars.contextType = Context;
 export default MyCars;

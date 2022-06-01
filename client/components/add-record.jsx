@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Button, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
+import Context from '../lib/vehicleContext-context';
 class AddForm extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +20,7 @@ class AddForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     let { date, cost, record, mileage } = this.state;
+    const { vehicleId } = this.context;
     if (mileage.includes(',')) {
       mileage = mileage.replace(/,/g, '');
     }
@@ -43,9 +45,10 @@ class AddForm extends React.Component {
     formData.append('cost', cost);
     formData.append('record', record);
     formData.append('mileage', mileage);
-    fetch(`/api/garage/add-record/${this.props.vehicleId}`, {
+    fetch(`/api/garage/add-record/${vehicleId}`, {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
     })
       .then(result => result.json())
       .then(data => {
@@ -123,4 +126,5 @@ class AddForm extends React.Component {
     );
   }
 }
+AddForm.contextType = Context;
 export default AddForm;

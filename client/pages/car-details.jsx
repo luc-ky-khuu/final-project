@@ -2,10 +2,9 @@ import React from 'react';
 import { Card, Modal, Table } from 'react-bootstrap';
 import AddForm from '../components/add-record';
 import CarForm from '../components/car-form';
-import VehicleId from '../lib/vehicleId-context';
+import Context from '../lib/vehicleContext-context';
 import Map from '../components/map';
 import LoadingSpinner from '../components/loading-spinner';
-
 class CarDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +23,12 @@ class CarDetails extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/garage/recent-history/${this.context.vehicleId}`)
+    const { vehicleId, user } = this.context;
+    fetch(`/api/garage/recent-history/${vehicleId}/${user.userId}`,
+      {
+        headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
+      }
+    )
       .then(result => result.json())
       .then(result => {
         if (result.error) {
@@ -133,7 +137,7 @@ class CarDetails extends React.Component {
   showAddForm() {
     return (
       <Modal size='md' show={this.state.recordModal} onHide={() => this.toggleModal('recordModal') } centered>
-        <AddForm vehicleId={this.context.vehicleId} toggleModal={() => this.toggleModal('recordModal')} addRecord={this.addRecord}/>
+        <AddForm toggleModal={() => this.toggleModal('recordModal')} addRecord={this.addRecord}/>
       </Modal>
     );
   }
@@ -252,5 +256,5 @@ class CarDetails extends React.Component {
     }
   }
 }
-CarDetails.contextType = VehicleId;
+CarDetails.contextType = Context;
 export default CarDetails;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Accordion, Form, Button, InputGroup, Modal } from 'react-bootstrap';
 import LoadingSpinner from '../components/loading-spinner';
+import Context from '../lib/vehicleContext-context';
 class AllRecords extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +26,10 @@ class AllRecords extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/vehicles/${this.props.vehicleId}/records`)
+    const { vehicleId, user } = this.context;
+    fetch(`/api/vehicles/${vehicleId}/${user.userId}/records`, {
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
+    })
       .then(result => result.json())
       .then(result => {
         if (result.error) {
@@ -61,6 +65,7 @@ class AllRecords extends React.Component {
   handleSubmit(event, record, recordIndex, accIndex) {
     event.preventDefault();
     let { editRecordName, editRecordCost, records } = this.state;
+    const { vehicleId } = this.context;
     if (!editRecordName || !editRecordCost) {
       this.setState({
         missingInput: '* Entries Cannot Be Empty'
@@ -88,11 +93,12 @@ class AllRecords extends React.Component {
     newRecords[accIndex].total = (parseInt(records[accIndex].total) - parseInt(record.cost[recordIndex])) + parseInt(editRecordCost);
     names[recordIndex] = editRecordName;
     cost[recordIndex] = editRecordCost;
-    fetch(`/api/garage/${this.props.vehicleId}/edit-records`,
+    fetch(`/api/garage/${vehicleId}/edit-records`,
       {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt')
         },
         body: JSON.stringify(updatedRecords)
       }
@@ -222,16 +228,18 @@ class AllRecords extends React.Component {
   }
 
   deleteRecord(record, recordIndex, accIndex) {
+    const { vehicleId } = this.context;
     const recordToDelete = {
       date: record.datePerformed,
       cost: record.cost[recordIndex],
       name: record.names[recordIndex]
     };
-    fetch(`/api/garage/${this.props.vehicleId}/delete-record`,
+    fetch(`/api/garage/${vehicleId}/delete-record`,
       {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt')
         },
         body: JSON.stringify(recordToDelete)
       })
@@ -307,12 +315,12 @@ class AllRecords extends React.Component {
       this.setState({
         receiptModal: !this.state.receiptModal
       });
+    } else {
+      this.setState({
+        receiptModal: !this.state.receiptModal,
+        pictureToDisplay: event.target.src
+      });
     }
-    this.setState({
-      receiptModal: !this.state.receiptModal,
-      pictureToDisplay: event.target.src
-    });
-
   }
 
   toggleDeleteModal() {
@@ -357,5 +365,5 @@ class AllRecords extends React.Component {
     }
   }
 }
-
+AllRecords.contextType = Context;
 export default AllRecords;

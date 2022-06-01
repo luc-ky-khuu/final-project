@@ -4,8 +4,9 @@ import MyCars from './pages/my-garage';
 import Menu from './components/menu';
 import CarDetails from './pages/car-details';
 import AllRecords from './pages/all-records';
-import VehicleId from './lib/vehicleId-context';
-import SignUp from './pages/sign-up';
+import VehicleContext from './lib/vehicleContext-context';
+import SignIn from './pages/sign-in';
+import decodeToken from './lib/decode-token';
 
 function parseRoute(hashRoute) {
   if (hashRoute.startsWith('#')) {
@@ -19,8 +20,12 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash)
+      route: parseRoute(window.location.hash),
+      isAuthorizing: true,
+      user: null
     };
+    this.handleSignIn = this.handleSignIn.bind(this);
+    this.redirect = this.redirect.bind(this);
   }
 
   componentDidMount() {
@@ -28,14 +33,37 @@ export default class App extends React.Component {
       this.setState({
         route: parseRoute(window.location.hash)
       });
-
     });
+    const token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
+    const user = token ? decodeToken(token) : null;
+    this.setState({ user, isAuthorizing: false });
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('vehicle-expenses-tracker-jwt', token);
+    this.setState({ user });
+    this.redirect();
+  }
+
+  redirect() {
+    const url = new URL(window.location);
+    if (this.state.user) {
+      url.hash = 'garage';
+    } else {
+      url.hash = '#sign-in';
+    }
+    window.location.replace(url);
+    return null;
   }
 
   renderPage() {
-    const { route } = this.state;
-    const vehicleId = route.params.get('vehicleId');
-    const contextValue = { vehicleId };
+    const { route, user } = this.state;
+    const page = {
+      garage: <MyCars />,
+      'garage/myCar': <CarDetails />,
+      'vehicle-records': <AllRecords />
+    };
     if (!navigator.onLine) {
       return (
         <>
@@ -45,34 +73,36 @@ export default class App extends React.Component {
         </>
       );
     }
-    if (route.path === 'garage') {
-      return <MyCars />;
-    } else if (route.path === 'garage/myCar') {
-      return (
-        <VehicleId.Provider value={contextValue}>
-          <CarDetails />
-        </VehicleId.Provider>
-      );
-    } else if (route.path === 'vehicle-records') {
-      return <AllRecords vehicleId={vehicleId}/>;
+    if (!user) {
+      this.redirect();
+      return <SignIn />;
+    } else if (page[route.path]) {
+      return page[route.path];
     }
-    return <SignUp />;
+    return <SignIn />;
   }
 
   render() {
+    if (this.state.isAuthorizing) return null;
+    const { route, user } = this.state;
+    const { handleSignIn } = this;
+    const vehicleId = route.params.get('vehicleId');
+    const contextValue = { vehicleId, user, handleSignIn };
     return (
       <>
-        <Navbar route={this.state.route.path}/>
-        <div className='container'>
-          <div className='justify-content-center row'>
-            <div className='col-lg-2 d-none d-lg-block px-0'>
-              <Menu />
-            </div>
-            <div className='text-center col-lg-10 '>
-              {this.renderPage()}
+        <VehicleContext.Provider value={contextValue}>
+          <Navbar route={route.path} user={user}/>
+          <div className='container'>
+            <div className='justify-content-center row'>
+              <div className='col-lg-2 d-none d-lg-block px-0'>
+                <Menu />
+              </div>
+              <div className='text-center col-lg-10 '>
+                {this.renderPage()}
+              </div>
             </div>
           </div>
-        </div>
+        </VehicleContext.Provider>
       </>
     );
   }
