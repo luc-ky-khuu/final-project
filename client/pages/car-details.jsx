@@ -23,10 +23,10 @@ class CarDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { vehicleId, token, user } = this.context;
+    const { vehicleId, user } = this.context;
     fetch(`/api/garage/recent-history/${vehicleId}/${user.userId}`,
       {
-        headers: { 'X-Access-Token': token }
+        headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
       }
     )
       .then(result => result.json())

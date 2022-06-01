@@ -16,7 +16,7 @@ const jsonMiddleware = express.json();
 
 app.use(jsonMiddleware);
 
-app.post('/api/auth/sign-up', (req, res, next) => {
+app.post('/api/auth/Sign-Up', (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(400, 'username and password are required fields');
@@ -44,7 +44,7 @@ app.post('/api/auth/sign-up', (req, res, next) => {
     });
 });
 
-app.post('/api/auth/sign-in', (req, res, next) => {
+app.post('/api/auth/Sign-In', (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(400, 'username and password are required fields');

@@ -29,10 +29,9 @@ class MyCars extends React.Component {
 
   deleteCar() {
     const { cars, vehicleIndex } = this.state;
-    const { token } = this.context;
     fetch(`/api/garage/delete-car/${cars[vehicleIndex].vehicleId}`, {
       method: 'DELETE',
-      headers: { 'X-Access-Token': token }
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
     })
       .then(result => result.json())
       .then(result => {
@@ -80,9 +79,9 @@ class MyCars extends React.Component {
   }
 
   getCars() {
-    const { token, user } = this.context;
+    const { user } = this.context;
     fetch(`api/garage/${user.userId}`, {
-      headers: { 'X-Access-Token': token }
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
     })
       .then(cars => cars.json())
       .then(result => {

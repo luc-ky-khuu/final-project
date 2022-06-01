@@ -20,6 +20,7 @@ class CarForm extends React.Component {
   }
 
   addCarModal() {
+
     return (
       <>
         <Modal size='md' show={this.state.modal} onHide={this.toggleModal} centered>
@@ -118,7 +119,7 @@ class CarForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const { year, make, model } = this.state;
-    const { user, token, vehicleId } = this.context;
+    const { user, vehicleId } = this.context;
     const formData = new FormData();
     formData.append('year', year);
     formData.append('make', make);
@@ -134,6 +135,11 @@ class CarForm extends React.Component {
       });
       this.fileInputRef.current.value = null;
     };
+    const actionObj = {
+      'edit-car': [vehicleId, 'PUT'],
+      'add-car': [user.userId, 'POST']
+    };
+    let action = 'edit-car';
     if (this.state.newCar) {
       if (!year || !make || !model) {
         this.setState({
@@ -141,24 +147,16 @@ class CarForm extends React.Component {
         });
         return;
       }
-      fetch(`/api/garage/add-car/${user.userId}`, {
-        method: 'POST',
-        body: formData,
-        headers: { 'X-Access-Token': token }
-      })
-        .then(res => res.json())
-        .then(resetState)
-        .catch(err => console.error(err));
-    } else {
-      fetch(`/api/garage/edit-car/${vehicleId}`, {
-        method: 'PUT',
-        body: formData,
-        headers: { 'X-Access-Token': token }
-      })
-        .then(res => res.json())
-        .then(resetState)
-        .catch(err => console.error(err));
+      action = 'add-car';
     }
+    fetch(`/api/garage/${action}/${actionObj[action][0]}`, {
+      method: actionObj[action][1],
+      body: formData,
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
+    })
+      .then(res => res.json())
+      .then(resetState)
+      .catch(err => console.error(err));
   }
 
   render() {

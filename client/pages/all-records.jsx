@@ -26,9 +26,9 @@ class AllRecords extends React.Component {
   }
 
   componentDidMount() {
-    const { vehicleId, token, user } = this.context;
+    const { vehicleId, user } = this.context;
     fetch(`/api/vehicles/${vehicleId}/${user.userId}/records`, {
-      headers: { 'X-Access-Token': token }
+      headers: { 'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt') }
     })
       .then(result => result.json())
       .then(result => {
@@ -65,7 +65,7 @@ class AllRecords extends React.Component {
   handleSubmit(event, record, recordIndex, accIndex) {
     event.preventDefault();
     let { editRecordName, editRecordCost, records } = this.state;
-    const { vehicleId, token } = this.context;
+    const { vehicleId } = this.context;
     if (!editRecordName || !editRecordCost) {
       this.setState({
         missingInput: '* Entries Cannot Be Empty'
@@ -98,7 +98,7 @@ class AllRecords extends React.Component {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-Access-Token': token
+          'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt')
         },
         body: JSON.stringify(updatedRecords)
       }
@@ -228,7 +228,7 @@ class AllRecords extends React.Component {
   }
 
   deleteRecord(record, recordIndex, accIndex) {
-    const { vehicleId, token } = this.context;
+    const { vehicleId } = this.context;
     const recordToDelete = {
       date: record.datePerformed,
       cost: record.cost[recordIndex],
@@ -239,7 +239,7 @@ class AllRecords extends React.Component {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'X-Access-Token': token
+          'X-Access-Token': localStorage.getItem('vehicle-expenses-tracker-jwt')
         },
         body: JSON.stringify(recordToDelete)
       })

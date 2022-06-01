@@ -34,18 +34,15 @@ export default class App extends React.Component {
         route: parseRoute(window.location.hash)
       });
     });
-    this.token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
-    const user = this.token ? decodeToken(this.token) : null;
+    const token = window.localStorage.getItem('vehicle-expenses-tracker-jwt');
+    const user = token ? decodeToken(token) : null;
     this.setState({ user, isAuthorizing: false });
   }
 
   handleSignIn(result) {
     const { user, token } = result;
     window.localStorage.setItem('vehicle-expenses-tracker-jwt', token);
-    this.token = token;
-    this.setState({
-      user
-    });
+    this.setState({ user });
     this.redirect();
   }
 
@@ -88,9 +85,9 @@ export default class App extends React.Component {
   render() {
     if (this.state.isAuthorizing) return null;
     const { route, user } = this.state;
-    const { handleSignIn, token } = this;
+    const { handleSignIn } = this;
     const vehicleId = route.params.get('vehicleId');
-    const contextValue = { vehicleId, user, handleSignIn, token };
+    const contextValue = { vehicleId, user, handleSignIn };
     return (
       <>
         <VehicleContext.Provider value={contextValue}>

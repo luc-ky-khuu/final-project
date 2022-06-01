@@ -82,14 +82,14 @@ class SignIn extends React.Component {
       username: username,
       password: password
     };
-    if (action === 'Sign-Up') {
-      fetch('/api/auth/sign-up', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(info)
-      })
-        .then(result => result.json())
-        .then(userInfo => {
+    fetch(`/api/auth/${action}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(info)
+    })
+      .then(result => result.json())
+      .then(userInfo => {
+        if (action === 'Sign-Up') {
           if (!userInfo[0]) {
             this.setState({
               badName: 'Username already exists'
@@ -102,20 +102,11 @@ class SignIn extends React.Component {
             setTimeout(() => this.setState({ didSignUp: null }), 3000);
             this.reset();
           }
-        })
-        .catch(err => console.error(err));
-    } else {
-      fetch('/api/auth/sign-in', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(info)
-      })
-        .then(result => result.json())
-        .then(userInfo => {
+        } else {
           this.context.handleSignIn(userInfo);
-        })
-        .catch(err => console.error(err));
-    }
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   pwTooltip(props) {
