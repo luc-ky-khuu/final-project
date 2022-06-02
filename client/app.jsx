@@ -25,6 +25,7 @@ export default class App extends React.Component {
       user: null
     };
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
     this.redirect = this.redirect.bind(this);
   }
 
@@ -43,6 +44,14 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('vehicle-expenses-tracker-jwt', token);
     this.setState({ user });
+    this.redirect();
+  }
+
+  handleSignOut() {
+    window.localStorage.removeItem('vehicle-expenses-tracker-jwt');
+    this.setState({
+      user: null
+    });
     this.redirect();
   }
 
@@ -85,9 +94,9 @@ export default class App extends React.Component {
   render() {
     if (this.state.isAuthorizing) return null;
     const { route, user } = this.state;
-    const { handleSignIn } = this;
+    const { handleSignIn, handleSignOut } = this;
     const vehicleId = route.params.get('vehicleId');
-    const contextValue = { vehicleId, user, handleSignIn };
+    const contextValue = { vehicleId, user, handleSignIn, handleSignOut };
     return (
       <>
         <VehicleContext.Provider value={contextValue}>

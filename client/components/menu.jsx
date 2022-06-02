@@ -3,11 +3,18 @@ import Context from '../lib/vehicleContext-context';
 class Menu extends React.Component {
   isLoggedIn() {
     return (
-      <li className='p-3 fs-5 border-0 bg-transparent list-group-item list-group-item-action'>
-        <a className='text-decoration-none text-reset' href='#garage'>
-          Garage
-        </a>
-      </li>
+      <>
+        <li className='p-3 fs-5 border-0 bg-transparent list-group-item list-group-item-action'>
+          <a className='text-decoration-none text-reset' href='#garage'>
+            Garage
+          </a>
+        </li>
+        <li className='p-3 fs-5 border-0 bg-transparent list-group-item list-group-item-action'>
+          <a className='text-decoration-none text-reset' href='#sign-in' onClick={this.context.handleSignOut}>
+            Sign-Out
+          </a>
+        </li>
+      </>
     );
   }
 

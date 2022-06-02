@@ -1,9 +1,10 @@
 import React from 'react';
 import { Container, Offcanvas, Navbar, Nav } from 'react-bootstrap';
+import VehicleContext from '../lib/vehicleContext-context';
 class Navigation extends React.Component {
-
   render() {
     let title = 'My Garage';
+    const linkClass = 'open-sans text-reset text-capitalize text-decoration-none border-bottom w-50';
     if (this.props.route === 'vehicle-records') {
       title = 'Vehicle Records';
     }
@@ -27,7 +28,8 @@ class Navigation extends React.Component {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className='flex-grow-1 pe-3'>
-                <Nav.Link className='open-sans text-reset text-capitalize text-decoration-none border-bottom w-50' href={`#${menuItem}`}>{menuItem}</Nav.Link>
+                <Nav.Link className={linkClass} href={`#${menuItem}`}>{menuItem}</Nav.Link>
+                {this.props.user && <Nav.Link className={linkClass} href='#sign-in' onClick={this.context.handleSignOut}>Sign-Out</Nav.Link>}
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
@@ -37,4 +39,5 @@ class Navigation extends React.Component {
     );
   }
 }
+Navigation.contextType = VehicleContext;
 export default Navigation;
